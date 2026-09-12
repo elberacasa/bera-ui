@@ -14,11 +14,11 @@ No perpetual ambient animation. No shader machinery in the collection. No orname
 
 ## First collection
 
-| Feedback | Navigation | Surfaces |
-| --- | --- | --- |
-| State button | Sliding tabs | Morphing menu |
-| Text swap | Expanding search | Toast stack |
-| Copy feedback | Rolling counter | Accordion |
+| Feedback      | Navigation       | Surfaces      |
+| ------------- | ---------------- | ------------- |
+| State button  | Sliding tabs     | Morphing menu |
+| Text swap     | Expanding search | Toast stack   |
+| Copy feedback | Rolling counter  | Accordion     |
 
 State button uses a clearly labeled simulated save unless an actual action is supplied. Copy writes to the clipboard. Search filters local demonstration names. Toasts are explicitly local previews. Production integrations must connect the relevant application behavior.
 

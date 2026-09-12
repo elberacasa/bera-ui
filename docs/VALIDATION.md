@@ -1,5 +1,16 @@
 # Validation — transition collection
 
+## Agent kit edition — September 12, 2026
+
+- All nine downloaded TSX modules compile as strict standalone consumers with only one named export.
+- The portable kit passes 25 integration checks: installer safeguards, four agent destinations, archive extraction, public-source parity, and deterministic generation.
+- Whole-project TypeScript, ESLint, and formatting checks pass.
+- The Vercel static build produces the gallery, agent guide, Iris study, and downloadable kit.
+- Browser check at 668px: customizer presets and keyboard corner adjustment appear in the full agent brief; closing returns focus to the exact opener; the agent guide and its links render correctly.
+- The save button is disabled without a real callback outside preview. TextSwap without application statuses renders nothing outside preview.
+
+The earlier detailed browser checks below apply to V1. This edition does not imply a fresh physical-device or cross-engine certification.
+
 ## Browser checks
 
 The nine-pattern collection was exercised in the Codex browser at desktop widths (1280 and 1440), a 390px phone viewport, and a 320px narrow phone viewport.

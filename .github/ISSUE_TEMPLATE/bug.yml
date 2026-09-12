@@ -1,0 +1,37 @@
+name: Bug report
+description: Report incorrect behavior in a transition, the gallery, or the agent kit.
+title: "bug: "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Name the transition or workflow and explain the unexpected behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: How can we reproduce it?
+      description: Include the smallest useful sequence, code example, or installer command. Remove private data.
+      placeholder: "1. Open the morphing menu…"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should happen?
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser and OS for UI bugs; Node version and operating system for installer bugs. Include the commit or kit version when known.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Recording, screenshot, or error output
+      description: Optional. Motion recordings and precise errors are especially useful.

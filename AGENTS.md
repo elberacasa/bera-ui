@@ -15,7 +15,10 @@ Build a library of reusable transitions for existing interfaces. The reference i
 
 ## Files
 
-- `components/transition-library.tsx`: gallery registry, filters, playback, source inspector, agent instructions.
+- `components/transition-library.tsx`: gallery registry, filters, playback, per-pattern settings.
+- `components/transition-inspector.tsx`: live customization, individual source, complete agent handoff.
+- `skills/bera-motion/`: portable skill and installer; recipes/catalog are generated.
+- `lib/transition-catalog.json`: the single authored catalog.
 - `components/transitions/feedback.tsx` and `.css`: state button, text swap, copy feedback.
 - `components/transitions/selection.tsx` and `.css`: sliding tabs, expanding search, rolling counter.
 - `components/transitions/surfaces.tsx` and `.css`: morphing menu, accordion, toast stack.
@@ -27,4 +30,8 @@ Build a library of reusable transitions for existing interfaces. The reference i
 
 ## Quality and delivery
 
-Judge the live transitions at desktop and narrow phone widths. Check keyboard navigation, focus return, menu dismissal, controlled inputs, interruption, bounds, copy outcomes, reduced motion, and source/download parity. Run TypeScript, relevant lint, and production compilation. Update the validation record with what was actually checked. Preserve `.openai/hosting.json` and the existing Site project; publish revisions privately without creating another Site.
+Judge the live transitions at desktop and narrow phone widths. Check keyboard navigation, focus return, menu dismissal, controlled inputs, interruption, bounds, copy outcomes, reduced motion, and source/download parity. Run TypeScript, relevant lint, and production compilation. Update the validation record with what was actually checked. Preserve `.openai/hosting.json` and the existing Site project. The primary public deployment is now Vercel, connected to the public MIT GitHub repository `elberacasa/bera-ui`. Keep the Sites build available, but do not create another Site. Vercel Git integration owns deployments; GitHub Actions owns validation. Use a feature branch, conventional commits, a focused PR, and passing required checks before merging. Do not rewrite main.
+
+## Agent distribution
+
+Every component defaults to natural sizing; `preview` opts into gallery framing and demo controls. `speed` and `radius` are integration settings. Slow gallery playback is separate. Read CONTRIBUTING.md for generation and validation; never hand-edit generated recipe files. Every downloaded TSX exports only its selected component. The installer preserves differing files and never installs dependencies. Keep the SKILL.md concise; longer motion and integration guidance belongs in references.

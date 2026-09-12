@@ -10,11 +10,11 @@ The signature is a boundary: sharp rim, folded light, darker inner return, soft 
 
 ## Tokens
 
-| Role | Dusk | Pearl | Ember |
-| --- | --- | --- | --- |
+| Role    | Dusk    | Pearl   | Ember   |
+| ------- | ------- | ------- | ------- |
 | Surface | #e6e7ed | #e9eae7 | #ede3db |
-| Ink | #2c3044 | #292c32 | #45372e |
-| Accent | #626dab | #506662 | #a95c36 |
+| Ink     | #2c3044 | #292c32 | #45372e |
+| Accent  | #626dab | #506662 | #a95c36 |
 
 Manrope provides both display and functional typography. Iris's large name anchors the asymmetrical desktop composition. On phones, name and action precede the full-width instrument. No horizontal scrolling should be necessary at 320px.
 

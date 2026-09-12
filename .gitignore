@@ -45,3 +45,5 @@ next-env.d.ts
 /work/
 
 *.tsbuildinfo
+
+/.next-vercel/
