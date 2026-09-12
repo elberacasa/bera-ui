@@ -87,6 +87,35 @@ function useTiming(speed: number) {
         },
     }), [reduced, rate]);
 }
+function useKeyboardFocus() {
+    const keyboard = useRef(true);
+    const [visible, setVisible] = useState(false);
+    useEffect(() => {
+        const onPointer = () => {
+            keyboard.current = false;
+            setVisible(false);
+        };
+        const onKey = (event: globalThis.KeyboardEvent) => {
+            if (event.key === "Tab" || event.key === "Enter" || event.key === " ")
+                keyboard.current = true;
+        };
+        document.addEventListener("pointerdown", onPointer, true);
+        document.addEventListener("keydown", onKey, true);
+        return () => {
+            document.removeEventListener("pointerdown", onPointer, true);
+            document.removeEventListener("keydown", onKey, true);
+        };
+    }, []);
+    return {
+        visible,
+        focus: () => setVisible(keyboard.current),
+        keyboard: () => {
+            keyboard.current = true;
+            setVisible(true);
+        },
+        blur: () => setVisible(false),
+    };
+}
 const defaultSearchItems = ["Button", "Popover", "Tabs", "Search", "Counter"];
 type ExpandingSearchProps = PlaybackProps & {
     items?: readonly string[];
@@ -101,6 +130,7 @@ function ExpandingSearch({ items = defaultSearchItems, value, defaultValue = "",
     const [localValue, setLocalValue] = useState(defaultValue);
     const query = value ?? localValue;
     const [open, setOpen] = useState(Boolean(query));
+    const focus = useKeyboardFocus();
     const triggerRef = useRef<HTMLButtonElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const focusTarget = useRef<"input" | "trigger" | null>(null);
@@ -141,9 +171,11 @@ function ExpandingSearch({ items = defaultSearchItems, value, defaultValue = "",
             ...style,
         } as CSSProperties}>
       <motion.div className="bs-search-stage" initial={false} animate={{ y: open ? -5 : 0 }} transition={timing.settle}>
-        <motion.form className="bs-search-form" role="search" aria-label="Search components" initial={false} animate={{
+        <motion.form className="bs-search-form" data-open={open} data-keyboard-focus={focus.visible} onFocusCapture={focus.focus} onBlurCapture={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget))
+                focus.blur();
+        }} role="search" aria-label="Search components" initial={false} animate={{
             width: open ? 266 : 116,
-            borderColor: open ? "#484848" : "#333",
         }} transition={timing.settle} onSubmit={(event) => {
             event.preventDefault();
             if (!open)
@@ -151,6 +183,7 @@ function ExpandingSearch({ items = defaultSearchItems, value, defaultValue = "",
             else
                 onSearch?.(query);
         }} onKeyDown={(event) => {
+            focus.keyboard();
             if (event.key === "Escape" && open) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -419,8 +452,16 @@ SOFTWARE.
     0 2px 4px #0002,
     inset 0 1px 0 #ffffff03;
 }
-.bs-search-form:focus-within {
-  box-shadow: 0 0 0 2px #bcbcbc;
+.bs-search-form[data-open="true"] {
+  border-color: color-mix(in srgb, var(--bs-border) 70%, var(--bs-text));
+}
+.bs-search-form[data-keyboard-focus="true"] {
+  outline: 1px solid var(--bs-muted);
+  outline-offset: 3px;
+}
+.bs-demo .bs-search-input:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 .bs-search-trigger {
   position: absolute;

@@ -171,6 +171,24 @@
       "styles": "/transitions/accordion.css",
       "recipe": "/transitions/accordion.agent.md",
       "asset": "/transitions/accordion.json"
+    },
+    {
+      "id": "morphing-icon-button",
+      "name": "Icon morph",
+      "description": "The same strokes. A different intention.",
+      "category": "Navigation",
+      "exportName": "MorphingIconButton",
+      "detail": "Three SVG strokes draw together and become a close icon. One continuous motion preserves the shape through rapid reversals.",
+      "when": "A menu or panel toggle that needs a clear change of state.",
+      "integration": "Connect pressed/onPressedChange to the actual panel state. Keep the stable label and existing focus management. Forward aria-controls to the panel and preserve host dismissal behavior. Replay changes only the icon, never the application state.",
+      "props": "pressed, defaultPressed, onPressedChange, label, labels, disabled, buttonRef, native button attributes, speed, radius, className, style",
+      "dependencies": [
+        "motion"
+      ],
+      "source": "/transitions/morphing-icon-button.tsx",
+      "styles": "/transitions/morphing-icon-button.css",
+      "recipe": "/transitions/morphing-icon-button.agent.md",
+      "asset": "/transitions/morphing-icon-button.json"
     }
   ]
 }

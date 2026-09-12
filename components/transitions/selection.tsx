@@ -263,6 +263,36 @@ export function SlidingTabs({
   );
 }
 
+function useKeyboardFocus() {
+  const keyboard = useRef(true);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const onPointer = () => {
+      keyboard.current = false;
+      setVisible(false);
+    };
+    const onKey = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Tab" || event.key === "Enter" || event.key === " ")
+        keyboard.current = true;
+    };
+    document.addEventListener("pointerdown", onPointer, true);
+    document.addEventListener("keydown", onKey, true);
+    return () => {
+      document.removeEventListener("pointerdown", onPointer, true);
+      document.removeEventListener("keydown", onKey, true);
+    };
+  }, []);
+  return {
+    visible,
+    focus: () => setVisible(keyboard.current),
+    keyboard: () => {
+      keyboard.current = true;
+      setVisible(true);
+    },
+    blur: () => setVisible(false),
+  };
+}
+
 const defaultSearchItems = ["Button", "Popover", "Tabs", "Search", "Counter"];
 
 export type ExpandingSearchProps = PlaybackProps & {
@@ -292,6 +322,7 @@ export function ExpandingSearch({
   const [localValue, setLocalValue] = useState(defaultValue);
   const query = value ?? localValue;
   const [open, setOpen] = useState(Boolean(query));
+  const focus = useKeyboardFocus();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const focusTarget = useRef<"input" | "trigger" | null>(null);
@@ -352,12 +383,18 @@ export function ExpandingSearch({
       >
         <motion.form
           className="bs-search-form"
+          data-open={open}
+          data-keyboard-focus={focus.visible}
+          onFocusCapture={focus.focus}
+          onBlurCapture={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget))
+              focus.blur();
+          }}
           role="search"
           aria-label="Search components"
           initial={false}
           animate={{
             width: open ? 266 : 116,
-            borderColor: open ? "#484848" : "#333",
           }}
           transition={timing.settle}
           onSubmit={(event) => {
@@ -366,6 +403,7 @@ export function ExpandingSearch({
             else onSearch?.(query);
           }}
           onKeyDown={(event) => {
+            focus.keyboard();
             if (event.key === "Escape" && open) {
               event.preventDefault();
               event.stopPropagation();

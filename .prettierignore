@@ -1,11 +1,7 @@
 node_modules
 .next
 out
-dist
-.wrangler
 .vercel
-.openai
-build
 components/ui
 public
 skills/bera-motion/recipes
@@ -20,6 +16,4 @@ skills/bera-motion/references/state-button.md
 skills/bera-motion/references/text-swap.md
 skills/bera-motion/references/toast-stack.md
 package-lock.json
-vendor
-hooks/use-mobile.ts
-.next-vercel
+skills/bera-motion/references/morphing-icon-button.md

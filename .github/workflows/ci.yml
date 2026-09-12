@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        check: ["typecheck", "lint", "format:check", "test:kit", "build:vercel"]
+        check: ["typecheck", "lint", "format:check", "test:kit", "build"]
     steps:
       - name: Check out source
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4

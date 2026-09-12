@@ -1,75 +1,75 @@
 # Contributing to bera/ui
 
-The best contribution makes an ordinary action feel clearer and more considered. Improve a transition's continuity, timing, accessibility, or integration before adding another pattern. Read [AGENTS.md](AGENTS.md) and [docs/DESIGN.md](docs/DESIGN.md) first.
+Help make an interface action clearer, more expressive, or easier to reuse. Contributions can refine a transition, add a useful pattern, improve an integration, or strengthen the kit. Read the [design principles](docs/DESIGN.md) and [quality standards](docs/QUALITY.md) before changing an interaction.
 
 ## Choose a focused change
 
-Use an issue to describe a bug, a useful motion pattern, or a concrete task from the [roadmap](docs/ROADMAP.md). For a new pattern, explain the interface action it serves and why the existing collection does not cover it. A small fix can go straight to a pull request.
+Check the [roadmap](docs/ROADMAP.md) and [open issues](https://github.com/elberacasa/bera-ui/issues). For a new pattern, describe the action it serves, the states it connects, and how an application would use it. A small fix can go straight to a pull request.
 
-Avoid bundling visual redesigns, dependency upgrades, unrelated cleanup, and motion changes into one review. A pull request should have a clear before and after that can be demonstrated.
+Keep motion changes, dependency updates, and unrelated cleanup in separate reviews. Each pull request should demonstrate a clear before and after.
 
-## Local setup
+## Set up locally
 
-Use Node.js 22.x (22.13 or newer) and npm. Keep `package-lock.json` in sync with intentional dependency changes.
+Use Node.js **22.x, version 22.13 or newer**, and npm.
 
 ```sh
 npm ci
 npm run dev
 ```
 
-The gallery runs at [localhost:5173](http://localhost:5173). The agent documentation is at `/agents`; the preserved Iris study is at `/studies/iris`.
+The Next.js gallery runs at [localhost:5173](http://localhost:5173). The agent guide is at `/agents`. Keep `package-lock.json` synchronized with intentional dependency changes.
 
 ## Branches and commits
 
-Start a short-lived branch from the current `main`, using a name such as `fix/menu-focus-return`, `feat/counter-signed-values`, or `docs/agent-setup`. Fork the repository first if you do not have write access.
+Start a short-lived branch from the current `main`. Use a name such as `fix/menu-focus-return`, `feat/svg-morph`, or `docs/agent-setup`. Fork the repository first if you do not have write access.
 
-Keep each commit cohesive and buildable when practical. Use a concise conventional title describing its result:
+Keep commits cohesive and use conventional titles that describe the result:
 
 ```text
 fix(menu): restore trigger focus after Escape
-feat(kit): support a custom component directory
-docs(agents): clarify how to adapt an existing primitive
+feat(motion): add a reversible SVG state transition
+docs(kit): clarify component installation
 ```
 
-Use `feat`, `fix`, `docs`, `test`, `refactor`, `build`, or `chore` as appropriate. Add a body when a decision or compatibility tradeoff needs explanation. Do not commit secrets, local credentials, generated build folders, or editor state. Do not rewrite `main` or someone else's branch history.
+Use `feat`, `fix`, `docs`, `test`, `refactor`, `build`, or `chore` as appropriate. Explain material decisions in the commit body. Do not commit secrets, local credentials, build directories, or editor state. Do not rewrite `main` or another contributor's branch history.
 
-When the change is ready, open a pull request against `main`. Link its issue, explain the user-visible behavior, and include the checks you actually ran. Prefer a short screen recording for motion changes; include a phone-width view when layout changes. Maintainers can squash a focused pull request using its conventional title.
+## Edit the source
 
-## Where to edit
+| Path                                  | Responsibility                                          |
+| ------------------------------------- | ------------------------------------------------------- |
+| `components/transitions/`             | Live components and local styles.                       |
+| `lib/transition-catalog.json`         | Discovery metadata, props, and adaptation guidance.     |
+| `components/transition-inspector.tsx` | Customization, source inspection, and agent handoff.    |
+| `app/transition-library.css`          | Gallery presentation.                                   |
+| `skills/bera-motion/`                 | Installer and authored skill guidance.                  |
+| `scripts/`                            | Source extraction, download generation, and kit checks. |
 
-- Change implementations and local styles in `components/transitions/`.
-- Change discovery and integration guidance in `lib/transition-catalog.json`.
-- Change gallery-only presentation in `app/transition-library.css`.
-- Change installer behavior or authored skill guidance in `skills/bera-motion/`.
-- Change extraction and download generation in `scripts/`.
+After changing a transition, its catalog entry, or the skill bundle, regenerate the distributed files:
 
-Run `node scripts/sync-components.mjs` after editing a transition, its catalog entry, or the skill bundle. Generated downloads and extracted recipes should be committed alongside the source change. Do not hand-edit these generated copies. A clean regeneration should leave no further differences.
+```sh
+npm run generate
+```
 
-## Motion review
+Commit generated downloads and recipes with their source change. Do not hand-edit generated copies. A second generation should leave their contents unchanged.
 
-For a changed interaction, check the whole sequence: initial response, movement, settlement, interruption, and reversal. Repeated input should reach the latest intended state. Text should stay sharp as surfaces change size.
-
-Use the actual keyboard path as well as pointer input. Check focus entry and return, Escape and outside dismissal where relevant, controlled values, and closed content that contains interactive elements. Inspect desktop and narrow phone layouts, including 320px width. Verify reduced motion without relying only on slow playback.
-
-Connect real callbacks in the integration you are testing. A replay control must not save data, write to the clipboard, or take focus. Demonstration simulations need a visible label. Confirm success only after the real operation succeeds; exercise the failure path when it changes.
-
-An existing host component's behavior comes first. Keep its accessibility primitive, fonts, tokens, data, validation, and focus management. Use the existing motion engine when practical. Do not add runtime agent infrastructure for a source recipe.
-
-## Required checks
+## Verify the change
 
 ```sh
 npm run typecheck
 npm run lint
+npm run format:check
 npm run test:kit
-npm run build:vercel
+npm run build
 ```
 
-Run `npm run build` for changes that affect the existing Cloudflare/Sites target. If a change touches shared application or build code, check both targets.
+Use `npm run format` to apply repository formatting. Follow [docs/QUALITY.md](docs/QUALITY.md) for the relevant interaction and integration checks. Exercise real failure paths when they change, and add tests for meaningful behavior rather than tests that repeat implementation details.
 
-For installer or export changes, verify the resulting kit in a temporary destination project: install only the selected transition, exercise `--dry-run`, repeat the install, and confirm that differing files are preserved. Test a real consumer import and meaningful behavior or failure cases. Avoid tests that merely repeat implementation details.
+For installer or export changes, use a temporary destination project. Install the selected transition, inspect a dry run, repeat the installation, and confirm that differing files remain intact. Verify the resulting consumer import and the application's actual behavior.
 
-Record significant new validation in [docs/VALIDATION.md](docs/VALIDATION.md), including the environment and any limits. Do not claim a browser or device was checked unless it was.
+## Open a pull request
 
-## A useful pull request
+Target `main` and link the relevant issue. Explain the action or workflow that improves, describe its resulting behavior, and list checks actually performed. For motion changes, include a short recording or precise interaction steps. Include desktop and phone evidence when layout changes.
 
-A reviewer should be able to answer three questions: what ordinary action improved, what changed in its behavior, and how was that verified? Use the pull request template, keep the scope small, and distinguish completed work from proposed follow-ups.
+Keep application semantics, keyboard focus, reduced motion, and integration guidance part of the review. Note any unverified behavior explicitly. Use the [pull request template](.github/PULL_REQUEST_TEMPLATE.md) and resolve required checks before merging.
+
+GitHub Actions runs validation. Vercel provides branch previews and deploys `main` to production through its Git integration. Maintainers squash focused pull requests using their conventional titles; deployment credentials do not belong in pull requests or source files.
