@@ -2,6 +2,13 @@
 
 The collection grows through useful interface actions and strong integration examples. GitHub issues track implementation status; the priorities below describe the intended outcomes.
 
+## Ecosystem priorities
+
+- **Existing components first.** Provide small integrations that apply motion to a host primitive and show exactly which state, callbacks, and accessibility behavior remain with the host.
+- **One catalog, consistent distribution.** Generate the gallery metadata, skill recipes, downloads, shadcn registry, and discovery index from the authored catalog. Keep dependencies, paths, and integration boundaries aligned.
+- **Reliable consumer installs.** Verify direct URL and configured namespace installs in representative React projects. Cover component aliases, local CSS imports, host tokens, and dependency changes.
+- **Focused agent context.** Route an agent from the index to one relevant recipe, with working source links and clear application requirements. Add discovery formats only when a consumer can use them.
+
 ## Integration priorities
 
 The [integration milestone](https://github.com/elberacasa/bera-ui/milestone/1) groups these tasks:

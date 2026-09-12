@@ -660,6 +660,59 @@
 .tl-workbench .tl-code-tabs pre {
   max-height: 42svh;
 }
+.tl-install-content {
+  padding-block: 10px 4px;
+}
+.tl-install-step + .tl-install-step {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #292929;
+}
+.tl-install-step h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.tl-install-step p {
+  color: #a3a3a3;
+  font-size: 12px;
+  line-height: 1.8;
+  margin: 0 0 14px;
+  max-width: 640px;
+}
+.tl-workbench .tl-code-tabs .tl-install-command,
+.tl-workbench .tl-code-tabs .tl-install-usage {
+  min-height: 0;
+  padding: 16px;
+  color: #dedede;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.tl-install-step .tl-install-caption {
+  font-size: 11px;
+  margin: 10px 0 0;
+  color: #929292;
+}
+.tl-install-resources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  padding-top: 18px;
+  font-size: 11px;
+  color: #aaa;
+}
+.tl-install-resources a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: #454545;
+}
+.tl-install-resources a:hover {
+  color: #eee;
+}
 .tl-customizer {
   display: grid;
   grid-template-columns: 1.1fr 1fr;

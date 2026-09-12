@@ -18,8 +18,8 @@ Props: text, speed, radius, className, style.
 
 Defaults: `speed={1}`, `radius={12}`, `preview={false}`. Speed scales timing; radius is in pixels. The gallery's 0.35× playback is for inspection only. Omit `preview` in applications: it enables gallery framing, helper labels, and demo controls. Connect actual data and callbacks.
 
-Source: `../recipes/copy-button.tsx`
-Styles: `../recipes/copy-button.css`
+Source: [copy-button.tsx](https://bera-ui.vercel.app/transitions/copy-button.tsx)
+Styles: [copy-button.css](https://bera-ui.vercel.app/transitions/copy-button.css)
 Dependencies: React, motion, lucide-react. Styles use namespaced selectors and inherit the host's neutral tokens.
 
 ## Verify

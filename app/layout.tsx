@@ -33,6 +33,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
+      <head>
+        <link rel="describedby" href="/llms.txt" type="text/markdown" />
+      </head>
       <body className="antialiased">{children}</body>
     </html>
   );

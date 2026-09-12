@@ -1,10 +1,39 @@
 # bera/ui
 
-Reusable motion for existing React interfaces. 10 source-available transition recipes, live tempo and radius tuning, and a local coding-agent skill.
+> Reusable motion for existing React interfaces: 10 inspectable transition recipes, live tuning, and an optional coding-agent skill.
 
-- [Agent guide](/agents): download the self-contained kit, install a skill, or copy a selected transition.
-- [Catalog](/transitions/manifest.json): available transitions, props, integration boundaries, and source paths.
-- [Skill](/bera-motion.SKILL.md): discovery, review, apply, and refine workflow.
-- [Portable kit](/bera-motion.tar.gz): all source, styles, recipes, and zero-dependency local installer.
+Read the host project and preserve its primitives, state ownership, and styles. Components default to natural sizing and preview=false. Registry installation adds the original recipe; pass chosen speed and radius in the consuming code. Review dependency changes and each recipe's integration boundary.
 
-Do not invent an npm package. Read the host project and adapt motion to existing primitives. Components default to natural sizing; preview=true is reserved for the gallery. See each recipe's limitations before integrating.
+## Integration
+
+- [Agent guide](https://bera-ui.vercel.app/agents): choose a registry install, portable kit, or skill.
+- [Catalog](https://bera-ui.vercel.app/transitions/manifest.json): IDs, props, compatibility, and source paths.
+- [shadcn registry](https://bera-ui.vercel.app/r/registry.json): discover recipes; install with npx shadcn@latest add https://bera-ui.vercel.app/r/<id>.json.
+- [Skill](https://bera-ui.vercel.app/bera-motion.SKILL.md): discover, review, apply, and refine workflow.
+- [Portable kit](https://bera-ui.vercel.app/bera-motion.tar.gz): complete source, styles, recipes, and zero-dependency local installer.
+
+## Recipes
+
+- [State button](https://bera-ui.vercel.app/transitions/state-button.agent.md): Save and submit actions that already have pending/success/error state.
+- [Sliding tabs](https://bera-ui.vercel.app/transitions/sliding-tabs.agent.md): A small set of modes, filters, or views with an existing selected value.
+- [Morphing menu](https://bera-ui.vercel.app/transitions/morphing-menu.agent.md): A compact action trigger opening a nearby set of commands.
+- [Text swap](https://bera-ui.vercel.app/transitions/text-swap.agent.md): Short status messages that change as an operation progresses.
+- [Expanding search](https://bera-ui.vercel.app/transitions/expanding-search.agent.md): Compact search or filter controls that need more space on focus.
+- [Toast stack](https://bera-ui.vercel.app/transitions/toast-stack.agent.md): A notification system with multiple recent messages.
+- [Copy feedback](https://bera-ui.vercel.app/transitions/copy-button.agent.md): Copying a command, URL, identifier, or other text.
+- [Rolling counter](https://bera-ui.vercel.app/transitions/rolling-counter.agent.md): Adjustable integer quantities, totals, or compact counters.
+- [Accordion](https://bera-ui.vercel.app/transitions/accordion.agent.md): Expandable help, preferences, and short supporting details.
+- [Icon morph](https://bera-ui.vercel.app/transitions/morphing-icon-button.agent.md): A menu or panel toggle that needs a clear change of state.
+
+## Optional
+
+- [State button registry item](https://bera-ui.vercel.app/r/state-button.json): installable source, companion CSS, and dependencies.
+- [Sliding tabs registry item](https://bera-ui.vercel.app/r/sliding-tabs.json): installable source, companion CSS, and dependencies.
+- [Morphing menu registry item](https://bera-ui.vercel.app/r/morphing-menu.json): installable source, companion CSS, and dependencies.
+- [Text swap registry item](https://bera-ui.vercel.app/r/text-swap.json): installable source, companion CSS, and dependencies.
+- [Expanding search registry item](https://bera-ui.vercel.app/r/expanding-search.json): installable source, companion CSS, and dependencies.
+- [Toast stack registry item](https://bera-ui.vercel.app/r/toast-stack.json): installable source, companion CSS, and dependencies.
+- [Copy feedback registry item](https://bera-ui.vercel.app/r/copy-button.json): installable source, companion CSS, and dependencies.
+- [Rolling counter registry item](https://bera-ui.vercel.app/r/rolling-counter.json): installable source, companion CSS, and dependencies.
+- [Accordion registry item](https://bera-ui.vercel.app/r/accordion.json): installable source, companion CSS, and dependencies.
+- [Icon morph registry item](https://bera-ui.vercel.app/r/morphing-icon-button.json): installable source, companion CSS, and dependencies.

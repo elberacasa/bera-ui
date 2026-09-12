@@ -18,8 +18,8 @@ Props: items, value, defaultValue, onValueChange, onSearch, placeholder, speed, 
 
 Defaults: `speed={1}`, `radius={12}`, `preview={false}`. Speed scales timing; radius is in pixels. The gallery's 0.35× playback is for inspection only. Omit `preview` in applications: it enables gallery framing, helper labels, and demo controls. Connect actual data and callbacks.
 
-Source: `../recipes/expanding-search.tsx`
-Styles: `../recipes/expanding-search.css`
+Source: [expanding-search.tsx](https://bera-ui.vercel.app/transitions/expanding-search.tsx)
+Styles: [expanding-search.css](https://bera-ui.vercel.app/transitions/expanding-search.css)
 Dependencies: React, motion, lucide-react. Styles use namespaced selectors and inherit the host's neutral tokens.
 
 ## Verify

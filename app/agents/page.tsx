@@ -3,6 +3,7 @@ import { ArrowDownToLine, ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Brand } from "@/components/brand";
 import { CopyControl } from "@/components/copy-control";
 import { MotionComparison } from "@/components/motion-comparison";
+import { registryInstallCommand } from "@/lib/registry";
 import "../transition-library.css";
 import "./agents.css";
 
@@ -14,6 +15,12 @@ export const metadata = {
 const quickInstall = "npx skills add elberacasa/bera-ui --skill bera-motion";
 const install = "node bera-motion/install.mjs skill --project . --agent codex";
 const add = "node bera-motion/install.mjs add sliding-tabs --project .";
+const registryAdd = registryInstallCommand("copy-button");
+const registryConfig = `{
+  "registries": {
+    "@bera": "https://bera-ui.vercel.app/r/{name}.json"
+  }
+}`;
 const request =
   "Use bera-motion to refine my existing tabs. Keep their content, design tokens, accessibility primitive, and state behavior. Adapt the appropriate motion recipe, then verify keyboard navigation and reduced motion.";
 
@@ -121,30 +128,77 @@ export default function AgentsPage() {
           </p>
         </div>
       </section>
-      <section className="ba-section">
+      <section className="ba-section" id="registry">
         <div className="ba-section-title">
-          <h2>Take the source.</h2>
+          <h2>Add one transition.</h2>
         </div>
         <div className="ba-section-body">
           <p>
-            Prefer direct installation? Download and extract the portable kit
-            into your project root.
+            Already use shadcn/ui? Run this in your project to add copy
+            feedback. Every recipe in the collection has its own install
+            command.
           </p>
-          <a className="tl-agent-button" href="/bera-motion.tar.gz" download>
-            <ArrowDownToLine size={15} />
-            Download the kit
-          </a>
           <div className="ba-command">
-            <code>{add}</code>
-            <CopyControl value={add} label="Copy add command" />
+            <code>{registryAdd}</code>
+            <CopyControl value={registryAdd} label="Copy component command" />
           </div>
           <p>
-            This copies one TSX file and its CSS into{" "}
-            <code>components/bera</code>. The installer reports missing
-            dependencies and preserves differing files. It needs Node.js 18 or
-            newer. Use <code>--dry-run</code> to inspect the result or{" "}
-            <code>--dir src/components/bera</code> to choose the destination.
+            The registry adds a React file and its stylesheet under{" "}
+            <code>bera</code> in your configured components directory, and
+            installs or updates declared dependencies. Your application owns the
+            source, theme, and behavior. Review the CLI’s file and dependency
+            changes before accepting them.
           </p>
+          <p className="ba-small">
+            Use Node.js 20.18.1 or newer for the shadcn CLI. Its installation
+            command adds the original recipe; apply your chosen settings as
+            props.
+          </p>
+          <details className="ba-details">
+            <summary>Connect the registry to your agent’s tools</summary>
+            <p>
+              Merge this entry into <code>components.json</code>. Keep your
+              existing aliases, theme settings, and other registries.
+            </p>
+            <div className="ba-command">
+              <pre>
+                <code>{registryConfig}</code>
+              </pre>
+              <CopyControl
+                value={registryConfig}
+                label="Copy registry configuration"
+              />
+            </div>
+            <p>
+              The shadcn CLI can then resolve <code>@bera/copy-button</code>.
+              Agents using the{" "}
+              <a href="https://ui.shadcn.com/docs/mcp">shadcn MCP server</a> can
+              discover this configured registry through the same tools. The Bera
+              skill supplies the guidance for adapting motion in place.
+            </p>
+          </details>
+          <details className="ba-details">
+            <summary>Use the portable kit</summary>
+            <p>
+              Download and extract the kit into your project root. Its local
+              installer works without shadcn configuration.
+            </p>
+            <a className="tl-agent-button" href="/bera-motion.tar.gz" download>
+              <ArrowDownToLine size={15} />
+              Download the kit
+            </a>
+            <div className="ba-command">
+              <code>{add}</code>
+              <CopyControl value={add} label="Copy add command" />
+            </div>
+            <p>
+              This copies one TSX file and its CSS into{" "}
+              <code>components/bera</code>. It reports missing dependencies and
+              preserves differing files. Use <code>--dry-run</code> to inspect
+              the result, or <code>--dir src/components/bera</code> to choose
+              the destination. Requires Node.js 18 or newer.
+            </p>
+          </details>
           <details className="ba-details">
             <summary>Install the skill from the offline kit</summary>
             <div className="ba-command">
@@ -193,6 +247,12 @@ export default function AgentsPage() {
               is a motion reference for an existing notification provider. Each
               recipe documents the behavior your application owns.
             </p>
+            <p>
+              The registry is tested with React 19 and modern shadcn themes.
+              Color tokens must contain complete CSS colors, such as OKLCH or
+              HSL values. Older themes using bare HSL channels need a small
+              color mapping in the recipe.
+            </p>
           </details>
           <div className="ba-resources">
             <a href="https://github.com/elberacasa/bera-ui">
@@ -205,6 +265,14 @@ export default function AgentsPage() {
             </a>
             <a href="/transitions/manifest.json">
               Catalog JSON
+              <ArrowUpRight size={13} />
+            </a>
+            <a href="/r/registry.json">
+              Registry JSON
+              <ArrowUpRight size={13} />
+            </a>
+            <a href="/llms.txt">
+              Agent index
               <ArrowUpRight size={13} />
             </a>
           </div>

@@ -1,0 +1,285 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "bera",
+  "homepage": "https://bera-ui.vercel.app",
+  "items": [
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "state-button",
+      "type": "registry:component",
+      "title": "State button",
+      "description": "One action. Every state, connected.",
+      "dependencies": [
+        "motion@^12.43.0",
+        "lucide-react@^1.31.0"
+      ],
+      "files": [
+        {
+          "path": "skills/bera-motion/recipes/state-button.tsx",
+          "type": "registry:component",
+          "target": "@components/bera/state-button.tsx"
+        },
+        {
+          "path": "skills/bera-motion/recipes/state-button.css",
+          "type": "registry:file",
+          "target": "@components/bera/state-button.css"
+        }
+      ],
+      "docs": "Import { StateButton } from your configured components alias under bera/state-button. Keep its companion CSS. Use the host save callback through onAction. Preserve validation, disabled state, and retry rules. Never use the simulation as real persistence. Defaults: preview=false, speed=1, radius=12. Tested with React 19 and shadcn 4.21.0; use complete CSS color tokens. Integration: https://bera-ui.vercel.app/transitions/state-button.agent.md",
+      "categories": [
+        "feedback",
+        "motion"
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "sliding-tabs",
+      "type": "registry:component",
+      "title": "Sliding tabs",
+      "description": "A selection that carries its momentum.",
+      "dependencies": [
+        "motion@^12.43.0"
+      ],
+      "files": [
+        {
+          "path": "skills/bera-motion/recipes/sliding-tabs.tsx",
+          "type": "registry:component",
+          "target": "@components/bera/sliding-tabs.tsx"
+        },
+        {
+          "path": "skills/bera-motion/recipes/sliding-tabs.css",
+          "type": "registry:file",
+          "target": "@components/bera/sliding-tabs.css"
+        }
+      ],
+      "docs": "Import { SlidingTabs } from your configured components alias under bera/sliding-tabs. Keep its companion CSS. Connect value/onValueChange and supply items. Keep each tab associated with its existing panel. Defaults: preview=false, speed=1, radius=12. Tested with React 19 and shadcn 4.21.0; use complete CSS color tokens. Integration: https://bera-ui.vercel.app/transitions/sliding-tabs.agent.md",
+      "categories": [
+        "navigation",
+        "motion"
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "morphing-menu",
+      "type": "registry:component",
+      "title": "Morphing menu",
+      "description": "A small surface becomes the next step.",
+      "dependencies": [
+        "motion@^12.43.0",
+        "lucide-react@^1.31.0"
+      ],
+      "files": [
+        {
+          "path": "skills/bera-motion/recipes/morphing-menu.tsx",
+          "type": "registry:component",
+          "target": "@components/bera/morphing-menu.tsx"
+        },
+        {
+          "path": "skills/bera-motion/recipes/morphing-menu.css",
+          "type": "registry:file",
+          "target": "@components/bera/morphing-menu.css"
+        }
+      ],
+      "docs": "Import { MorphingMenu } from your configured components alias under bera/morphing-menu. Keep its companion CSS. Supply actions with onSelect callbacks and a label. Preserve menu focus and keyboard behavior. In an existing Radix menu, adapt the surface motion instead of replacing the primitive. Defaults: preview=false, speed=1, radius=12. Tested with React 19 and shadcn 4.21.0; use complete CSS color tokens. Integration: https://bera-ui.vercel.app/transitions/morphing-menu.agent.md",
+      "categories": [
+        "surfaces",
+        "motion"
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "text-swap",
+      "type": "registry:component",
+      "title": "Text swap",
+      "description": "A new thought, without a hard cut.",
+      "dependencies": [
+        "motion@^12.43.0",
+        "lucide-react@^1.31.0"
+      ],
+      "files": [
+        {
+          "path": "skills/bera-motion/recipes/text-swap.tsx",
+          "type": "registry:component",
+          "target": "@components/bera/text-swap.tsx"
+        },
+        {
+          "path": "skills/bera-motion/recipes/text-swap.css",
+          "type": "registry:file",
+          "target": "@components/bera/text-swap.css"
+        }
+      ],
+      "docs": "Import { TextSwap } from your configured components alias under bera/text-swap. Keep its companion CSS. Connect the status index with value; supply statuses with text and icons. Keep a single polite announcement for a meaningful change. Defaults: preview=false, speed=1; radius does not apply. Tested with React 19 and shadcn 4.21.0; use complete CSS color tokens. Integration: https://bera-ui.vercel.app/transitions/text-swap.agent.md",
+      "categories": [
+        "feedback",
+        "motion"
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "expanding-search",
+      "type": "registry:component",
+      "title": "Expanding search",
+      "description": "Space appears exactly when you need it.",
+      "dependencies": [
+        "motion@^12.43.0",
+        "lucide-react@^1.31.0"
+      ],
+      "files": [
+        {
+          "path": "skills/bera-motion/recipes/expanding-search.tsx",
+          "type": "registry:component",
+          "target": "@components/bera/expanding-search.tsx"
+        },
+        {
+          "path": "skills/bera-motion/recipes/expanding-search.css",
+          "type": "registry:file",
+          "target": "@components/bera/expanding-search.css"
+        }
+      ],
+      "docs": "Import { ExpandingSearch } from your configured components alias under bera/expanding-search. Keep its companion CSS. Connect value/onValueChange; onSearch submits the query. Supply actual searchable items or replace demonstration result rendering. Defaults: preview=false, speed=1, radius=12. Tested with React 19 and shadcn 4.21.0; use complete CSS color tokens. Integration: https://bera-ui.vercel.app/transitions/expanding-search.agent.md",
+      "categories": [
+        "navigation",
+        "motion"
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "toast-stack",
+      "type": "registry:component",
+      "title": "Toast stack",
+      "description": "Feedback with a little sense of space.",
+      "dependencies": [
+        "motion@^12.43.0",
+        "lucide-react@^1.31.0"
+      ],
+      "files": [
+        {
+          "path": "skills/bera-motion/recipes/toast-stack.tsx",
+          "type": "registry:component",
+          "target": "@components/bera/toast-stack.tsx"
+        },
+        {
+          "path": "skills/bera-motion/recipes/toast-stack.css",
+          "type": "registry:file",
+          "target": "@components/bera/toast-stack.css"
+        }
+      ],
+      "docs": "Import { ToastStack } from your configured components alias under bera/toast-stack. Keep its companion CSS. Adapt the stack geometry to the existing toast provider. This reference uses a local Preview toast control; preserve the host provider's lifecycle, expiry, pause, live region, and dismissal semantics. Defaults: preview=false, speed=1, radius=12. Tested with React 19 and shadcn 4.21.0; use complete CSS color tokens. Integration: https://bera-ui.vercel.app/transitions/toast-stack.agent.md",
+      "categories": [
+        "surfaces",
+        "motion"
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "copy-button",
+      "type": "registry:component",
+      "title": "Copy feedback",
+      "description": "A tiny confirmation that feels complete.",
+      "dependencies": [
+        "motion@^12.43.0",
+        "lucide-react@^1.31.0"
+      ],
+      "files": [
+        {
+          "path": "skills/bera-motion/recipes/copy-button.tsx",
+          "type": "registry:component",
+          "target": "@components/bera/copy-button.tsx"
+        },
+        {
+          "path": "skills/bera-motion/recipes/copy-button.css",
+          "type": "registry:file",
+          "target": "@components/bera/copy-button.css"
+        }
+      ],
+      "docs": "Import { CopyButton } from your configured components alias under bera/copy-button. Keep its companion CSS. Pass the exact text. Confirm only after the clipboard write succeeds and preserve the manual fallback. Defaults: preview=false, speed=1, radius=12. Tested with React 19 and shadcn 4.21.0; use complete CSS color tokens. Integration: https://bera-ui.vercel.app/transitions/copy-button.agent.md",
+      "categories": [
+        "feedback",
+        "motion"
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "rolling-counter",
+      "type": "registry:component",
+      "title": "Rolling counter",
+      "description": "Numbers with direction, not distraction.",
+      "dependencies": [
+        "motion@^12.43.0",
+        "lucide-react@^1.31.0"
+      ],
+      "files": [
+        {
+          "path": "skills/bera-motion/recipes/rolling-counter.tsx",
+          "type": "registry:component",
+          "target": "@components/bera/rolling-counter.tsx"
+        },
+        {
+          "path": "skills/bera-motion/recipes/rolling-counter.css",
+          "type": "registry:file",
+          "target": "@components/bera/rolling-counter.css"
+        }
+      ],
+      "docs": "Import { RollingCounter } from your configured components alias under bera/rolling-counter. Keep its companion CSS. Connect value/onValueChange and the allowed range. The reference supports 0–999; adapt digit count explicitly for larger ranges or signed values. Defaults: preview=false, speed=1, radius=12. Tested with React 19 and shadcn 4.21.0; use complete CSS color tokens. Integration: https://bera-ui.vercel.app/transitions/rolling-counter.agent.md",
+      "categories": [
+        "navigation",
+        "motion"
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "accordion",
+      "type": "registry:component",
+      "title": "Accordion",
+      "description": "More detail. The same quiet rhythm.",
+      "dependencies": [
+        "motion@^12.43.0",
+        "lucide-react@^1.31.0"
+      ],
+      "files": [
+        {
+          "path": "skills/bera-motion/recipes/accordion.tsx",
+          "type": "registry:component",
+          "target": "@components/bera/accordion.tsx"
+        },
+        {
+          "path": "skills/bera-motion/recipes/accordion.css",
+          "type": "registry:file",
+          "target": "@components/bera/accordion.css"
+        }
+      ],
+      "docs": "Import { Accordion } from your configured components alias under bera/accordion. Keep its companion CSS. Supply items and connect value/onValueChange if controlled. Keep the heading/panel relationship and make closed interactive content inert. Defaults: preview=false, speed=1, radius=12. Tested with React 19 and shadcn 4.21.0; use complete CSS color tokens. Integration: https://bera-ui.vercel.app/transitions/accordion.agent.md",
+      "categories": [
+        "surfaces",
+        "motion"
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "morphing-icon-button",
+      "type": "registry:component",
+      "title": "Icon morph",
+      "description": "The same strokes. A different intention.",
+      "dependencies": [
+        "motion@^12.43.0"
+      ],
+      "files": [
+        {
+          "path": "skills/bera-motion/recipes/morphing-icon-button.tsx",
+          "type": "registry:component",
+          "target": "@components/bera/morphing-icon-button.tsx"
+        },
+        {
+          "path": "skills/bera-motion/recipes/morphing-icon-button.css",
+          "type": "registry:file",
+          "target": "@components/bera/morphing-icon-button.css"
+        }
+      ],
+      "docs": "Import { MorphingIconButton } from your configured components alias under bera/morphing-icon-button. Keep its companion CSS. Connect pressed/onPressedChange to the actual panel state. Keep the stable label and existing focus management. Forward aria-controls to the panel and preserve host dismissal behavior. Replay changes only the icon, never the application state. Defaults: preview=false, speed=1, radius=12. Tested with React 19 and shadcn 4.21.0; use complete CSS color tokens. Integration: https://bera-ui.vercel.app/transitions/morphing-icon-button.agent.md",
+      "categories": [
+        "navigation",
+        "motion"
+      ]
+    }
+  ]
+}

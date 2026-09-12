@@ -19,7 +19,8 @@
       "source": "/transitions/state-button.tsx",
       "styles": "/transitions/state-button.css",
       "recipe": "/transitions/state-button.agent.md",
-      "asset": "/transitions/state-button.json"
+      "asset": "/transitions/state-button.json",
+      "registry": "/r/state-button.json"
     },
     {
       "id": "sliding-tabs",
@@ -37,7 +38,8 @@
       "source": "/transitions/sliding-tabs.tsx",
       "styles": "/transitions/sliding-tabs.css",
       "recipe": "/transitions/sliding-tabs.agent.md",
-      "asset": "/transitions/sliding-tabs.json"
+      "asset": "/transitions/sliding-tabs.json",
+      "registry": "/r/sliding-tabs.json"
     },
     {
       "id": "morphing-menu",
@@ -56,7 +58,8 @@
       "source": "/transitions/morphing-menu.tsx",
       "styles": "/transitions/morphing-menu.css",
       "recipe": "/transitions/morphing-menu.agent.md",
-      "asset": "/transitions/morphing-menu.json"
+      "asset": "/transitions/morphing-menu.json",
+      "registry": "/r/morphing-menu.json"
     },
     {
       "id": "text-swap",
@@ -75,7 +78,8 @@
       "source": "/transitions/text-swap.tsx",
       "styles": "/transitions/text-swap.css",
       "recipe": "/transitions/text-swap.agent.md",
-      "asset": "/transitions/text-swap.json"
+      "asset": "/transitions/text-swap.json",
+      "registry": "/r/text-swap.json"
     },
     {
       "id": "expanding-search",
@@ -94,7 +98,8 @@
       "source": "/transitions/expanding-search.tsx",
       "styles": "/transitions/expanding-search.css",
       "recipe": "/transitions/expanding-search.agent.md",
-      "asset": "/transitions/expanding-search.json"
+      "asset": "/transitions/expanding-search.json",
+      "registry": "/r/expanding-search.json"
     },
     {
       "id": "toast-stack",
@@ -113,7 +118,8 @@
       "source": "/transitions/toast-stack.tsx",
       "styles": "/transitions/toast-stack.css",
       "recipe": "/transitions/toast-stack.agent.md",
-      "asset": "/transitions/toast-stack.json"
+      "asset": "/transitions/toast-stack.json",
+      "registry": "/r/toast-stack.json"
     },
     {
       "id": "copy-button",
@@ -132,7 +138,8 @@
       "source": "/transitions/copy-button.tsx",
       "styles": "/transitions/copy-button.css",
       "recipe": "/transitions/copy-button.agent.md",
-      "asset": "/transitions/copy-button.json"
+      "asset": "/transitions/copy-button.json",
+      "registry": "/r/copy-button.json"
     },
     {
       "id": "rolling-counter",
@@ -151,7 +158,8 @@
       "source": "/transitions/rolling-counter.tsx",
       "styles": "/transitions/rolling-counter.css",
       "recipe": "/transitions/rolling-counter.agent.md",
-      "asset": "/transitions/rolling-counter.json"
+      "asset": "/transitions/rolling-counter.json",
+      "registry": "/r/rolling-counter.json"
     },
     {
       "id": "accordion",
@@ -170,7 +178,8 @@
       "source": "/transitions/accordion.tsx",
       "styles": "/transitions/accordion.css",
       "recipe": "/transitions/accordion.agent.md",
-      "asset": "/transitions/accordion.json"
+      "asset": "/transitions/accordion.json",
+      "registry": "/r/accordion.json"
     },
     {
       "id": "morphing-icon-button",
@@ -188,7 +197,21 @@
       "source": "/transitions/morphing-icon-button.tsx",
       "styles": "/transitions/morphing-icon-button.css",
       "recipe": "/transitions/morphing-icon-button.agent.md",
-      "asset": "/transitions/morphing-icon-button.json"
+      "asset": "/transitions/morphing-icon-button.json",
+      "registry": "/r/morphing-icon-button.json"
     }
-  ]
+  ],
+  "registry": {
+    "url": "/r/registry.json",
+    "itemUrlTemplate": "/r/{name}.json",
+    "cli": "shadcn",
+    "testedVersion": "4.21.0"
+  },
+  "compatibility": {
+    "react": "^19.0.0",
+    "shadcn": "Use shadcn@latest; alias targets verified with 4.21.0.",
+    "node": ">=20.18.1 for shadcn 4.21.0; the portable installer supports Node >=18.",
+    "cssTokens": "Host tokens must be complete CSS colors (OKLCH, HSL, or hex), not bare HSL channels. Modern shadcn themes are supported; adapt legacy tokens locally.",
+    "styles": "Companion namespaced CSS is imported by each recipe. No Tailwind plugin, theme, or global CSS changes are declared."
+  }
 }

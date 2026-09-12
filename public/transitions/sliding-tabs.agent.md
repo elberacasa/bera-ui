@@ -18,8 +18,8 @@ Props: items, value, defaultValue, onValueChange, ariaLabel, speed, radius, clas
 
 Defaults: `speed={1}`, `radius={12}`, `preview={false}`. Speed scales timing; radius is in pixels. The gallery's 0.35× playback is for inspection only. Omit `preview` in applications: it enables gallery framing, helper labels, and demo controls. Connect actual data and callbacks.
 
-Source: `../recipes/sliding-tabs.tsx`
-Styles: `../recipes/sliding-tabs.css`
+Source: [sliding-tabs.tsx](https://bera-ui.vercel.app/transitions/sliding-tabs.tsx)
+Styles: [sliding-tabs.css](https://bera-ui.vercel.app/transitions/sliding-tabs.css)
 Dependencies: React, motion. Styles use namespaced selectors and inherit the host's neutral tokens.
 
 ## Verify
