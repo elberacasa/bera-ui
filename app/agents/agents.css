@@ -237,17 +237,3 @@
     padding-left: 16px;
   }
 }
-
-.ba-example-link {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  width: fit-content;
-  margin: -24px 0 32px;
-  color: #929292;
-  font-size: 12px;
-  min-height: 40px;
-}
-.ba-example-link:hover {
-  color: #eee;
-}

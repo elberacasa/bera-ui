@@ -1,0 +1,73 @@
+.bc-navigation-preview {
+  width: min(100%, 270px);
+  margin-inline: auto;
+  color: var(--foreground, #eeeeee);
+  font-size: 13px;
+}
+
+.bc-navigation-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 48px;
+}
+
+.bc-navigation-header > span {
+  font-weight: 550;
+  letter-spacing: -0.2px;
+}
+
+.bc-navigation-space {
+  min-height: 108px;
+  padding-top: 12px;
+}
+
+.bc-navigation-space nav:not([hidden]) {
+  display: grid;
+}
+
+.bc-navigation-space a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: 12px;
+  border-radius: 6px;
+  color: var(--muted-foreground, #999999);
+  text-decoration: none;
+}
+
+.bc-navigation-space a:hover {
+  background: var(--accent, #222222);
+  color: var(--foreground, #eeeeee);
+}
+
+.bc-navigation-space a:focus-visible {
+  outline: 2px solid var(--ring, var(--foreground, #eeeeee));
+  outline-offset: 3px;
+}
+
+.bc-status-preview {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  gap: 18px;
+  width: 100%;
+  min-height: 156px;
+}
+
+.bc-status-context,
+.bc-status-note {
+  padding-left: 48px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--muted-foreground, #999999);
+}
+
+.bc-status-context {
+  font-size: 12px;
+}
+
+.bc-status-preview .bf-status-line {
+  max-width: 100%;
+}

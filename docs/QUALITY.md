@@ -24,6 +24,8 @@ Inspect desktop and narrow phone widths, including 320px. Check touch targets, o
 
 Test representative host tokens when styling changes. Foreground, surfaces, borders, hover, and focus states must work together. Do not assume that inheriting text color alone makes a transition theme-compatible.
 
+For paired comparisons, verify both directions of state synchronization without mirrored focus. Settled previews should match visually; the baseline must retain the same controls and design. Check mobile view switching, hidden-column focus exclusion, shared playback, and the source link for every row. Shared playback may advance local example state, but must never repeat application side effects.
+
 ## Source and kit
 
 Verify that generated TSX and CSS match the live implementation. Each extracted TSX module must compile in a consumer project and export only its selected component. Keep dependencies and integration notes accurate.
@@ -62,6 +64,8 @@ npm exec --yes --package=playwright@1.62.1 -- node scripts/test-radix-menu.mjs
 ```
 
 If Chrome is already installed, pass `--channel chrome` to the second command instead of installing Chromium. The check uses the installed Radix primitive with the actual adapter stylesheet in a temporary fixture. It verifies exit cleanup, page interaction, uninterrupted reversal, and reduced motion changed during exit. CI runs the same check in Chromium. Safari and Firefox require separate verification.
+
+For search changes, run `scripts/test-expanding-search.mjs` through the same Playwright command. It checks controlled and uncontrolled disclosure, accepted and rejected requests, mirrored focus, explicit submission, replay, and reduced motion. Both regression scripts run in CI's `test:browser` job.
 
 Run checks relevant to the change before requesting review. Add regression coverage for meaningful behavior and failure paths; avoid tests that merely restate implementation details. A successful build does not substitute for inspecting the changed interaction.
 

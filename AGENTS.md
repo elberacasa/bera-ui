@@ -17,6 +17,7 @@ Build reusable React transitions for existing interfaces. Each recipe combines u
 - `components/transitions/`: transition implementations and local CSS.
 - `components/adapters/`: CSS motion layers for existing host primitives.
 - `components/integrations/` and `app/integrations/`: live examples using real host actions and state.
+- `components/motion-comparison.tsx` and `components/comparisons/`: synchronized before/after examples. Enhanced previews import the shipped recipes; instant baselines retain the same content, styling, semantics, and state.
 - `lib/transition-catalog.json`: authored pattern metadata, props, and integration guidance.
 - `lib/adapter-catalog.json`: authored host adapter metadata and source paths.
 - `components/transition-library.tsx`: collection, filters, playback, and per-pattern settings.

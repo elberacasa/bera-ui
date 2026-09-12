@@ -136,7 +136,7 @@
           "target": "@components/bera/expanding-search.css"
         }
       ],
-      "docs": "Import { ExpandingSearch } from your configured components alias under bera/expanding-search. Keep its companion CSS. Connect value/onValueChange; onSearch submits the query. Supply actual searchable items or replace demonstration result rendering. Defaults: preview=false, speed=1, radius=12. Tested with React 19 and shadcn 4.21.0; use complete CSS color tokens. Integration: https://bera-ui.vercel.app/transitions/expanding-search.agent.md",
+      "docs": "Import { ExpandingSearch } from your configured components alias under bera/expanding-search. Keep its companion CSS. Connect value/onValueChange and optionally open/onOpenChange. Only direct interaction moves focus; external disclosure updates and controlled replay preserve it. onSearch submits the query. Supply actual searchable items or replace demonstration result rendering. Defaults: preview=false, speed=1, radius=12. Tested with React 19 and shadcn 4.21.0; use complete CSS color tokens. Integration: https://bera-ui.vercel.app/transitions/expanding-search.agent.md",
       "categories": [
         "navigation",
         "motion"

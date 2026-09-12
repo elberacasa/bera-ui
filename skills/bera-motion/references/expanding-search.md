@@ -8,13 +8,13 @@ Compact search or filter controls that need more space on focus.
 
 ## Integration
 
-Connect value/onValueChange; onSearch submits the query. Supply actual searchable items or replace demonstration result rendering.
+Connect value/onValueChange and optionally open/onOpenChange. Only direct interaction moves focus; external disclosure updates and controlled replay preserve it. onSearch submits the query. Supply actual searchable items or replace demonstration result rendering.
 
 Read the host component before making changes. Preserve its accessibility primitive, content, state ownership, fonts, colors, and layout. Adapt motion in place when an existing component already handles behavior. Otherwise copy the standalone TSX and matching CSS together. Do not introduce a second animation engine just to reproduce this recipe.
 
 Export: `ExpandingSearch`
 
-Props: items, value, defaultValue, onValueChange, onSearch, placeholder, speed, radius, className, style.
+Props: items, open, defaultOpen, onOpenChange, value, defaultValue, onValueChange, onSearch, placeholder, speed, radius, className, style.
 
 Defaults: `speed={1}`, `radius={12}`, `preview={false}`. Speed scales timing; radius is in pixels. The gallery's 0.35× playback is for inspection only. Omit `preview` in applications: it enables gallery framing, helper labels, and demo controls. Connect actual data and callbacks.
 

@@ -491,8 +491,8 @@
   }
   .tl-intro {
     grid-template-columns: 1fr;
-    gap: 25px;
-    padding: 32px 0 40px;
+    gap: 18px;
+    padding: 20px 0 24px;
   }
   .tl-intro h1 {
     font-size: 42px;
@@ -503,7 +503,7 @@
     padding: 0;
   }
   .tl-intro p {
-    margin-bottom: 19px;
+    margin-bottom: 14px;
     max-width: 310px;
   }
   .tl-toolbar {
@@ -897,26 +897,6 @@
 
 .tl-hero-comparison {
   margin: 0 0 56px;
-}
-.tl-adapter-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 0 0 32px;
-  color: #929292;
-  font-size: 12px;
-  line-height: 1.8;
-}
-.tl-adapter-link strong {
-  color: #ccc;
-  font-weight: 400;
-}
-.tl-adapter-link:hover strong {
-  color: #fff;
-}
-.tl-adapter-link svg {
-  flex-shrink: 0;
 }
 @media (max-width: 400px) {
   .tl-header {
