@@ -1,0 +1,60 @@
+{
+  "name": "Bera / Iris",
+  "version": "0.1.0",
+  "purpose": "Select a visual atmosphere and adjust its light intensity.",
+  "component": {
+    "path": "components/iris/iris.tsx",
+    "exports": {
+      "Iris": "Optical instrument and two synchronized intensity controls",
+      "IrisAtmospheres": "Accessible atmosphere preset group"
+    },
+    "props": {
+      "value": {
+        "atmosphere": ["pearl", "dusk", "ember"],
+        "intensity": "integer 0–100"
+      },
+      "onChange": "Receives the complete updated value",
+      "className": "Optional class for layout integration"
+    },
+    "composition": "Render Iris and IrisAtmospheres with the same controlled value and onChange. Iris owns material rendering and light adjustment; IrisAtmospheres owns preset selection. The host applies exported palette tokens to surrounding surfaces."
+  },
+  "defaults": { "atmosphere": "dusk", "intensity": 72 },
+  "design": {
+    "thesis": "Interfaces as objects",
+    "typeface": "Manrope",
+    "principles": [
+      "One dominant material event",
+      "Motion answers input",
+      "A composed resting state",
+      "Useful detail, quiet surroundings",
+      "Touch and keyboard are first-class inputs"
+    ],
+    "motion": {
+      "response": "Exponential interpolation, 7.5 per second",
+      "ambientAnimation": false,
+      "pageTransition": "800ms color transition",
+      "reducedMotion": "Immediate changes; pointer lighting disabled"
+    }
+  },
+  "atmospheres": {
+    "pearl": { "surface": "#e9eae7", "ink": "#292c32", "accent": "#506662" },
+    "dusk": { "surface": "#e6e7ed", "ink": "#2c3044", "accent": "#626dab" },
+    "ember": { "surface": "#ede3db", "ink": "#45372e", "accent": "#a95c36" }
+  },
+  "behavior": {
+    "pointer": "Move over the lens to redirect its light. Drag the outer handle to adjust intensity.",
+    "touch": "Drag the handle or use the linear slider. The lens does not capture page scrolling.",
+    "keyboard": "Radio-group arrow navigation. Both intensity sliders support arrow keys, Home, End, PageUp, and PageDown.",
+    "fallback": "Controls remain functional without WebGL. The lens recovers when its graphics context is restored.",
+    "idle": "Rendering stops when interpolation settles, when offscreen, or when the document is hidden.",
+    "persistence": "None. Controlled state belongs to the host application."
+  },
+  "agentTools": ["get_iris_atmosphere", "set_iris_atmosphere"],
+  "guardrails": [
+    "Preserve controlled state and input semantics",
+    "Do not add looping ambient animation",
+    "Keep geometry relative to the component, not the viewport",
+    "Do not add unrelated cards or decorative statistics",
+    "Validate at narrow mobile widths and with reduced motion"
+  ]
+}

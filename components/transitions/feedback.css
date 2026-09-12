@@ -1,0 +1,242 @@
+.bf-preview {
+  --bf-ink: var(--foreground, #eeeeee);
+  --bf-muted: var(--muted-foreground, #888888);
+  --bf-panel: var(--popover, #191919);
+  --bf-border: var(--border, #303030);
+  --bf-primary: var(--primary, #eeeeee);
+  --bf-primary-ink: var(--primary-foreground, #191919);
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: 320px;
+  height: 230px;
+  margin-inline: auto;
+  color: var(--bf-ink);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+.bf-preview *,
+.bf-preview *::before,
+.bf-preview *::after {
+  box-sizing: border-box;
+}
+.bf-preview button,
+.bf-preview input {
+  font: inherit;
+}
+.bf-preview button {
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.bf-preview button:disabled {
+  cursor: default;
+}
+.bf-preview button:focus-visible,
+.bf-preview input:focus-visible {
+  outline: 2px solid var(--bf-ink);
+  outline-offset: 5px;
+}
+.bf-main {
+  height: 187px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+}
+.bf-state-button,
+.bf-copy-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  height: 48px;
+  padding: 0;
+  border: 1px solid
+    color-mix(in srgb, var(--bf-primary) 88%, var(--bf-primary-ink));
+  border-radius: 13px;
+  white-space: nowrap;
+  font-weight: 550 !important;
+  letter-spacing: -0.18px;
+  background: var(--bf-primary);
+  color: var(--bf-primary-ink);
+  box-shadow:
+    0 1px 0 #ffffff50 inset,
+    0 4px 12px #00000025;
+}
+.bf-state-button:not(:disabled):hover {
+  background: color-mix(in srgb, var(--bf-primary) 92%, var(--bf-primary-ink));
+}
+.bf-state-button:focus-visible {
+  outline-offset: 5px;
+}
+.bf-button-content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  flex-shrink: 0;
+  position: relative;
+  white-space: nowrap;
+}
+.bf-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.bf-icon svg {
+  display: block;
+}
+.bf-demo-footer {
+  height: 43px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 17px;
+  color: var(--bf-muted);
+  font-size: 10px;
+}
+.bf-small-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 5px 1px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--bf-ink);
+  font-size: 11px !important;
+  line-height: 1.2;
+}
+.bf-small-button:hover:not([aria-disabled="true"]) {
+  color: var(--bf-ink);
+}
+.bf-small-button[aria-disabled="true"] {
+  cursor: default;
+  opacity: 0.35;
+}
+.bf-status-line {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 248px;
+  min-height: 40px;
+}
+.bf-status-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+.bf-status-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  color: color-mix(in srgb, var(--bf-ink) 75%, var(--bf-muted));
+}
+.bf-status-words {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.27em;
+  font-size: 16px;
+  font-weight: 450;
+  letter-spacing: -0.38px;
+  white-space: nowrap;
+}
+.bf-status-words > span {
+  display: inline-block;
+}
+.bf-copy-block {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 18px;
+}
+.bf-command {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--bf-ink) 65%, var(--bf-muted));
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  letter-spacing: -0.25px;
+}
+.bf-copy-button {
+  height: 41px;
+  color: var(--bf-ink);
+  background: var(--bf-panel);
+  border: 1px solid var(--bf-border);
+  border-radius: 10px;
+  box-shadow:
+    0 1px 0 #ffffff05 inset,
+    0 2px 5px #00000020;
+  font-size: 12px !important;
+}
+.bf-copy-button:hover {
+  background: color-mix(in srgb, var(--bf-panel) 87%, var(--bf-ink));
+}
+.bf-manual-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  max-width: 258px;
+  color: var(--bf-muted);
+  font-size: 10px;
+}
+.bf-manual-copy input {
+  width: 100%;
+  min-width: 0;
+  height: 32px;
+  border: 1px solid var(--bf-border);
+  border-radius: 6px;
+  padding: 5px 8px;
+  background: var(--bf-panel);
+  color: var(--bf-ink);
+  font-size: 11px;
+}
+.bf-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bf-preview *,
+  .bf-preview *::before,
+  .bf-preview *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+@media (pointer: coarse) {
+  .bf-small-button {
+    min-height: 40px;
+  }
+  .bf-manual-copy input {
+    font-size: 16px;
+  }
+}

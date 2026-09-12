@@ -1,0 +1,83 @@
+{
+  "name": "bera/ui",
+  "version": 1,
+  "dependencies": [
+    "react",
+    "motion",
+    "lucide-react"
+  ],
+  "transitions": [
+    {
+      "id": "state-button",
+      "exportName": "StateButton",
+      "category": "Feedback",
+      "source": "/transitions/feedback.tsx",
+      "styles": "/transitions/feedback.css",
+      "agentBrief": "/transitions/state-button.agent.md"
+    },
+    {
+      "id": "sliding-tabs",
+      "exportName": "SlidingTabs",
+      "category": "Navigation",
+      "source": "/transitions/selection.tsx",
+      "styles": "/transitions/selection.css",
+      "agentBrief": "/transitions/sliding-tabs.agent.md"
+    },
+    {
+      "id": "morphing-menu",
+      "exportName": "MorphingMenu",
+      "category": "Surfaces",
+      "source": "/transitions/surfaces.tsx",
+      "styles": "/transitions/surfaces.css",
+      "agentBrief": "/transitions/morphing-menu.agent.md"
+    },
+    {
+      "id": "text-swap",
+      "exportName": "TextSwap",
+      "category": "Feedback",
+      "source": "/transitions/feedback.tsx",
+      "styles": "/transitions/feedback.css",
+      "agentBrief": "/transitions/text-swap.agent.md"
+    },
+    {
+      "id": "expanding-search",
+      "exportName": "ExpandingSearch",
+      "category": "Navigation",
+      "source": "/transitions/selection.tsx",
+      "styles": "/transitions/selection.css",
+      "agentBrief": "/transitions/expanding-search.agent.md"
+    },
+    {
+      "id": "toast-stack",
+      "exportName": "ToastStack",
+      "category": "Surfaces",
+      "source": "/transitions/surfaces.tsx",
+      "styles": "/transitions/surfaces.css",
+      "agentBrief": "/transitions/toast-stack.agent.md"
+    },
+    {
+      "id": "copy-button",
+      "exportName": "CopyButton",
+      "category": "Feedback",
+      "source": "/transitions/feedback.tsx",
+      "styles": "/transitions/feedback.css",
+      "agentBrief": "/transitions/copy-button.agent.md"
+    },
+    {
+      "id": "rolling-counter",
+      "exportName": "RollingCounter",
+      "category": "Navigation",
+      "source": "/transitions/selection.tsx",
+      "styles": "/transitions/selection.css",
+      "agentBrief": "/transitions/rolling-counter.agent.md"
+    },
+    {
+      "id": "accordion",
+      "exportName": "Accordion",
+      "category": "Surfaces",
+      "source": "/transitions/surfaces.tsx",
+      "styles": "/transitions/surfaces.css",
+      "agentBrief": "/transitions/accordion.agent.md"
+    }
+  ]
+}
