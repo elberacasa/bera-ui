@@ -18,8 +18,8 @@ Props: items, value, defaultValue, onValueChange, speed, radius, className, styl
 
 Defaults: `speed={1}`, `radius={12}`, `preview={false}`. Speed scales timing; radius is in pixels. The gallery's 0.35× playback is for inspection only. Omit `preview` in applications: it enables gallery framing, helper labels, and demo controls. Connect actual data and callbacks.
 
-Source: `../recipes/accordion.tsx`
-Styles: `../recipes/accordion.css`
+Source: [accordion.tsx](https://bera-ui.vercel.app/transitions/accordion.tsx)
+Styles: [accordion.css](https://bera-ui.vercel.app/transitions/accordion.css)
 Dependencies: React, motion, lucide-react. Styles use namespaced selectors and inherit the host's neutral tokens.
 
 ## Verify

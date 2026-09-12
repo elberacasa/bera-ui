@@ -18,8 +18,8 @@ Props: actions, label, speed, radius, className, style.
 
 Defaults: `speed={1}`, `radius={12}`, `preview={false}`. Speed scales timing; radius is in pixels. The gallery's 0.35× playback is for inspection only. Omit `preview` in applications: it enables gallery framing, helper labels, and demo controls. Connect actual data and callbacks.
 
-Source: `../recipes/morphing-menu.tsx`
-Styles: `../recipes/morphing-menu.css`
+Source: [morphing-menu.tsx](https://bera-ui.vercel.app/transitions/morphing-menu.tsx)
+Styles: [morphing-menu.css](https://bera-ui.vercel.app/transitions/morphing-menu.css)
 Dependencies: React, motion, lucide-react. Styles use namespaced selectors and inherit the host's neutral tokens.
 
 ## Verify

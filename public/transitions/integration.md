@@ -2,7 +2,7 @@
 
 Read the target component and its callers first. Identify which state is controlled by the application, which element owns focus, and which handler performs the real action. Check the host's React setup, Motion dependency, design tokens, and CSS conventions.
 
-Read the selected entry in `../catalog.json`, then its `../references/<id>.md`, `../recipes/<id>.tsx`, and `../recipes/<id>.css`. Treat the complete source as an inspectable starting point. The recipe notes define props and adaptation boundaries.
+Read the selected entry in the [catalog](https://bera-ui.vercel.app/transitions/manifest.json), then follow its recipe, source, and styles URLs relative to https://bera-ui.vercel.app. Treat the complete source as an inspectable starting point. The recipe notes define props and adaptation boundaries.
 
 ## Choose an integration route
 

@@ -28,6 +28,10 @@ Verify that generated TSX and CSS match the live implementation. Each extracted 
 
 For distribution changes, exercise installation into a temporary project: inspect `--dry-run`, install one selected pair, repeat the operation, and preserve differing destination files. Check skill contents, archive extraction, and deterministic generation. Use real application callbacks in integration examples and clearly identify reference-only behavior.
 
+Validate registry items against the shadcn schema and compare their embedded files with the same generated source and CSS used by the kit. Exercise the real shadcn CLI against a temporary consumer, including direct URL and configured namespace installation. Check alias-based destinations, sibling CSS imports, dependency changes, and compilation. Confirm that payloads do not replace host primitives or inject global theme changes. Record the actual CLI and host versions tested; an install in one setup does not establish compatibility with every React or shadcn project.
+
+Keep the machine-readable catalog, registry index, skill links, and `llms.txt` aligned with the authored catalog. Website links must resolve on the public origin; kit links must resolve after extraction. Check that an agent can discover one relevant recipe and its integration requirements without loading the whole collection.
+
 ## Repository checks
 
 ```sh
@@ -37,6 +41,14 @@ npm run format:check
 npm run test:kit
 npm run build
 ```
+
+For registry changes, run the released CLI smoke test as well:
+
+```sh
+npm exec --yes --package=shadcn@4.21.0 -- node scripts/test-shadcn-registry.mjs
+```
+
+It downloads dependencies into temporary consumer projects and checks actual installs, alias resolution, edited-file preservation, and compilation. The CLI version must match the registry's recorded tested version. The offline `test:kit` suite also compiles every usage example shown in the Install tab.
 
 Run checks relevant to the change before requesting review. Add regression coverage for meaningful behavior and failure paths; avoid tests that merely restate implementation details. A successful build does not substitute for inspecting the changed interaction.
 

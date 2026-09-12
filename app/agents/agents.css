@@ -57,6 +57,16 @@
   font-size: 11px;
   white-space: nowrap;
 }
+.ba-command > pre {
+  flex: 1 1 240px;
+  min-width: 0;
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.ba-section[id] {
+  scroll-margin-top: 28px;
+}
 .ba-install-command {
   max-width: 650px;
   margin: 24px 0 12px;

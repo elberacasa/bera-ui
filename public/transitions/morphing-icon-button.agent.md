@@ -18,8 +18,8 @@ Props: pressed, defaultPressed, onPressedChange, label, labels, disabled, button
 
 Defaults: `speed={1}`, `radius={12}`, `preview={false}`. Speed scales timing; radius is in pixels. The gallery's 0.35× playback is for inspection only. Omit `preview` in applications: it enables gallery framing, helper labels, and demo controls. Connect actual data and callbacks.
 
-Source: `../recipes/morphing-icon-button.tsx`
-Styles: `../recipes/morphing-icon-button.css`
+Source: [morphing-icon-button.tsx](https://bera-ui.vercel.app/transitions/morphing-icon-button.tsx)
+Styles: [morphing-icon-button.css](https://bera-ui.vercel.app/transitions/morphing-icon-button.css)
 Dependencies: React, motion. Styles use namespaced selectors and inherit the host's neutral tokens.
 
 ## Verify

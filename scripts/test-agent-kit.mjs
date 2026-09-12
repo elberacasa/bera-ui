@@ -12,6 +12,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 import { gunzipSync } from "node:zlib";
+import { checkTransitionExamples } from "./check-transition-examples.mjs";
 
 const execute = promisify(execFile);
 const EXPECTED_IDS = [
@@ -639,9 +640,13 @@ async function main() {
           assert.deepEqual(asset.dependencies, entry.dependencies);
           const brief = await fs.readFile(`${base}.agent.md`, "utf8");
           assert.ok(
-            brief.startsWith(
-              await fs.readFile(path.join(kit, entry.recipe), "utf8"),
-            ) &&
+            brief.includes(entry.integration) &&
+              brief.includes(
+                `https://bera-ui.vercel.app/transitions/${entry.id}.tsx`,
+              ) &&
+              brief.includes(
+                `https://bera-ui.vercel.app/transitions/${entry.id}.css`,
+              ) &&
               brief.includes(asset.source) &&
               brief.includes(asset.css),
             entry.id,
@@ -664,11 +669,186 @@ async function main() {
             ],
           );
         }
-        await sameFile(
+        const publicSkill = await fs.readFile(
           path.join(repository, "public/bera-motion.SKILL.md"),
-          path.join(kit, "SKILL.md"),
+          "utf8",
+        );
+        assert.match(
+          publicSkill,
+          /https:\/\/bera-ui\.vercel\.app\/transitions\/manifest\.json/,
+        );
+        assert.ok(
+          !publicSkill.includes("](references/") &&
+            !publicSkill.includes("](catalog.json)"),
+        );
+        const integration = await fs.readFile(
+          path.join(repository, "public/transitions/integration.md"),
+          "utf8",
+        );
+        assert.ok(
+          !integration.includes("../catalog") &&
+            !integration.includes("../recipes/") &&
+            !integration.includes("../references/"),
+        );
+        assert.ok(
+          integration.includes(
+            "https://bera-ui.vercel.app/transitions/manifest.json",
+          ),
+        );
+        await sameFile(
+          path.join(repository, "public/transitions/motion.md"),
+          path.join(kit, "references/motion.md"),
         );
       },
+    );
+    await check(
+      "shadcn registry has paired source, scoped targets, supported packages, and lightweight discovery",
+      async () => {
+        const index = await readJSON(
+          path.join(repository, "public/r/registry.json"),
+        );
+        const manifest = await readJSON(
+          path.join(repository, "public/transitions/manifest.json"),
+        );
+        const packageJSON = await readJSON(
+          path.join(repository, "package.json"),
+        );
+        assert.equal(
+          index.$schema,
+          "https://ui.shadcn.com/schema/registry.json",
+        );
+        assert.equal(index.name, "bera");
+        assert.equal(index.homepage, "https://bera-ui.vercel.app");
+        assert.deepEqual(
+          index.items.map((item) => item.name),
+          catalog.transitions.map((item) => item.id),
+        );
+        assert.equal(manifest.registry.url, "/r/registry.json");
+        assert.equal(manifest.compatibility.react, "^19.0.0");
+        await sameFile(
+          path.join(repository, "registry.json"),
+          path.join(repository, "public/r/registry.json"),
+        );
+        for (const entry of catalog.transitions) {
+          const item = await readJSON(
+            path.join(repository, "public/r", `${entry.id}.json`),
+          );
+          assert.equal(
+            item.$schema,
+            "https://ui.shadcn.com/schema/registry-item.json",
+          );
+          assert.equal(item.name, entry.id);
+          assert.equal(item.type, "registry:component");
+          assert.deepEqual(
+            Object.keys(item).sort(),
+            [
+              "$schema",
+              "name",
+              "type",
+              "title",
+              "description",
+              "dependencies",
+              "files",
+              "docs",
+              "categories",
+            ].sort(),
+          );
+          assert.deepEqual(
+            item.dependencies,
+            entry.dependencies.map(
+              (name) => `${name}@${packageJSON.dependencies[name]}`,
+            ),
+          );
+          assert.equal(item.files.length, 2);
+          assert.equal(item.files[0].type, "registry:component");
+          assert.equal(item.files[1].type, "registry:file");
+          for (const [number, extension] of ["tsx", "css"].entries()) {
+            const file = item.files[number];
+            assert.equal(
+              file.target,
+              `@components/bera/${entry.id}.${extension}`,
+            );
+            assert.equal(
+              file.path,
+              `skills/bera-motion/recipes/${entry.id}.${extension}`,
+            );
+            assert.equal(
+              file.content,
+              await fs.readFile(path.join(repository, file.path), "utf8"),
+            );
+          }
+          assert.deepEqual(
+            index.items.find((candidate) => candidate.name === entry.id),
+            {
+              ...item,
+              files: item.files.map(({ path, type, target }) => ({
+                path,
+                type,
+                target,
+              })),
+            },
+          );
+          assert.equal(
+            manifest.transitions.find((candidate) => candidate.id === entry.id)
+              .registry,
+            `/r/${entry.id}.json`,
+          );
+        }
+        assert.ok(
+          Buffer.byteLength(JSON.stringify(index)) < 32_000,
+          "Discovery must not duplicate all source/CSS blobs",
+        );
+        const llms = await fs.readFile(
+          path.join(repository, "public/llms.txt"),
+          "utf8",
+        );
+        for (const entry of catalog.transitions)
+          assert.ok(
+            llms.includes(
+              `https://bera-ui.vercel.app/transitions/${entry.id}.agent.md`,
+            ),
+          );
+      },
+    );
+    await check(
+      "published guidance links resolve to real website assets",
+      async () => {
+        const files = [
+          "llms.txt",
+          "bera-motion.SKILL.md",
+          ...catalog.transitions.map(
+            (entry) => `transitions/${entry.id}.agent.md`,
+          ),
+          "transitions/integration.md",
+          "transitions/motion.md",
+        ];
+        for (const name of files) {
+          const markdown = (
+            await fs.readFile(path.join(repository, "public", name), "utf8")
+          ).replace(/```[\s\S]*?```/g, "");
+          for (const match of markdown.matchAll(/\[[^\]]*\]\(([^\s)]+)\)/g)) {
+            const target = new URL(
+              match[1],
+              `https://bera-ui.vercel.app/${name}`,
+            );
+            if (target.origin !== "https://bera-ui.vercel.app") continue;
+            if (target.pathname === "/agents") continue; // Next page, not a public asset.
+            const destination = path.join(
+              repository,
+              "public",
+              decodeURIComponent(target.pathname),
+            );
+            assert.ok(
+              (await fs.stat(destination)).isFile(),
+              `${name} has a missing link: ${match[1]}`,
+            );
+          }
+        }
+      },
+    );
+    await check(
+      "Install examples strictly compile against generated source",
+      () => checkTransitionExamples(repository),
     );
     await check(
       "isolated generation matches published files and is deterministic",
@@ -680,6 +860,7 @@ async function main() {
         });
         const files = [
           "LICENSE",
+          "package.json",
           "scripts/sync-components.mjs",
           "scripts/extract-transition.mjs",
           "lib/transition-catalog.json",
@@ -721,6 +902,18 @@ async function main() {
         assert.deepEqual(
           await snapshot(path.join(clone, "public/transitions")),
           await snapshot(path.join(repository, "public/transitions")),
+        );
+        assert.deepEqual(
+          await snapshot(path.join(clone, "public/r")),
+          await snapshot(path.join(repository, "public/r")),
+        );
+        await sameFile(
+          path.join(clone, "registry.json"),
+          path.join(repository, "registry.json"),
+        );
+        await sameFile(
+          path.join(clone, "public/llms.txt"),
+          path.join(repository, "public/llms.txt"),
         );
         // Node releases may use different deflate implementations. The portable
         // tar stream must match; repeat generation below still compares gzip bytes.

@@ -11,6 +11,11 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { CopyControl } from "@/components/copy-control";
 import catalog from "@/lib/transition-catalog.json";
+import { registryInstallCommand, registryItemUrl } from "@/lib/registry";
+import {
+  supportsRadius,
+  transitionUsage as usage,
+} from "@/lib/transition-examples";
 import {
   defaultTuning,
   motionPresets,
@@ -34,11 +39,13 @@ type Asset = {
   dependencies: string[];
 };
 
-function usage(item: Entry, tuning: MotionTuning) {
-  return `import { ${item.exportName} } from "./components/bera/${item.id}";\n\n<${item.exportName} speed={${tuning.tempo}} radius={${tuning.radius}} />`;
-}
 function brief(item: Entry, asset: Asset, tuning: MotionTuning) {
-  return `Use bera/ui's ${item.name} in the current project.\n\nSelected settings: ${JSON.stringify({ transition: item.id, ...tuning })}\nTempo is the speed prop; radius is in pixels. The gallery's slow-motion playback is not part of these settings.\n\nRead the existing component before editing. Preserve its content, fonts, colors, layout, accessibility primitive, and application behavior. If it already has a good component (such as shadcn/Radix), adapt only the relevant motion to it. Otherwise install the supplied standalone React export and connect the actual props/callbacks. Do not duplicate an existing animation engine unnecessarily.\n\nUse case: ${item.when}\nIntegration: ${item.integration}\nAvailable props: ${item.props}\n\nThis file contains only the selected export and its required helpers. It imports its own CSS. Normal imports use natural sizing; preview=true enables the gallery framing and demo controls and must be omitted from the application. Replace sample data with the host's data. Honor OS reduced motion; preserve keyboard focus and interruptions. Validate the real user action.\n\nDependencies: ${asset.dependencies.join(", ")} plus React. Use the project's package manager for missing dependencies.\n\nUsage (connect the relevant application props):\n\`\`\`tsx\n${usage(item, tuning)}\n\`\`\`\n\nFile: ${item.id}.tsx\n\`\`\`tsx\n${asset.source}\n\`\`\`\n\nFile: ${item.id}.css\n\`\`\`css\n${asset.css}\n\`\`\`\n`;
+  const settings = {
+    transition: item.id,
+    tempo: tuning.tempo,
+    ...(supportsRadius(item.id) ? { radius: tuning.radius } : {}),
+  };
+  return `Use bera/ui's ${item.name} in the current project.\n\nSelected settings: ${JSON.stringify(settings)}\nTempo is the speed prop; radius, when present, is in pixels. The gallery's slow-motion playback is not part of these settings.\n\nRead the existing component before editing. Preserve its content, fonts, colors, layout, accessibility primitive, and application behavior. If it already has a good component (such as shadcn/Radix), adapt only the relevant motion to it. Otherwise install the supplied standalone React export and connect the actual props/callbacks. Do not duplicate an existing animation engine unnecessarily.\n\nUse case: ${item.when}\nIntegration: ${item.integration}\nAvailable props: ${item.props}\n\nThis file contains only the selected export and its required helpers. It imports its own CSS. Normal imports use natural sizing; preview=true enables the gallery framing and demo controls and must be omitted from the application. Replace sample data with the host's data. Honor OS reduced motion; preserve keyboard focus and interruptions. Validate the real user action.\n\nDependencies: ${asset.dependencies.join(", ")} plus React. Use the project's package manager for missing dependencies.\n\n${item.id === "toast-stack" ? "Local motion reference (adapt to your actual provider)" : "Usage (connect the relevant application props)"}:\n\`\`\`tsx\n${usage(item, tuning)}\n\`\`\`\n\nFile: ${item.id}.tsx\n\`\`\`tsx\n${asset.source}\n\`\`\`\n\nFile: ${item.id}.css\n\`\`\`css\n${asset.css}\n\`\`\`\n`;
 }
 
 export function TransitionInspector({
@@ -93,13 +100,15 @@ export function TransitionInspector({
   }, [id, retry]);
   const loaded = asset?.id === id ? asset : null;
   const text =
-    item && loaded
-      ? tab === "react"
-        ? loaded.source
-        : tab === "css"
-          ? loaded.css
-          : brief(item, loaded, tuning)
-      : "";
+    item && tab === "install"
+      ? registryInstallCommand(item.id)
+      : item && loaded
+        ? tab === "react"
+          ? loaded.source
+          : tab === "css"
+            ? loaded.css
+            : brief(item, loaded, tuning)
+        : "";
   return (
     <Dialog
       open={!!item}
@@ -131,17 +140,20 @@ export function TransitionInspector({
               <div className="tl-code-toolbar">
                 <TabsList>
                   <TabsTrigger value="customize">Customize</TabsTrigger>
+                  <TabsTrigger value="install">Install</TabsTrigger>
                   <TabsTrigger value="react">React</TabsTrigger>
                   <TabsTrigger value="css">CSS</TabsTrigger>
                   <TabsTrigger value="agent">Agent</TabsTrigger>
                 </TabsList>
                 <CopyControl
                   value={text}
-                  disabled={!loaded}
+                  disabled={tab !== "install" && !loaded}
                   label={
-                    tab === "react" || tab === "css"
-                      ? "Copy code"
-                      : "Copy for agent"
+                    tab === "install"
+                      ? "Copy command"
+                      : tab === "react" || tab === "css"
+                        ? "Copy code"
+                        : "Copy for agent"
                   }
                 />
               </div>
@@ -190,7 +202,8 @@ export function TransitionInspector({
                           title={p.description}
                           aria-pressed={
                             p.tempo === tuning.tempo &&
-                            p.radius === tuning.radius
+                            (!supportsRadius(item.id) ||
+                              p.radius === tuning.radius)
                           }
                           onClick={() => {
                             onTuningChange({
@@ -225,27 +238,31 @@ export function TransitionInspector({
                       />
                       <small>Changes motion timing proportionally.</small>
                     </label>
-                    <label className="tl-tuning-range">
-                      <span>
-                        Corners <output>{tuning.radius}px</output>
-                      </span>
-                      <input
-                        type="range"
-                        min="0"
-                        max="24"
-                        step="1"
-                        value={tuning.radius}
-                        onChange={(e) =>
-                          onTuningChange(
-                            normalizeTuning({
-                              ...tuning,
-                              radius: Number(e.target.value),
-                            }),
-                          )
-                        }
-                      />
-                      <small>Fits the shape of your existing interface.</small>
-                    </label>
+                    {supportsRadius(item.id) && (
+                      <label className="tl-tuning-range">
+                        <span>
+                          Corners <output>{tuning.radius}px</output>
+                        </span>
+                        <input
+                          type="range"
+                          min="0"
+                          max="24"
+                          step="1"
+                          value={tuning.radius}
+                          onChange={(e) =>
+                            onTuningChange(
+                              normalizeTuning({
+                                ...tuning,
+                                radius: Number(e.target.value),
+                              }),
+                            )
+                          }
+                        />
+                        <small>
+                          Fits the shape of your existing interface.
+                        </small>
+                      </label>
+                    )}
                     <button
                       className="tl-reset-tuning"
                       type="button"
@@ -258,7 +275,53 @@ export function TransitionInspector({
                 <div className="tl-integration-note">
                   <strong>Where it belongs</strong>
                   <p>{item.when}</p>
-                  <code>{`<${item.exportName} speed={${tuning.tempo}} radius={${tuning.radius}} />`}</code>
+                  <code>{`<${item.exportName} speed={${tuning.tempo}}${supportsRadius(item.id) ? ` radius={${tuning.radius}}` : ""} />`}</code>
+                </div>
+              </TabsContent>
+              <TabsContent value="install">
+                <div className="tl-install-content">
+                  <div className="tl-install-step">
+                    <h3>Add it to your project.</h3>
+                    <p>
+                      Run this in a project configured with shadcn/ui. It adds
+                      this recipe and its stylesheet to your configured
+                      components directory, and installs or updates the declared
+                      dependencies.
+                    </p>
+                    <pre className="tl-install-command" tabIndex={0}>
+                      <code>{registryInstallCommand(item.id)}</code>
+                    </pre>
+                    <p className="tl-install-caption">
+                      The source is yours to edit. Your global theme stays
+                      yours.
+                    </p>
+                  </div>
+                  <div className="tl-install-step">
+                    <h3>
+                      {item.id === "toast-stack"
+                        ? "Study the motion reference."
+                        : "Connect your interface."}
+                    </h3>
+                    <p>{item.integration}</p>
+                    <pre className="tl-install-usage" tabIndex={0}>
+                      <code>{usage(item, tuning)}</code>
+                    </pre>
+                    <p className="tl-install-caption">
+                      Adjust the import to your component alias. The command
+                      installs the original recipe; pass these props to use your
+                      selected timing
+                      {supportsRadius(item.id) ? " and corners" : ""}.
+                    </p>
+                  </div>
+                  <div className="tl-install-resources">
+                    <CopyControl
+                      value={loaded ? brief(item, loaded, tuning) : ""}
+                      disabled={!loaded}
+                      label="Copy for agent"
+                    />
+                    <a href="/agents#registry">Installation guide</a>
+                    <a href={registryItemUrl(item.id)}>Inspect registry JSON</a>
+                  </div>
                 </div>
               </TabsContent>
               <TabsContent value="react">
@@ -293,9 +356,11 @@ export function TransitionInspector({
             )}
             <div className="tl-code-bottom">
               <span>
-                {tab === "customize"
-                  ? "Your settings are included when you copy for an agent."
-                  : "One transition, with only its required helpers."}
+                {tab === "install"
+                  ? "Have this component already? Copy for agent to adapt its motion."
+                  : tab === "customize"
+                    ? "Your settings are included when you copy for an agent."
+                    : "One transition, with only its required helpers."}
               </span>
               <a
                 href={`/transitions/${item.id}.${tab === "css" ? "css" : "tsx"}`}

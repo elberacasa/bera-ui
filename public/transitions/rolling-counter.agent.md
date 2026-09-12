@@ -18,8 +18,8 @@ Props: value, defaultValue, onValueChange, min, max, label, speed, radius, class
 
 Defaults: `speed={1}`, `radius={12}`, `preview={false}`. Speed scales timing; radius is in pixels. The gallery's 0.35× playback is for inspection only. Omit `preview` in applications: it enables gallery framing, helper labels, and demo controls. Connect actual data and callbacks.
 
-Source: `../recipes/rolling-counter.tsx`
-Styles: `../recipes/rolling-counter.css`
+Source: [rolling-counter.tsx](https://bera-ui.vercel.app/transitions/rolling-counter.tsx)
+Styles: [rolling-counter.css](https://bera-ui.vercel.app/transitions/rolling-counter.css)
 Dependencies: React, motion, lucide-react. Styles use namespaced selectors and inherit the host's neutral tokens.
 
 ## Verify

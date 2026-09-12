@@ -16,7 +16,7 @@ Export: `TextSwap`
 
 Props: statuses, value, speed, radius, className, style.
 
-Defaults: `speed={1}`, `radius={12}`, `preview={false}`. Speed scales timing; radius is in pixels. The gallery's 0.35× playback is for inspection only. Omit `preview` in applications: it enables gallery framing, helper labels, and demo controls. Connect actual data and callbacks.
+Defaults: `speed={1}`, `preview={false}`. Speed scales timing. Radius does not apply to TextSwap; its radius prop remains accepted for API compatibility. The gallery's 0.35× playback is for inspection only. Omit `preview` in applications: it enables gallery framing, helper labels, and demo controls. Connect actual data and callbacks.
 
 Source: `../recipes/text-swap.tsx`
 Styles: `../recipes/text-swap.css`

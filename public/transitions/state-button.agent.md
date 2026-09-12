@@ -18,8 +18,8 @@ Props: onAction, speed, radius, className, style.
 
 Defaults: `speed={1}`, `radius={12}`, `preview={false}`. Speed scales timing; radius is in pixels. The gallery's 0.35× playback is for inspection only. Omit `preview` in applications: it enables gallery framing, helper labels, and demo controls. Connect actual data and callbacks.
 
-Source: `../recipes/state-button.tsx`
-Styles: `../recipes/state-button.css`
+Source: [state-button.tsx](https://bera-ui.vercel.app/transitions/state-button.tsx)
+Styles: [state-button.css](https://bera-ui.vercel.app/transitions/state-button.css)
 Dependencies: React, motion, lucide-react. Styles use namespaced selectors and inherit the host's neutral tokens.
 
 ## Verify
