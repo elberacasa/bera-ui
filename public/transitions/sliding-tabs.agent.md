@@ -1,6 +1,6 @@
 # Sliding tabs
 
-A selection that carries its momentum.
+Switch views with a selection that follows your lead.
 
 ## Choose this for
 
@@ -56,7 +56,24 @@ SOFTWARE.
 */
 "use client";
 import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from "react";
-import { LayoutGroup, motion, useAnimationControls, useReducedMotion } from "motion/react";
+import { LayoutGroup, motion, useAnimationControls } from "motion/react";
+import { useContext, useSyncExternalStore } from "react";
+import { MotionConfigContext } from "motion/react";
+const motionPreferenceQuery = "(prefers-reduced-motion: reduce)";
+function subscribeMotionPreference(notify: () => void) {
+    const query = window.matchMedia(motionPreferenceQuery);
+    query.addEventListener("change", notify);
+    return () => query.removeEventListener("change", notify);
+}
+function readMotionPreference() {
+    return window.matchMedia(motionPreferenceQuery).matches;
+}
+/** Follow live user preference and any stronger host policy; render still on the server. */
+function useMotionPreference() {
+    const preference = useSyncExternalStore(subscribeMotionPreference, readMotionPreference, () => true);
+    const { reducedMotion } = useContext(MotionConfigContext);
+    return reducedMotion === "always" || preference;
+}
 import "./sliding-tabs.css";
 type PlaybackProps = {
     preview?: boolean;
@@ -69,7 +86,7 @@ type PlaybackProps = {
     replayKey?: number;
 };
 function useTiming(speed: number) {
-    const reduced = useReducedMotion();
+    const reduced = useMotionPreference();
     const rate = Math.max(0.1, speed);
     return useMemo(() => ({
         reduced,

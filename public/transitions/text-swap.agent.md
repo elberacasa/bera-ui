@@ -1,6 +1,6 @@
 # Text swap
 
-A new thought, without a hard cut.
+Keep changing statuses readable and connected.
 
 ## Choose this for
 
@@ -56,8 +56,25 @@ SOFTWARE.
 */
 "use client";
 import { useCallback, useEffect, useRef, useState, type ComponentType, type CSSProperties } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { ArrowRight, CheckCheck, FileCheck2, MessageSquare } from "lucide-react";
+import { useContext, useSyncExternalStore } from "react";
+import { MotionConfigContext } from "motion/react";
+const motionPreferenceQuery = "(prefers-reduced-motion: reduce)";
+function subscribeMotionPreference(notify: () => void) {
+    const query = window.matchMedia(motionPreferenceQuery);
+    query.addEventListener("change", notify);
+    return () => query.removeEventListener("change", notify);
+}
+function readMotionPreference() {
+    return window.matchMedia(motionPreferenceQuery).matches;
+}
+/** Follow live user preference and any stronger host policy; render still on the server. */
+function useMotionPreference() {
+    const preference = useSyncExternalStore(subscribeMotionPreference, readMotionPreference, () => true);
+    const { reducedMotion } = useContext(MotionConfigContext);
+    return reducedMotion === "always" || preference;
+}
 import "./text-swap.css";
 type FeedbackDemoProps = {
     preview?: boolean;
@@ -103,7 +120,7 @@ type TextSwapProps = FeedbackDemoProps & {
 /** A status sentence changes directionally; the glyphs never stretch. */
 function TextSwap({ speed: requestedSpeed = 1, radius = 12, preview = false, className = "", style, replayKey = 0, statuses, value, }: TextSwapProps) {
     const speed = normalizeSpeed(requestedSpeed);
-    const reduced = Boolean(useReducedMotion());
+    const reduced = Boolean(useMotionPreference());
     const [step, setStep] = useState(0);
     const next = useCallback(() => setStep((current) => current + 1), []);
     useReplay(replayKey, next);

@@ -1,6 +1,6 @@
 # Text swap
 
-A new thought, without a hard cut.
+Keep changing statuses readable and connected.
 
 ## Choose this for
 

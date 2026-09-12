@@ -17,9 +17,9 @@ import {
   motion,
   useAnimationControls,
   useMotionValue,
-  useReducedMotion,
 } from "motion/react";
 import { ArrowLeft, Check, Minus, Plus, Search, X } from "lucide-react";
+import { useMotionPreference } from "./use-motion-preference";
 import "./selection.css";
 
 type PlaybackProps = {
@@ -34,7 +34,7 @@ type PlaybackProps = {
 };
 
 function useTiming(speed: number) {
-  const reduced = useReducedMotion();
+  const reduced = useMotionPreference();
   const rate = Math.max(0.1, speed);
   return useMemo(
     () => ({

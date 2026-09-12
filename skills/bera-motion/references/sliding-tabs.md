@@ -1,6 +1,6 @@
 # Sliding tabs
 
-A selection that carries its momentum.
+Switch views with a selection that follows your lead.
 
 ## Choose this for
 

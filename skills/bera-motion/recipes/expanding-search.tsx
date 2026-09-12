@@ -23,8 +23,25 @@ SOFTWARE.
 */
 "use client";
 import { useEffect, useId, useMemo, useRef, useState, type CSSProperties } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, Check, Search, X } from "lucide-react";
+import { useContext, useSyncExternalStore } from "react";
+import { MotionConfigContext } from "motion/react";
+const motionPreferenceQuery = "(prefers-reduced-motion: reduce)";
+function subscribeMotionPreference(notify: () => void) {
+    const query = window.matchMedia(motionPreferenceQuery);
+    query.addEventListener("change", notify);
+    return () => query.removeEventListener("change", notify);
+}
+function readMotionPreference() {
+    return window.matchMedia(motionPreferenceQuery).matches;
+}
+/** Follow live user preference and any stronger host policy; render still on the server. */
+function useMotionPreference() {
+    const preference = useSyncExternalStore(subscribeMotionPreference, readMotionPreference, () => true);
+    const { reducedMotion } = useContext(MotionConfigContext);
+    return reducedMotion === "always" || preference;
+}
 import "./expanding-search.css";
 type PlaybackProps = {
     preview?: boolean;
@@ -37,7 +54,7 @@ type PlaybackProps = {
     replayKey?: number;
 };
 function useTiming(speed: number) {
-    const reduced = useReducedMotion();
+    const reduced = useMotionPreference();
     const rate = Math.max(0.1, speed);
     return useMemo(() => ({
         reduced,

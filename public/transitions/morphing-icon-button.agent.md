@@ -1,6 +1,6 @@
 # Icon morph
 
-The same strokes. A different intention.
+Connect open and close with the same SVG strokes.
 
 ## Choose this for
 
@@ -57,7 +57,24 @@ SOFTWARE.
 "use client";
 import { useEffect, useRef, useState } from "react";
 import type { ButtonHTMLAttributes, CSSProperties, MouseEvent, Ref } from "react";
-import { animate, motion, useMotionValue, useReducedMotion, useTransform } from "motion/react";
+import { animate, motion, useMotionValue, useTransform } from "motion/react";
+import { useContext, useSyncExternalStore } from "react";
+import { MotionConfigContext } from "motion/react";
+const motionPreferenceQuery = "(prefers-reduced-motion: reduce)";
+function subscribeMotionPreference(notify: () => void) {
+    const query = window.matchMedia(motionPreferenceQuery);
+    query.addEventListener("change", notify);
+    return () => query.removeEventListener("change", notify);
+}
+function readMotionPreference() {
+    return window.matchMedia(motionPreferenceQuery).matches;
+}
+/** Follow live user preference and any stronger host policy; render still on the server. */
+function useMotionPreference() {
+    const preference = useSyncExternalStore(subscribeMotionPreference, readMotionPreference, () => true);
+    const { reducedMotion } = useContext(MotionConfigContext);
+    return reducedMotion === "always" || preference;
+}
 import "./morphing-icon-button.css";
 interface MorphingIconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children" | "type" | "aria-label" | "aria-pressed"> {
     pressed?: boolean;
@@ -105,7 +122,7 @@ function MorphingIconButton({ pressed, defaultPressed = false, onPressedChange, 
     const [localPressed, setLocalPressed] = useState(defaultPressed);
     const localValue = useRef(defaultPressed);
     const active = pressed ?? localPressed;
-    const reduced = Boolean(useReducedMotion());
+    const reduced = Boolean(useMotionPreference());
     const rate = Number.isFinite(speed) ? Math.max(0.1, Math.min(4, speed)) : 1;
     const progress = useMotionValue(active ? 1 : 0);
     const previousReplay = useRef(replayKey);

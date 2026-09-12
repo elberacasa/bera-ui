@@ -8,7 +8,7 @@ import {
   type ComponentType,
   type CSSProperties,
 } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowRight,
   Check,
@@ -21,6 +21,7 @@ import {
   Save,
   TriangleAlert,
 } from "lucide-react";
+import { useMotionPreference } from "./use-motion-preference";
 import "./feedback.css";
 
 export type FeedbackDemoProps = {
@@ -92,7 +93,7 @@ export function StateButton({
   onAction,
 }: StateButtonProps) {
   const speed = normalizeSpeed(requestedSpeed);
-  const reduced = Boolean(useReducedMotion());
+  const reduced = Boolean(useMotionPreference());
   const [state, setState] = useState<SaveState>("idle");
   const pendingAction = useRef(false);
   const { cancel, later, revision } = useSequence();
@@ -275,7 +276,7 @@ export function TextSwap({
   value,
 }: TextSwapProps) {
   const speed = normalizeSpeed(requestedSpeed);
-  const reduced = Boolean(useReducedMotion());
+  const reduced = Boolean(useMotionPreference());
   const [step, setStep] = useState(0);
   const next = useCallback(() => setStep((current) => current + 1), []);
   useReplay(replayKey, next);
@@ -401,7 +402,7 @@ export function CopyButton({
   text = "npm install motion",
 }: CopyButtonProps) {
   const speed = normalizeSpeed(requestedSpeed);
-  const reduced = Boolean(useReducedMotion());
+  const reduced = Boolean(useMotionPreference());
   const [feedback, setFeedback] = useState<{ text: string; state: CopyState }>({
     text,
     state: "idle",

@@ -1,6 +1,6 @@
 # Accordion
 
-More detail. The same quiet rhythm.
+Reveal details with a coordinated height and content transition.
 
 ## Choose this for
 

@@ -1,6 +1,6 @@
 # State button
 
-One action. Every state, connected.
+Save, progress, and confirmation in one button.
 
 ## Choose this for
 
@@ -56,8 +56,25 @@ SOFTWARE.
 */
 "use client";
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { Check, LoaderCircle, RotateCcw, Save, TriangleAlert } from "lucide-react";
+import { useContext, useSyncExternalStore } from "react";
+import { MotionConfigContext } from "motion/react";
+const motionPreferenceQuery = "(prefers-reduced-motion: reduce)";
+function subscribeMotionPreference(notify: () => void) {
+    const query = window.matchMedia(motionPreferenceQuery);
+    query.addEventListener("change", notify);
+    return () => query.removeEventListener("change", notify);
+}
+function readMotionPreference() {
+    return window.matchMedia(motionPreferenceQuery).matches;
+}
+/** Follow live user preference and any stronger host policy; render still on the server. */
+function useMotionPreference() {
+    const preference = useSyncExternalStore(subscribeMotionPreference, readMotionPreference, () => true);
+    const { reducedMotion } = useContext(MotionConfigContext);
+    return reducedMotion === "always" || preference;
+}
 import "./state-button.css";
 type FeedbackDemoProps = {
     preview?: boolean;
@@ -114,7 +131,7 @@ type StateButtonProps = FeedbackDemoProps & {
 /** Useful for save/submit feedback; the demo simulation can safely be restarted. */
 function StateButton({ speed: requestedSpeed = 1, radius = 12, preview = false, className = "", style, replayKey = 0, onAction, }: StateButtonProps) {
     const speed = normalizeSpeed(requestedSpeed);
-    const reduced = Boolean(useReducedMotion());
+    const reduced = Boolean(useMotionPreference());
     const [state, setState] = useState<SaveState>("idle");
     const pendingAction = useRef(false);
     const { cancel, later, revision } = useSequence();

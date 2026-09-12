@@ -1,14 +1,15 @@
 "use client";
-import { useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import Link from "next/link";
+import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import {
-  AnimatePresence,
-  motion,
-  MotionConfig,
-  useReducedMotion,
-} from "motion/react";
-import {
-  ArrowDown,
   ArrowUpRight,
   Braces,
   Gauge,
@@ -35,6 +36,7 @@ import { MotionComparison } from "@/components/motion-comparison";
 import { GithubMark } from "@/components/github-mark";
 import { Brand } from "@/components/brand";
 import { TransitionInspector } from "@/components/transition-inspector";
+import { useMotionPreference } from "@/components/transitions/use-motion-preference";
 import catalog from "@/lib/transition-catalog.json";
 import { defaultTuning, type MotionTuning } from "@/lib/motion-tuning";
 import "@/components/transitions/feedback.css";
@@ -53,11 +55,29 @@ const components = {
   ToastStack,
   MorphingIconButton,
 };
-const transitions = catalog.map((item) => ({
-  ...item,
-  component: components[item.exportName as keyof typeof components],
-}));
+const collectionOrder = [
+  "sliding-tabs",
+  "expanding-search",
+  "state-button",
+  "morphing-icon-button",
+  "accordion",
+  "rolling-counter",
+  "morphing-menu",
+  "copy-button",
+  "text-swap",
+  "toast-stack",
+];
+const transitions = catalog
+  .map((item) => ({
+    ...item,
+    component: components[item.exportName as keyof typeof components],
+  }))
+  .sort(
+    (a, b) => collectionOrder.indexOf(a.id) - collectionOrder.indexOf(b.id),
+  );
 const categories = ["All", "Feedback", "Navigation", "Surfaces"];
+const readHash = () => window.location.hash;
+const serverHash = () => "";
 
 export function TransitionLibrary() {
   const [category, setCategory] = useState("All");
@@ -66,7 +86,30 @@ export function TransitionLibrary() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [settings, setSettings] = useState<Record<string, MotionTuning>>({});
   const returnFocus = useRef<HTMLButtonElement | null>(null);
-  const reduced = useReducedMotion();
+  const reduced = useMotionPreference();
+  const subscribeNavigation = useCallback((notify: () => void) => {
+    const onHashChange = () => {
+      if (transitions.some((item) => `#${item.id}` === window.location.hash)) {
+        setCategory("All");
+      }
+      notify();
+    };
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+  const hash = useSyncExternalStore(subscribeNavigation, readHash, serverHash);
+  const comparing = hash === "#compare" || hash.startsWith("#compare-");
+
+  useEffect(() => {
+    if (!hash) return;
+    // The hash can point into the inactive view. Reveal it before native scrolling.
+    const frame = requestAnimationFrame(() => {
+      const target = document.getElementById(hash.slice(1));
+      target?.scrollIntoView({ block: "start" });
+      target?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [hash]);
   const shown = useMemo(
     () =>
       transitions.filter(
@@ -78,22 +121,23 @@ export function TransitionLibrary() {
   function replay(id: string) {
     setReplays((current) => ({ ...current, [id]: (current[id] || 0) + 1 }));
   }
-  function replayAll() {
-    setReplays((current) => ({
-      ...current,
-      ...Object.fromEntries(
-        shown.map((item) => [item.id, (current[item.id] || 0) + 1]),
-      ),
-    }));
-  }
   return (
     <MotionConfig reducedMotion="user">
-      <main className="transition-library">
+      <main className="transition-library" id="top" tabIndex={-1}>
+        <a
+          className="tl-skip-link"
+          href={comparing ? "#compare" : "#transitions"}
+        >
+          Skip to {comparing ? "comparisons" : "components"}
+        </a>
         <header className="tl-header">
-          <Brand />
+          <Brand href="#top" />
           <nav aria-label="Main navigation">
-            <a href="#transitions" aria-current="page">
-              Collection
+            <a
+              href="#transitions"
+              aria-current={!comparing ? "page" : undefined}
+            >
+              Components
             </a>
             <Link href="/integrations/radix-menu">Integrations</Link>
             <Link href="/agents">Skill</Link>
@@ -108,42 +152,61 @@ export function TransitionLibrary() {
         </header>
         <section className="tl-intro">
           <h1>
-            Every state,
+            Interfaces,
             <br />
-            considered.
+            in motion.
           </h1>
           <div className="tl-intro-detail">
             <p>
-              Transitions for the interfaces you already have. Explore the
-              motion. Make it yours.
+              Carefully made transitions for the interfaces you already have.
+              Try them here. Take the source. Make them yours.
             </p>
             <div className="tl-intro-actions">
               <Link href="/agents" className="tl-agent-button">
                 <Braces size={16} /> Install the skill{" "}
                 <ArrowUpRight size={14} />
               </Link>
-              <a href="#transitions" className="tl-browse">
-                Browse components <ArrowDown size={13} aria-hidden="true" />
-              </a>
+              <span className="tl-intro-note">
+                React. Motion. Yours to adapt.
+              </span>
             </div>
           </div>
         </section>
-        <MotionComparison
-          className="tl-hero-comparison"
-          showHeading={false}
-          onExplore={(id) => {
-            returnFocus.current =
-              document.activeElement instanceof HTMLButtonElement
-                ? document.activeElement
-                : null;
-            setSelectedId(id);
-          }}
-        />
-        <section id="transitions" aria-label="Transition collection">
-          <div className="tl-collection-heading">
-            <h2>The collection</h2>
-            <p>Choose an interaction. Make it yours.</p>
-          </div>
+        <nav className="tl-view-nav" aria-label="Gallery views">
+          <a href="#transitions" aria-current={!comparing ? "page" : undefined}>
+            Components <span aria-hidden="true">{catalog.length}</span>
+          </a>
+          <a href="#compare" aria-current={comparing ? "page" : undefined}>
+            Compare motion <span aria-hidden="true">6</span>
+          </a>
+          <span className="tl-view-hint">Interact. Inspect. Adapt.</span>
+        </nav>
+        {!comparing && (
+          <p className="tl-motion-notice" role="status">
+            Reduced motion is on in your system. Interactions stay available;
+            movement is minimized.
+          </p>
+        )}
+        <div hidden={!comparing}>
+          <MotionComparison
+            className="tl-hero-comparison"
+            showHeading={false}
+            onExplore={(id) => {
+              returnFocus.current =
+                document.activeElement instanceof HTMLButtonElement
+                  ? document.activeElement
+                  : null;
+              setSelectedId(id);
+            }}
+          />
+        </div>
+        <section
+          id="transitions"
+          aria-label="Transition collection"
+          hidden={comparing}
+          tabIndex={-1}
+        >
+          <h2 className="sr-only">Transition collection</h2>
           <div className="tl-toolbar">
             <div
               className="tl-filters"
@@ -180,19 +243,12 @@ export function TransitionLibrary() {
               <button
                 type="button"
                 aria-pressed={slow}
+                disabled={reduced}
                 className={slow ? "is-active" : ""}
                 onClick={() => setSlow((v) => !v)}
               >
                 <Gauge size={14} />
                 <span>{slow ? "0.35× playback" : "Slow motion"}</span>
-              </button>
-              <button
-                type="button"
-                onClick={replayAll}
-                aria-label="Replay all visible transitions"
-              >
-                <RotateCcw size={14} />
-                <span>Replay</span>
               </button>
             </div>
           </div>
@@ -215,25 +271,8 @@ export function TransitionLibrary() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: reduced ? 0 : 0.2 }}
                     className="tl-specimen"
+                    tabIndex={-1}
                   >
-                    <div className={`tl-preview tl-preview-${item.id}`}>
-                      <Demo
-                        preview
-                        speed={tuning.tempo * (slow ? 0.35 : 1)}
-                        radius={tuning.radius}
-                        replayKey={replays[item.id] || 0}
-                      />
-                      {item.id !== "state-button" && (
-                        <button
-                          type="button"
-                          className="tl-replay"
-                          aria-label={`Replay ${item.name}`}
-                          onClick={() => replay(item.id)}
-                        >
-                          <RotateCcw size={13} />
-                        </button>
-                      )}
-                    </div>
                     <div className="tl-caption">
                       <div>
                         <h3>{item.name}</h3>
@@ -251,6 +290,24 @@ export function TransitionLibrary() {
                         <SlidersHorizontal size={14} />
                         <span>Customize</span>
                       </button>
+                    </div>
+                    <div className={`tl-preview tl-preview-${item.id}`}>
+                      <Demo
+                        preview
+                        speed={tuning.tempo * (slow ? 0.35 : 1)}
+                        radius={tuning.radius}
+                        replayKey={replays[item.id] || 0}
+                      />
+                      {item.id !== "state-button" && (
+                        <button
+                          type="button"
+                          className="tl-replay"
+                          aria-label={`Replay ${item.name}`}
+                          onClick={() => replay(item.id)}
+                        >
+                          <RotateCcw size={13} />
+                        </button>
+                      )}
                     </div>
                   </motion.article>
                 );

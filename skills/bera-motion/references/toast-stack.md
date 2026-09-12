@@ -1,6 +1,6 @@
 # Toast stack
 
-Feedback with a little sense of space.
+Layer notifications without taking over the screen.
 
 ## Choose this for
 

@@ -1,6 +1,6 @@
 # Copy feedback
 
-A tiny confirmation that feels complete.
+Copy a command. Confirm it right where you clicked.
 
 ## Choose this for
 

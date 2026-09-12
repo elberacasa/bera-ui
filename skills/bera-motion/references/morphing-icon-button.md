@@ -1,6 +1,6 @@
 # Icon morph
 
-The same strokes. A different intention.
+Connect open and close with the same SVG strokes.
 
 ## Choose this for
 

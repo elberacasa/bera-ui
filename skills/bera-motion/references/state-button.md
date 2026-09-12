@@ -1,6 +1,6 @@
 # State button
 
-One action. Every state, connected.
+Save, progress, and confirmation in one button.
 
 ## Choose this for
 

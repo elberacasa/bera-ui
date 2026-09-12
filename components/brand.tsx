@@ -9,13 +9,14 @@ const aperture = {
   open: "M23 14.5H33.4V14C33.4 11.24 31.76 9 29 9H28C25.24 9 23 11.24 23 14V15C23 17.76 25.24 20 28 20H29C30.3 20 31.9 19.3 33.2 18.3",
 };
 
-export function Brand() {
+export function Brand({ href = "/" }: { href?: string }) {
+  const HomeLink = href.startsWith("#") ? "a" : Link;
   const reduced = useReducedMotion();
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   return (
-    <Link
-      href="/"
+    <HomeLink
+      href={href}
       className="tl-brand"
       aria-label="Bera UI home"
       onPointerEnter={() => setHovered(true)}
@@ -56,6 +57,6 @@ export function Brand() {
           d="M67 20V9M67 14C67 11.24 64.76 9 62 9H61C58.24 9 56 11.24 56 14V15C56 17.76 58.24 20 61 20H62C64.76 20 67 17.76 67 15"
         />
       </svg>
-    </Link>
+    </HomeLink>
   );
 }

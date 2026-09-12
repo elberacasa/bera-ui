@@ -23,8 +23,25 @@ SOFTWARE.
 */
 "use client";
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { Check, Copy, TriangleAlert } from "lucide-react";
+import { useContext, useSyncExternalStore } from "react";
+import { MotionConfigContext } from "motion/react";
+const motionPreferenceQuery = "(prefers-reduced-motion: reduce)";
+function subscribeMotionPreference(notify: () => void) {
+    const query = window.matchMedia(motionPreferenceQuery);
+    query.addEventListener("change", notify);
+    return () => query.removeEventListener("change", notify);
+}
+function readMotionPreference() {
+    return window.matchMedia(motionPreferenceQuery).matches;
+}
+/** Follow live user preference and any stronger host policy; render still on the server. */
+function useMotionPreference() {
+    const preference = useSyncExternalStore(subscribeMotionPreference, readMotionPreference, () => true);
+    const { reducedMotion } = useContext(MotionConfigContext);
+    return reducedMotion === "always" || preference;
+}
 import "./copy-button.css";
 type FeedbackDemoProps = {
     preview?: boolean;
@@ -80,7 +97,7 @@ type CopyState = "idle" | "pending" | "copied" | "error";
 /** The clipboard write is real. Replay only resets the feedback; it never writes. */
 function CopyButton({ speed: requestedSpeed = 1, radius = 12, preview = false, className = "", style, replayKey = 0, text = "npm install motion", }: CopyButtonProps) {
     const speed = normalizeSpeed(requestedSpeed);
-    const reduced = Boolean(useReducedMotion());
+    const reduced = Boolean(useMotionPreference());
     const [feedback, setFeedback] = useState<{
         text: string;
         state: CopyState;
