@@ -1,5 +1,11 @@
 "use client";
-import { useEffect, useState, type ComponentType, type RefObject } from "react";
+import {
+  useEffect,
+  useId,
+  useState,
+  type ComponentType,
+  type RefObject,
+} from "react";
 import { ArrowDownToLine, RotateCcw, X } from "lucide-react";
 import {
   Dialog,
@@ -63,6 +69,7 @@ export function TransitionInspector({
   onClose: () => void;
   returnFocus: RefObject<HTMLButtonElement | null>;
 }) {
+  const controlId = useId();
   const [tab, setTab] = useState("customize");
   const [asset, setAsset] = useState<Asset | null>(null);
   const [failure, setFailure] = useState<string | null>(null);
@@ -217,11 +224,16 @@ export function TransitionInspector({
                         </button>
                       ))}
                     </div>
-                    <label className="tl-tuning-range">
+                    <div className="tl-tuning-range">
                       <span>
-                        Tempo <output>{tuning.tempo.toFixed(2)}×</output>
+                        <label htmlFor={`${controlId}-tempo`}>Tempo</label>
+                        <output htmlFor={`${controlId}-tempo`}>
+                          {tuning.tempo.toFixed(2)}×
+                        </output>
                       </span>
                       <input
+                        id={`${controlId}-tempo`}
+                        aria-describedby={`${controlId}-tempo-hint`}
                         type="range"
                         min=".6"
                         max="1.6"
@@ -236,14 +248,23 @@ export function TransitionInspector({
                           )
                         }
                       />
-                      <small>Changes motion timing proportionally.</small>
-                    </label>
+                      <small id={`${controlId}-tempo-hint`}>
+                        Changes motion timing proportionally.
+                      </small>
+                    </div>
                     {supportsRadius(item.id) && (
-                      <label className="tl-tuning-range">
+                      <div className="tl-tuning-range">
                         <span>
-                          Corners <output>{tuning.radius}px</output>
+                          <label htmlFor={`${controlId}-corners`}>
+                            Corners
+                          </label>
+                          <output htmlFor={`${controlId}-corners`}>
+                            {tuning.radius}px
+                          </output>
                         </span>
                         <input
+                          id={`${controlId}-corners`}
+                          aria-describedby={`${controlId}-corners-hint`}
                           type="range"
                           min="0"
                           max="24"
@@ -258,10 +279,10 @@ export function TransitionInspector({
                             )
                           }
                         />
-                        <small>
+                        <small id={`${controlId}-corners-hint`}>
                           Fits the shape of your existing interface.
                         </small>
-                      </label>
+                      </div>
                     )}
                     <button
                       className="tl-reset-tuning"

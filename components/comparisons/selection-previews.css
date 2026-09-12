@@ -1,6 +1,11 @@
+.cx-selection {
+  width: min(100%, 320px);
+  min-width: 0;
+}
+
 .cx-selection > .bs-demo {
   width: 100%;
-  max-width: 280px;
+  max-width: 320px;
 }
 
 .cx-instant {
@@ -25,13 +30,16 @@
 .cx-file {
   display: flex;
   align-items: center;
-  gap: 7px;
-  min-height: 29px;
-  font-size: 10px;
+  gap: 9px;
+  min-height: 34px;
+  font-size: 13px;
+  line-height: 20px;
 }
 
 .cx-file svg {
   flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
   color: var(--bs-muted);
 }
 
@@ -44,12 +52,14 @@
 
 .cx-file-type {
   margin-left: auto;
+  flex: none;
   color: var(--bs-muted);
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .cx-file-count {
-  margin: 10px 0 0 21px;
+  margin: 12px 0 0 25px;
   color: var(--bs-muted);
-  font-size: 10px;
+  font-size: 12px;
+  line-height: 20px;
 }

@@ -5,6 +5,7 @@
   --bf-border: var(--border, #303030);
   --bf-primary: var(--primary, #eeeeee);
   --bf-primary-ink: var(--primary-foreground, #191919);
+  --bf-highlight: color-mix(in srgb, var(--bf-ink) 7%, transparent);
   position: relative;
   isolation: isolate;
   width: 100%;
@@ -13,8 +14,8 @@
   margin-inline: auto;
   color: var(--bf-ink);
   font-family: inherit;
-  font-size: 13px;
-  line-height: 1.4;
+  font-size: 14px;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 .bf-preview *,
@@ -36,8 +37,8 @@
 }
 .bf-preview button:focus-visible,
 .bf-preview input:focus-visible {
-  outline: 2px solid var(--bf-ink);
-  outline-offset: 5px;
+  outline: 2px solid var(--ring, var(--bf-ink));
+  outline-offset: 4px;
 }
 .bf-main {
   height: 187px;
@@ -57,22 +58,27 @@
   height: 48px;
   padding: 0;
   border: 1px solid
-    color-mix(in srgb, var(--bf-primary) 88%, var(--bf-primary-ink));
+    color-mix(in srgb, var(--bf-primary) 78%, var(--bf-primary-ink));
   border-radius: var(--bera-radius, 13px);
   white-space: nowrap;
+  font-size: 14px !important;
   font-weight: 550 !important;
   letter-spacing: -0.18px;
   background: var(--bf-primary);
   color: var(--bf-primary-ink);
   box-shadow:
-    0 1px 0 #ffffff50 inset,
-    0 4px 12px #00000025;
+    0 1px 0 #ffffff40 inset,
+    0 1px 2px #00000024,
+    0 4px 10px #00000014;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease;
 }
-.bf-state-button:not(:disabled):hover {
-  background: color-mix(in srgb, var(--bf-primary) 92%, var(--bf-primary-ink));
-}
-.bf-state-button:focus-visible {
-  outline-offset: 5px;
+.bf-state-button:disabled:not([aria-busy="true"]),
+.bf-copy-button:disabled {
+  opacity: 0.72;
+  box-shadow: none;
 }
 .bf-button-content {
   display: inline-flex;
@@ -91,34 +97,38 @@
 }
 .bf-icon svg {
   display: block;
+  width: 17px;
+  height: 17px;
 }
 .bf-demo-footer {
-  height: 43px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
   padding: 0 17px;
   color: var(--bf-muted);
-  font-size: 10px;
+  font-size: 12px;
+  line-height: 1.4;
 }
 .bf-small-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  min-height: 36px;
+  min-height: 44px;
   padding: 5px 1px;
   border: 0;
-  border-radius: 3px;
+  border-radius: 5px;
   background: transparent;
   color: var(--bf-ink);
-  font-size: 11px !important;
-  line-height: 1.2;
+  font-size: 12px !important;
+  line-height: 1.4;
 }
-.bf-small-button:hover:not([aria-disabled="true"]) {
+.bf-small-button:hover:not(:disabled, [aria-disabled="true"]) {
   color: var(--bf-ink);
 }
+.bf-small-button:disabled,
 .bf-small-button[aria-disabled="true"] {
   cursor: default;
   opacity: 0.35;
@@ -128,6 +138,7 @@
   display: flex;
   align-items: center;
   width: 248px;
+  max-width: 100%;
   min-height: 40px;
 }
 .bf-status-content {
@@ -166,51 +177,74 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  gap: 18px;
+  gap: 20px;
 }
 .bf-command {
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: color-mix(in srgb, var(--bf-ink) 65%, var(--bf-muted));
+  color: color-mix(in srgb, var(--bf-ink) 75%, var(--bf-muted));
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12px;
   letter-spacing: -0.25px;
 }
 .bf-copy-button {
-  height: 41px;
+  height: 44px;
   color: var(--bf-ink);
   background: var(--bf-panel);
   border: 1px solid var(--bf-border);
   border-radius: var(--bera-radius, 10px);
   box-shadow:
-    0 1px 0 #ffffff05 inset,
-    0 2px 5px #00000020;
-  font-size: 12px !important;
+    0 1px 0 var(--bf-highlight) inset,
+    0 1px 2px #00000026,
+    0 3px 7px #00000014;
 }
-.bf-copy-button:hover {
-  background: color-mix(in srgb, var(--bf-panel) 87%, var(--bf-ink));
+@media (hover: hover) {
+  .bf-state-button:hover:not(:disabled) {
+    background: color-mix(
+      in srgb,
+      var(--bf-primary) 95%,
+      var(--bf-primary-ink)
+    );
+    border-color: color-mix(
+      in srgb,
+      var(--bf-primary) 88%,
+      var(--bf-primary-ink)
+    );
+  }
+  .bf-copy-button:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--bf-panel) 94%, var(--bf-ink));
+    border-color: color-mix(in srgb, var(--bf-border) 78%, var(--bf-ink));
+  }
+}
+.bf-state-button:active:not(:disabled) {
+  background: color-mix(in srgb, var(--bf-primary) 89%, var(--bf-primary-ink));
+  box-shadow: 0 1px 2px #00000020 inset;
+}
+.bf-copy-button:active:not(:disabled) {
+  background: color-mix(in srgb, var(--bf-panel) 90%, var(--bf-ink));
+  box-shadow: 0 1px 2px #00000024 inset;
 }
 .bf-manual-copy {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 7px;
   width: 100%;
   max-width: 258px;
   color: var(--bf-muted);
-  font-size: 10px;
+  font-size: 12px;
 }
 .bf-manual-copy input {
   width: 100%;
   min-width: 0;
-  height: 32px;
+  height: 40px;
   border: 1px solid var(--bf-border);
   border-radius: 6px;
   padding: 5px 8px;
   background: var(--bf-panel);
   color: var(--bf-ink);
-  font-size: 11px;
+  font-size: 13px;
 }
 .bf-sr-only {
   position: absolute;
@@ -233,10 +267,8 @@
   }
 }
 @media (pointer: coarse) {
-  .bf-small-button {
-    min-height: 40px;
-  }
   .bf-manual-copy input {
+    min-height: 44px;
     font-size: 16px;
   }
 }
