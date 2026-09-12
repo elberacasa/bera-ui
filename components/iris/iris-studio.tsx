@@ -1,4 +1,6 @@
 "use client";
+
+import Link from "next/link";
 import { useState, useRef, type CSSProperties } from "react";
 import { Iris, IrisAtmospheres } from "./iris";
 import { useIrisAgent } from "./use-iris-agent";
@@ -74,9 +76,9 @@ export function IrisStudio() {
   return (
     <main className="studio" style={style}>
       <header className="studio-header">
-        <a className="wordmark" href="/" aria-label="Bera home">
+        <Link className="wordmark" href="/" aria-label="Bera home">
           bera
-        </a>
+        </Link>
         <span className="header-caption">Objects for the web.</span>
         <button
           className="text-button"

@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useState, useRef, useEffect } from "react";
 import sourceText from "./origin-popover/origin-popover.tsx?raw";
 import stylesText from "./origin-popover/origin-popover.css?raw";
@@ -121,9 +123,9 @@ export function ComponentLibrary() {
       className={`library ${contrast ? "high-contrast" : ""} ${reduceMotion ? "reduce-motion" : ""}`}
     >
       <header className="library-header">
-        <a href="/" className="library-wordmark" aria-label="Bera UI home">
+        <Link href="/" className="library-wordmark" aria-label="Bera UI home">
           bera<span>/</span>ui
-        </a>
+        </Link>
         <nav aria-label="Main navigation">
           <a href="#component" className="current">
             Components

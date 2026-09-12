@@ -40,8 +40,8 @@ export function IrisLens({ value }: { value: IrisValue }) {
     requestRender = useRef<() => void>(() => {});
   const [available, setAvailable] = useState(false);
   const [generation, setGeneration] = useState(0);
-  target.current = value;
   useEffect(() => {
+    target.current = value;
     requestRender.current();
   }, [value]);
   useEffect(() => {

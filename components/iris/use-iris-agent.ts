@@ -25,7 +25,9 @@ export function useIrisAgent(
   onChange: (value: IrisValue) => void,
 ) {
   const latest = useRef({ value, onChange });
-  latest.current = { value, onChange };
+  useEffect(() => {
+    latest.current = { value, onChange };
+  }, [value, onChange]);
   useEffect(() => {
     const context = (document as ModelDocument).modelContext;
     if (!context?.registerTool) return;
