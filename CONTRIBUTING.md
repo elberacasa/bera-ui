@@ -33,7 +33,7 @@ docs(agents): clarify how to adapt an existing primitive
 
 Use `feat`, `fix`, `docs`, `test`, `refactor`, `build`, or `chore` as appropriate. Add a body when a decision or compatibility tradeoff needs explanation. Do not commit secrets, local credentials, generated build folders, or editor state. Do not rewrite `main` or someone else's branch history.
 
-When the change is ready, open a pull request against `main`. Link its issue, explain the user-visible behavior, and include the checks you actually ran. Prefer a short screen recording for motion changes; include a phone-width view when layout changes. Maintainers can squash a focused pull request using its conventional title.
+When the change is ready, open a pull request against `main`. Link its issue, explain the user-visible behavior, and include the checks you actually ran. Prefer a short screen recording for motion changes; include a phone-width view when layout changes. The protected `main` branch requires all CI checks and the Vercel preview to pass. Maintainers squash a focused pull request using its conventional title; completed branches are deleted automatically.
 
 ## Where to edit
 
@@ -60,6 +60,7 @@ An existing host component's behavior comes first. Keep its accessibility primit
 ```sh
 npm run typecheck
 npm run lint
+npm run format:check
 npm run test:kit
 npm run build:vercel
 ```

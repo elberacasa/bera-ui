@@ -11,6 +11,14 @@
 
 The earlier detailed browser checks below apply to V1. This edition does not imply a fresh physical-device or cross-engine certification.
 
+## Independent integration and delivery checks
+
+- Installed the skill from the public repository with the real `skills` CLI in a temporary project. It discovered one skill and copied the complete kit into `.agents/skills/bera-motion`.
+- An independent coding agent used the installed local skill to adapt an existing clipboard button. Strict TypeScript and AST checks confirmed its API, real clipboard handler, failure/cancellation logic, fallback, live region, and host light-theme tokens were preserved. Browser clipboard execution was not part of this fixture test.
+- GitHub CI passes typecheck, lint, formatting, all 25 kit checks, and the Vercel static build on Node 22/Linux. The portable archive compares exact decompressed content across runtimes and exact compressed bytes across repeat builds on the same runtime.
+- Vercel Git integration created branch previews; merging the checked PR triggered a main-branch production deployment. Main protection enforces the five CI checks plus Vercel, including for administrators.
+- The existing Sites/Cloudflare build also passes. Vercel is the primary public deployment; the previous private Site is retained.
+
 ## Browser checks
 
 The nine-pattern collection was exercised in the Codex browser at desktop widths (1280 and 1440), a 390px phone viewport, and a 320px narrow phone viewport.

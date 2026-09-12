@@ -17,7 +17,16 @@ This file tracks the product's direction. GitHub issues track individual pieces 
 - [x] **Custom settings that travel.** Tempo and corner changes preview immediately and appear in the copied agent brief. Study playback remains independent from exported settings.
 - [x] **Portable agent kit.** A downloaded kit lists patterns, installs a chosen TSX/CSS pair, and installs its skill for the supported agents. It works locally after download, supports a dry run, and protects differing destination files.
 - [ ] **Integration proof.** Use the kit in an existing React app. Keep the app's styling, state, accessibility primitive, and callbacks. Verify the behavior at desktop and phone widths.
-- [ ] **Repository workflow.** Clear setup and contribution docs, scoped issues, pull request checks, and a connected deployment path. Verify a commit reaches the intended preview or production environment.
+- [x] **Repository workflow.** Clear setup and contribution docs, scoped issues, pull request checks, and a connected deployment path. Verify a commit reaches the intended preview or production environment.
+
+## Tracked tasks
+
+The [0.2.0 integration milestone](https://github.com/elberacasa/bera-ui/milestone/1) contains the next concrete work:
+
+- [#1: Preserve an existing shadcn menu while adding motion](https://github.com/elberacasa/bera-ui/issues/1).
+- [#2: Connect the toast stack to a real provider](https://github.com/elberacasa/bera-ui/issues/2).
+- [#3: Record reduced-motion and theme evidence](https://github.com/elberacasa/bera-ui/issues/3).
+- [#4: Trim downloaded CSS to its selected recipe](https://github.com/elberacasa/bera-ui/issues/4).
 
 ## Next: deepen the useful patterns
 

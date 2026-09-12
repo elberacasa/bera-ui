@@ -2,7 +2,9 @@
 
 **Transitions for interfaces people already use.**
 
-[MIT licensed](LICENSE) · [Roadmap](docs/ROADMAP.md) · [Contributing](CONTRIBUTING.md)
+[Live collection](https://bera-ui.vercel.app) · [Agent guide](https://bera-ui.vercel.app/agents) · [MIT licensed](LICENSE)
+
+[![CI](https://github.com/elberacasa/bera-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/elberacasa/bera-ui/actions/workflows/ci.yml)
 
 A collection of nine interactive motion patterns for React. Try a transition, tune its tempo and corners, then take its source into your project—or hand the complete recipe to your coding agent.
 
@@ -10,12 +12,12 @@ The components use Motion, local CSS, and your application's fonts and colors. T
 
 ## Start here
 
-| I want to…                                  | Start with…                                                                 |
-| ------------------------------------------- | --------------------------------------------------------------------------- |
-| Explore and customize motion                | Run the [gallery](#run-the-gallery) and open a card's customize control.    |
-| Add one transition to a React app           | [Install a component](#install-a-component).                                |
-| Let my coding agent choose and adapt motion | [Install the agent skill](#use-with-a-coding-agent).                        |
-| Improve or contribute a pattern             | Read [CONTRIBUTING.md](CONTRIBUTING.md) and the [roadmap](docs/ROADMAP.md). |
+| I want to…                                  | Start with…                                                                                |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Explore and customize motion                | Open the [live gallery](https://bera-ui.vercel.app) and choose a card’s customize control. |
+| Add one transition to a React app           | [Install a component](#install-a-component).                                               |
+| Let my coding agent choose and adapt motion | [Install the agent skill](#use-with-a-coding-agent).                                       |
+| Improve or contribute a pattern             | Read [CONTRIBUTING.md](CONTRIBUTING.md) and the [roadmap](docs/ROADMAP.md).                |
 
 ## Run the gallery
 
@@ -122,11 +124,20 @@ For a single interaction, you can also use **Copy for agent** in the gallery. Th
 
 `ToastStack` is a motion reference, not a complete notification provider. The counter reference supports integers from 0–999. Demonstration data must be replaced with real application state. Preserve established accessibility primitives, validation, error handling, and notification lifecycles when adapting a recipe.
 
+## Deployment and project workflow
+
+The public gallery is [bera-ui.vercel.app](https://bera-ui.vercel.app). Vercel is connected to this repository: branch pushes create previews, and merges to `main` update the public site. No deployment token is required in GitHub Actions.
+
+`main` requires a pull request, passing type, lint, formatting, kit, and production-build checks, plus a successful Vercel preview. Force pushes are disabled and merge history stays linear. Small conventional commits document changes; focused pull requests are squash-merged after validation.
+
+See the [roadmap](docs/ROADMAP.md), [open tasks](https://github.com/elberacasa/bera-ui/issues), and [integration milestone](https://github.com/elberacasa/bera-ui/milestone/1). The [contribution guide](CONTRIBUTING.md) explains where to edit, regenerate, and verify a recipe.
+
 ## Develop and verify
 
 ```sh
 npm run typecheck
 npm run lint
+npm run format:check
 npm run test:kit
 npm run build:vercel
 ```
