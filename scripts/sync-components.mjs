@@ -133,10 +133,10 @@ function walk(path, relative = "bera-motion") {
 }
 walk(kit);
 blocks.push(Buffer.alloc(1024));
-write(
-  "public/bera-motion.tar.gz",
-  gzipSync(Buffer.concat(blocks), { level: 9 }),
-);
+const archive = gzipSync(Buffer.concat(blocks), { level: 9 });
+// Gzip otherwise embeds the builder OS (Darwin=19, Unix=3). This kit is portable.
+archive[9] = 255;
+write("public/bera-motion.tar.gz", archive);
 console.log(
   `Generated ${transitions.length} standalone transitions and the portable agent kit.`,
 );
