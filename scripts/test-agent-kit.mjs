@@ -721,9 +721,18 @@ async function main() {
           await snapshot(path.join(clone, "public/transitions")),
           await snapshot(path.join(repository, "public/transitions")),
         );
-        await sameFile(
-          path.join(clone, "public/bera-motion.tar.gz"),
-          path.join(repository, "public/bera-motion.tar.gz"),
+        // Node releases may use different deflate implementations. The portable
+        // tar stream must match; repeat generation below still compares gzip bytes.
+        assert.deepEqual(
+          gunzipSync(
+            await fs.readFile(path.join(clone, "public/bera-motion.tar.gz")),
+          ),
+          gunzipSync(
+            await fs.readFile(
+              path.join(repository, "public/bera-motion.tar.gz"),
+            ),
+          ),
+          "Portable archive contents changed across builders",
         );
         await generate();
         assert.deepEqual(await snapshot(path.join(clone, "public")), first);
