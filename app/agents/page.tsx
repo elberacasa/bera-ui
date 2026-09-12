@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Brand } from "@/components/brand";
 import { ArrowDownToLine, ArrowLeft, ArrowUpRight } from "lucide-react";
 import { CopyControl } from "@/components/copy-control";
 import "../transition-library.css";
@@ -31,16 +32,13 @@ export default function AgentsPage() {
   return (
     <main className="transition-library ba-guide">
       <header className="tl-header">
-        <Link className="tl-wordmark" href="/" aria-label="bera/ui home">
-          bera<span>/</span>ui
-        </Link>
+        <Brand />
         <Link className="ba-back" href="/">
           <ArrowLeft size={14} />
           Transitions
         </Link>
       </header>
       <section className="ba-intro">
-        <span className="ba-eyebrow">FOR CODING AGENTS</span>
         <h1>
           Your interface.
           <br />A better way to move.
@@ -62,9 +60,7 @@ export default function AgentsPage() {
             <ArrowUpRight size={15} />
           </a>
         </div>
-        <p className="ba-small">
-          Nine transitions · React + Motion · MIT · Runs locally
-        </p>
+        <p className="ba-small">React + Motion · MIT · Runs locally</p>
       </section>
       <section className="ba-section">
         <div className="ba-section-title">

@@ -1,39 +1,32 @@
 # Roadmap
 
-bera/ui turns useful interface changes into deliberate, reusable motion. The next milestone is reliable adoption in an existing application. The number of patterns is secondary to the quality of their integration.
+The collection grows through useful interface actions and strong integration examples. GitHub issues track implementation status; the priorities below describe the intended outcomes.
 
-This file tracks the product's direction. GitHub issues track individual pieces of work and their acceptance criteria. Check an item only after the implementation and its relevant checks are complete.
+## Integration priorities
 
-## Established foundation
+The [integration milestone](https://github.com/elberacasa/bera-ui/milestone/1) groups these tasks:
 
-- [x] Nine directly interactive patterns across feedback, navigation, and surfaces.
-- [x] Dark, neutral gallery with category filters, replay, and slow playback.
-- [x] Source inspection and per-pattern integration guidance.
-- [x] Preserved Iris study at `/studies/iris`.
+| Task                                                                             | Acceptance criteria                                                                                                                           |
+| -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| [#1 · Existing shadcn menu](https://github.com/elberacasa/bera-ui/issues/1)      | Apply surface motion while preserving the host primitive, actions, dismissal, and keyboard focus. Provide a usable example.                   |
+| [#2 · Notification provider](https://github.com/elberacasa/bera-ui/issues/2)     | Connect stack motion to a real provider without changing expiry, pause behavior, announcements, or dismissal semantics.                       |
+| [#3 · Reduced motion and themes](https://github.com/elberacasa/bera-ui/issues/3) | Exercise each recipe with reduced motion and representative host themes. Verify final state, contrast, keyboard behavior, and narrow layouts. |
+| [#4 · Focused CSS downloads](https://github.com/elberacasa/bera-ui/issues/4)     | Include only the selected recipe's required styles while preserving source parity and consumer behavior.                                      |
 
-## Current milestone: take one transition into a real project
+## Pattern priorities
 
-- [x] **Individual exports.** Every download contains one public component and the helpers it needs. A consumer imports it without gallery styles or preview framing. Generated files match the live implementation.
-- [x] **Custom settings that travel.** Tempo and corner changes preview immediately and appear in the copied agent brief. Study playback remains independent from exported settings.
-- [x] **Portable agent kit.** A downloaded kit lists patterns, installs a chosen TSX/CSS pair, and installs its skill for the supported agents. It works locally after download, supports a dry run, and protects differing destination files.
-- [ ] **Integration proof.** Use the kit in an existing React app. Keep the app's styling, state, accessibility primitive, and callbacks. Verify the behavior at desktop and phone widths.
-- [ ] **Repository workflow.** Clear setup and contribution docs, scoped issues, pull request checks, and a connected deployment path. Verify a commit reaches the intended preview or production environment.
+Candidate additions must include directly interactive examples, complete source, and a clear integration contract. These are directions for new work, not a list of released features.
 
-## Next: deepen the useful patterns
+- **SVG state morphs:** connect meaningful icon states, extending the menu/close recipe to play/pause and other useful toggles, with consistent optical weight and reversible path motion.
+- **Button state morphs:** connect idle, pending, success, and retry states while preserving the real action's lifetime and the host button's semantics.
+- **Inline editing:** carry a label into an editable state, then resolve confirmation or cancellation without losing focus or context.
+- **List changes:** animate insertion, removal, and reordering while keeping item identity, reading order, and keyboard navigation intact.
+- **Expanded number ranges:** define behavior for signed values and changing digit counts before extending the counter's documented bounds.
 
-- [ ] **Adapt an existing shadcn primitive.** Publish a concrete example that transfers motion into an existing menu or accordion while retaining its focus management and DOM relationships.
-- [ ] **Notification provider integration.** Demonstrate the stack motion with a real provider. Verify expiry, pause behavior, announcements, and dismissal; preserve the host provider's responsibilities.
-- [ ] **Counter range design.** Decide how signed values and additional digits behave. Verify crossings through zero, digit-width changes, rapid input, and controlled updates before expanding the current 0–999 contract.
-- [ ] **Reduced-motion evidence.** Record actual browser checks with the preference enabled for every pattern; compare final state, focus, and announcements with normal playback.
-- [ ] **Theme and layout examples.** Demonstrate the same selected transition inside both a dense desktop interface and a narrow touch interface using their own tokens and content.
-- [ ] **Reproducible motion capture.** Add a small capture workflow for reviewing timing changes at normal and slow speed without making screenshots the only correctness check.
+Use the [motion proposal form](https://github.com/elberacasa/bera-ui/issues/new?template=motion.yml) to propose a pattern or a focused refinement. Link the interface use case and describe observable acceptance criteria.
 
-## After adoption is proven
+## Ready to release
 
-Consider additional recipes only when a real interface need is missing from the collection. Candidate areas include list reordering, inline editing, and continuity between a thumbnail and its detail view. Each proposal needs an ordinary use case, a constrained source API, and an integration example.
+A pattern belongs in the collection when its action is clear, its normal playback feels immediate, and interruptions settle correctly. It must support keyboard input, reduced motion, and narrow layouts. Its distributed source must match the gallery, and its integration guidance must identify the real state, callbacks, and accessibility behavior the host retains.
 
-A public registry or package is a distribution decision, not a prerequisite for the local kit. Add one when it reduces friction without obscuring the source or imposing a second runtime. Avoid a separate agent service unless a concrete use case requires one.
-
-## A pattern is ready when
-
-Its intended action is obvious, its normal playback feels immediate, and interruptions settle correctly. It works with pointer and keyboard input, respects reduced motion, and fits a narrow phone layout. The exported source matches the gallery, its adaptation guidance identifies the real application state, and a consumer can use it without importing the showcase.
+See [QUALITY.md](QUALITY.md) for the checks used to assess an implementation and [CONTRIBUTING.md](../CONTRIBUTING.md) for the delivery workflow.

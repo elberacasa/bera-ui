@@ -1,108 +1,126 @@
 .transition-library {
-  max-width: 1232px;
-  padding: 0 40px;
+  --tl-line: #242424;
+  --tl-muted: #929292;
+  max-width: 1248px;
+  padding: 0 48px;
   margin: 0 auto;
   color: #efefef;
-  font-family: Manrope, Arial, sans-serif;
 }
 .tl-header {
   display: flex;
   align-items: center;
-  height: 100px;
-  border-bottom: 1px solid #242424;
-  gap: 68px;
+  justify-content: space-between;
+  height: 96px;
+  gap: 32px;
 }
-.tl-wordmark {
-  font-size: 27px;
+.tl-brand {
+  display: inline-flex;
+  border-radius: 3px;
+}
+.tl-brand > span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.tl-brand svg {
+  display: block;
+}
+.tl-brand-name {
+  font-size: 24px;
   font-weight: 600;
-  letter-spacing: -1.2px;
+  letter-spacing: -1px;
 }
-.tl-wordmark span {
-  padding: 0 3px;
+.tl-brand-ui {
   font-weight: 400;
-  color: #656565;
+  color: #828282;
+  margin-left: 2px;
 }
 .tl-header nav {
   display: flex;
   align-items: center;
-  gap: 28px;
-  font-size: 13px;
-}
-.tl-header nav button {
-  background: none;
-  border: 0;
-  padding: 8px 0;
-  color: #999;
+  gap: 30px;
+  font-size: 12px;
 }
 .tl-header nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #929292;
+  transition: color 0.18s;
+}
+.tl-header nav a:hover,
+.tl-header nav a[aria-current] {
   color: #eee;
 }
-.tl-header nav button:hover {
-  color: #eee;
-}
-.tl-header-note {
-  font-size: 12px;
-  color: #727272;
-  margin-left: auto;
+.tl-github {
+  gap: 7px;
 }
 .tl-intro {
-  padding: 61px 0 58px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 24px;
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 64px;
+  align-items: end;
+  padding: 48px 0 64px;
 }
 .tl-intro h1 {
-  font-size: 43px;
+  font-size: clamp(46px, 5.1vw, 64px);
   font-weight: 500;
-  letter-spacing: -1.6px;
-  line-height: 1.17;
-  margin: 0 0 18px;
+  letter-spacing: -0.055em;
+  line-height: 1.09;
+  margin: 0;
+}
+.tl-intro-detail {
+  padding-bottom: 5px;
+  max-width: 315px;
+  justify-self: end;
 }
 .tl-intro p {
   font-size: 15px;
-  line-height: 1.8;
+  line-height: 1.75;
   color: #929292;
-  margin: 0;
+  margin: 0 0 22px;
 }
 .tl-agent-button {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 11px;
+  justify-content: center;
+  gap: 10px;
   font-size: 12px;
-  white-space: nowrap;
-  padding: 12px 14px;
-  border: 1px solid #353535;
-  background: #181818;
-  border-radius: 9px;
+  min-height: 42px;
+  padding: 10px 14px;
+  border: 1px solid #343434;
+  background: #161616;
+  border-radius: 8px;
   box-shadow: inset 0 1px 0 #ffffff06;
   transition:
-    background 0.16s,
-    transform 0.16s;
+    background 0.18s,
+    border-color 0.18s;
 }
 .tl-agent-button:hover {
-  background: #242424;
-}
-.tl-agent-button:active {
-  transform: scale(0.98);
+  background: #222;
+  border-color: #484848;
 }
 .tl-agent-button > svg:first-child {
   color: #b4b4b4;
 }
 .tl-agent-button > svg:last-child {
-  color: #707070;
+  color: #929292;
+}
+#transitions {
+  scroll-margin-top: 24px;
 }
 .tl-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 15px;
-  margin-bottom: 23px;
+  gap: 18px;
+  border-bottom: 1px solid var(--tl-line);
+  padding-bottom: 18px;
 }
 .tl-filters {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 3px;
 }
 .tl-filters > button {
   position: relative;
@@ -111,16 +129,17 @@
   gap: 7px;
   border: 0;
   background: transparent;
-  border-radius: 100px;
-  padding: 10px 16px;
+  border-radius: 7px;
+  padding: 10px 13px;
   font-size: 12px;
-  color: #989898;
+  color: #929292;
   isolation: isolate;
   white-space: nowrap;
 }
-.tl-filters > button:hover {
-  color: #eee;
+.tl-filters > button:first-child {
+  margin-left: -13px;
 }
+.tl-filters > button:hover,
 .tl-filters > button.selected {
   color: #eee;
 }
@@ -128,19 +147,19 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  border: 1px solid #3e3e3e;
-  background: #272727;
-  border-radius: 100px;
+  background: #1d1d1d;
+  border-radius: 7px;
 }
 .tl-count {
   font-size: 10px;
-  color: #aaa;
+  color: #999;
+  font-variant-numeric: tabular-nums;
   line-height: 1;
 }
 .tl-playback {
   display: flex;
   align-items: center;
-  gap: 19px;
+  gap: 21px;
 }
 .tl-playback button {
   display: flex;
@@ -148,9 +167,9 @@
   gap: 7px;
   border: 0;
   background: transparent;
-  color: #858585;
+  color: #929292;
   font-size: 11px;
-  padding: 8px 0;
+  padding: 9px 0;
   white-space: nowrap;
 }
 .tl-playback button:hover,
@@ -163,26 +182,21 @@
 .tl-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
+  column-gap: 32px;
 }
-.tl-card {
-  background: #151515;
-  border: 1px solid #272727;
-  border-radius: 19px;
+.tl-specimen {
   min-width: 0;
-  padding: 10px;
   position: relative;
+  padding: 24px 0 22px;
+  border-bottom: 1px solid var(--tl-line);
 }
 .tl-preview {
   position: relative;
-  height: 252px;
-  background: #0e0e0e;
-  border: 1px solid #222;
-  border-radius: 11px;
+  height: 260px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14px;
+  padding: 8px 0;
   isolation: isolate;
 }
 .tl-preview > div:first-child {
@@ -190,22 +204,22 @@
 }
 .tl-replay {
   position: absolute;
-  top: 9px;
-  right: 9px;
+  top: 0;
+  right: 0;
   z-index: 5;
   display: grid;
   place-items: center;
-  width: 27px;
-  height: 27px;
-  border-radius: 50%;
-  border: 1px solid transparent;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 0;
   background: transparent;
-  color: #626262;
+  color: #929292;
   opacity: 0;
   transition:
-    opacity 0.15s,
-    color 0.15s,
-    background 0.15s;
+    opacity 0.18s,
+    color 0.18s,
+    background 0.18s;
 }
 .tl-preview:hover .tl-replay,
 .tl-preview:focus-within .tl-replay,
@@ -213,89 +227,95 @@
   opacity: 1;
 }
 .tl-replay:hover {
-  background: #242424;
+  background: #202020;
   color: #ddd;
-  border-color: #363636;
 }
 .tl-caption {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
-  padding: 17px 6px 8px;
+  gap: 10px;
+  padding-top: 14px;
 }
 .tl-caption h2 {
   font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0;
-  margin: 0 0 5px;
+  letter-spacing: -0.1px;
+  margin: 0 0 6px;
 }
 .tl-caption p {
   font-size: 11px;
-  line-height: 1.55;
-  color: #888;
+  line-height: 1.6;
+  color: #929292;
   margin: 0;
+  max-width: 230px;
 }
 .tl-inspect {
   flex-shrink: 0;
-  width: 33px;
-  height: 33px;
-  border: 1px solid #333;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: #232323;
-  color: #888;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 32px;
+  height: 32px;
+  margin-top: -6px;
+  padding: 0 7px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #929292;
   transition:
-    background 0.16s,
-    color 0.16s,
-    transform 0.16s;
+    background 0.18s,
+    color 0.18s;
+}
+.tl-inspect span {
+  display: none;
+  font-size: 11px;
 }
 .tl-inspect:hover {
   color: #e9e9e9;
-  background: #303030;
-  transform: translateY(-1px);
-}
-.tl-inspect:active {
-  transform: scale(0.95);
+  background: #202020;
 }
 .tl-collection-end {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 25px;
-  color: #757575;
+  gap: 24px;
+  color: #929292;
   font-size: 11px;
-  padding: 24px 1px 45px;
+  padding: 26px 0 54px;
 }
-.tl-collection-end p {
-  margin: 0;
-  text-align: right;
+.tl-collection-end a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.tl-collection-end a:hover {
+  color: #eee;
 }
 .tl-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  border-top: 1px solid #242424;
-  min-height: 90px;
+  border-top: 1px solid var(--tl-line);
+  min-height: 96px;
   font-size: 11px;
-  color: #626262;
+  color: #929292;
 }
 .tl-footer > span:first-child {
   font-size: 17px;
   font-weight: 550;
   letter-spacing: -0.6px;
-  color: #898989;
+  color: #c0c0c0;
 }
 .tl-footer a {
   display: flex;
   align-items: center;
   gap: 5px;
-  color: #888;
 }
 .tl-footer a:hover {
-  color: #ddd;
+  color: #eee;
 }
 .tl-inspector {
   overflow: hidden;
@@ -432,260 +452,160 @@
   gap: 5px;
   color: #aaa;
 }
-.tl-guide {
-  max-width: 460px !important;
-  border-radius: 17px;
-  padding: 32px;
-  background: #141414;
-  border: 1px solid #353535;
-  color: #eee;
-  gap: 16px;
+
+.tl-inspector > *,
+.tl-code-tabs > *,
+.tl-code-tabs [data-slot="tabs-content"] {
+  min-width: 0;
 }
-.tl-guide [data-slot="dialog-title"] {
-  font-size: 24px;
-  font-weight: 500;
-  letter-spacing: -0.5px;
-  line-height: 1.3;
-  max-width: 330px;
-}
-.tl-guide [data-slot="dialog-description"] {
-  font-size: 13px;
-  line-height: 1.75;
-  color: #999;
-}
-.tl-guide ol {
-  list-style: decimal;
-  margin: 6px 0 0;
-  padding: 0 0 0 21px;
-  color: #777;
-}
-.tl-guide li {
-  padding-left: 7px;
-  margin-bottom: 20px;
-  font-size: 12px;
-}
-.tl-guide li strong {
-  font-size: 13px;
-  font-weight: 500;
-  color: #e0e0e0;
-}
-.tl-guide li p {
-  font-size: 12px;
-  line-height: 1.7;
-  color: #949494;
-  margin: 5px 0 0;
-}
-.tl-guide-note {
-  font-size: 11px;
-  color: #777;
-  line-height: 1.7;
-  padding-top: 15px;
-  border-top: 1px solid #303030;
-  margin: 0;
-}
-@media (max-width: 1080px) {
+@media (max-width: 1000px) {
   .transition-library {
-    padding: 0 28px;
+    padding-inline: 32px;
   }
-  .tl-grid {
-    gap: 14px;
-  }
-  .tl-preview {
-    height: 238px;
-    padding: 10px;
-  }
-  .tl-caption {
-    padding: 14px 4px 7px;
-    gap: 7px;
-  }
-  .tl-caption p {
-    font-size: 10px;
-  }
-  .tl-agent-button {
-    font-size: 11px;
-    gap: 8px;
-  }
-  .tl-intro h1 {
-    font-size: 38px;
-  }
-  .tl-caption h2 {
-    font-size: 12px;
-  }
-}
-@media (max-width: 980px) {
   .tl-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
-  }
-  .tl-header {
-    height: 86px;
-    gap: 42px;
+    column-gap: 40px;
   }
   .tl-intro {
-    padding: 45px 0;
+    gap: 44px;
+    padding: 42px 0 52px;
   }
   .tl-intro h1 {
-    font-size: 37px;
+    font-size: 52px;
   }
   .tl-intro p {
-    font-size: 13px;
+    font-size: 14px;
   }
-  .tl-agent-button {
-    padding: 11px;
+  .tl-inspect span {
+    display: inline;
   }
-  .tl-agent-button > svg:last-child {
-    display: none;
-  }
-  .tl-header-note {
-    display: none;
-  }
-  .tl-preview {
-    height: 250px;
-    padding: 14px;
-  }
-  .tl-caption h2 {
-    font-size: 13px;
+  .tl-caption {
+    gap: 8px;
   }
   .tl-caption p {
-    font-size: 11px;
-  }
-  .tl-playback {
-    gap: 13px;
-  }
-  .tl-playback button:last-child > span {
-    display: none;
-  }
-  .tl-filters > button {
-    padding: 9px 12px;
-  }
-  .tl-collection-end {
-    align-items: flex-start;
-    font-size: 10px;
-  }
-  .tl-collection-end p {
-    max-width: 270px;
+    max-width: 225px;
   }
 }
 @media (max-width: 700px) {
   .transition-library {
-    padding: 0 20px;
+    padding-inline: 24px;
   }
   .tl-header {
-    justify-content: space-between;
-    gap: 20px;
     height: 80px;
+    gap: 16px;
   }
   .tl-header nav {
-    gap: 21px;
-    font-size: 12px;
+    gap: 22px;
   }
-  .tl-wordmark {
-    font-size: 25px;
+  .tl-github span {
+    display: none;
+  }
+  .tl-brand-name {
+    font-size: 22px;
+  }
+  .tl-brand svg {
+    width: 27px;
+    height: 27px;
   }
   .tl-intro {
-    display: block;
-    padding: 42px 0 34px;
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 32px 0 40px;
   }
   .tl-intro h1 {
-    font-size: 35px;
-    letter-spacing: -1.3px;
-    max-width: 310px;
+    font-size: 49px;
+  }
+  .tl-intro-detail {
+    justify-self: start;
+    max-width: 340px;
+    padding: 0;
   }
   .tl-intro p {
-    font-size: 13px;
-  }
-  .tl-agent-button {
-    margin-top: 24px;
-    font-size: 11px;
+    margin-bottom: 19px;
+    max-width: 310px;
   }
   .tl-toolbar {
-    flex-wrap: wrap;
-    gap: 18px;
-    margin-bottom: 19px;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 14px;
   }
   .tl-filters {
-    gap: 1px;
     justify-content: space-between;
-    width: 100%;
+    gap: 0;
   }
   .tl-filters > button {
     padding: 10px 12px;
-    font-size: 11px;
+  }
+  .tl-filters > button:first-child {
+    margin-left: -12px;
   }
   .tl-playback {
-    width: 100%;
-    justify-content: flex-end;
-    gap: 20px;
+    justify-content: space-between;
   }
   .tl-playback button {
-    font-size: 11px;
-  }
-  .tl-playback button:last-child > span {
-    display: inline;
+    min-height: 32px;
   }
   .tl-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .tl-specimen {
+    padding: 21px 0 25px;
   }
   .tl-preview {
-    height: 248px;
-    padding: 16px;
+    height: 260px;
   }
-  .tl-card {
-    padding: 10px;
-    border-radius: 18px;
+  .tl-replay {
+    opacity: 1;
   }
   .tl-caption {
-    padding: 15px 6px 8px;
+    padding-top: 13px;
   }
   .tl-caption h2 {
     font-size: 14px;
   }
   .tl-caption p {
     font-size: 12px;
+    max-width: 270px;
   }
   .tl-inspect {
-    width: 35px;
-    height: 35px;
+    min-height: 40px;
+    margin-top: -8px;
   }
-  .tl-replay {
-    opacity: 1;
-    width: 32px;
-    height: 32px;
+  .tl-inspect span {
+    display: none;
   }
   .tl-collection-end {
-    display: block;
-    font-size: 11px;
-    padding: 25px 2px 32px;
+    align-items: flex-start;
+    padding: 25px 0 40px;
+    font-size: 10px;
+    gap: 22px;
   }
-  .tl-collection-end p {
-    text-align: left;
-    margin-top: 7px;
-    max-width: 280px;
-    line-height: 1.65;
+  .tl-collection-end a {
+    text-align: right;
   }
   .tl-footer {
-    flex-wrap: wrap;
-    gap: 16px;
-    padding: 24px 0;
-    min-height: 100px;
-    font-size: 10px;
+    min-height: 88px;
   }
-  .tl-footer > span:nth-child(2) {
+  .tl-footer-note {
     display: none;
   }
   .tl-inspector {
     width: calc(100vw - 24px) !important;
-    padding: 20px 16px;
     max-height: calc(100svh - 24px);
+    padding: 20px;
     gap: 13px;
+    border-radius: 12px !important;
   }
   .tl-inspector [data-slot="dialog-title"] {
-    font-size: 23px;
+    font-size: 22px;
+  }
+  .tl-inspector [data-slot="dialog-description"] {
+    font-size: 12px;
   }
   .tl-code-toolbar {
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
   }
   .tl-code-toolbar .tl-copy {
     margin-left: auto;
@@ -697,20 +617,49 @@
     min-height: 190px;
   }
   .tl-code-bottom {
-    font-size: 9px;
-    gap: 8px;
+    font-size: 10px;
+    gap: 12px;
     line-height: 1.6;
   }
   .tl-code-bottom > span {
-    max-width: 190px;
+    max-width: 180px;
   }
-  .tl-guide {
-    max-width: calc(100vw - 28px) !important;
-    padding: 26px;
+}
+@media (max-width: 360px) {
+  .transition-library {
+    padding-inline: 18px;
   }
-  .tl-guide [data-slot="dialog-title"] {
-    font-size: 23px;
-    max-width: 260px;
+  .tl-header nav {
+    gap: 18px;
+  }
+  .tl-intro h1 {
+    font-size: 44px;
+  }
+  .tl-inspector {
+    padding: 16px;
+  }
+  .tl-filters > button {
+    padding-inline: 9px;
+    font-size: 11px;
+  }
+  .tl-filters > button:first-child {
+    margin-left: -9px;
+  }
+}
+@media (pointer: coarse) {
+  .tl-inspect,
+  .tl-replay,
+  .tl-close {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .tl-replay {
+    opacity: 1;
+  }
+  .tl-playback button,
+  .tl-copy,
+  .tl-filters > button {
+    min-height: 44px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -718,41 +667,7 @@
   .tl-inspect,
   .tl-replay,
   .tl-agent-button {
-    transition: none !important;
-    animation: none !important;
-  }
-}
-
-.tl-inspector > *,
-.tl-code-tabs > *,
-.tl-code-tabs [data-slot="tabs-content"] {
-  min-width: 0;
-}
-@media (pointer: coarse) {
-  .tl-inspect,
-  .tl-replay,
-  .tl-close {
-    min-width: 40px;
-    min-height: 40px;
-  }
-  .tl-playback button,
-  .tl-header nav button,
-  .tl-copy {
-    min-height: 40px;
-  }
-}
-@media (max-width: 360px) {
-  .transition-library {
-    padding-inline: 14px;
-  }
-  .tl-preview {
-    padding: 8px;
-  }
-  .tl-caption p {
-    font-size: 11px;
-  }
-  .tl-intro h1 {
-    font-size: 33px;
+    transition: none;
   }
 }
 

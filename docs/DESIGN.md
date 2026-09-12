@@ -1,29 +1,33 @@
-# Transitions, with feeling
+# Design principles
 
-bera/ui is a source collection for bringing deliberate motion into existing interfaces. Its first edition covers nine everyday patterns across feedback, navigation, and surfaces. The collection—not an unusual branded component—is the product.
+bera/ui brings deliberate motion to familiar interface actions. A transition should make the relationship between states clear and remain useful when adapted to a different product.
 
-The user chose transitions.dev as the reference and a black shadcn-style visual language. Iris remains an earlier visual study. The ordinary Origin Popover is retained in source but does not define the new collection.
+## Begin with the action
 
-## Motion direction
+Identify what changes and why: a button starts work, an icon changes meaning, a menu reveals choices, or a value increases. Give the transition one dominant movement. Supporting details follow only when their sequence improves comprehension.
 
-A surface has a believable origin. A changing label carries direction. A number moves through neighboring values. A selected tab travels rather than flashes. Motion should explain what just happened while rewarding attention to detail.
+Keep normal playback immediate. Slow playback reveals the construction; it does not determine the timing people use in an application.
 
-Use one dominant movement per interaction, with smaller details following it: surface first, label second, confirmation last. Favor continuous reversals over queued animation. Keep text crisp instead of scaling a whole container. Short transitions should feel immediate at normal speed; the 0.35× control reveals their construction.
+## Preserve continuity
 
-No perpetual ambient animation. No shader machinery in the collection. No ornamental gradients or generic star logo. Contrast comes from neutral layers, a few light controls, and differences in size and rhythm.
+Maintain a surface's origin and an object's identity as its state changes. Keep labels sharp while surrounding geometry moves. Interrupt and reverse from the current visual state instead of queuing work or snapping back to an earlier frame.
 
-## First collection
+For SVG morphs, design recognizable endpoints and deliberate intermediate shapes. Match path structure when interpolating geometry, retain consistent optical weight, and keep the icon's meaning clear. The resting image must work without animation.
 
-| Feedback      | Navigation       | Surfaces      |
-| ------------- | ---------------- | ------------- |
-| State button  | Sliding tabs     | Morphing menu |
-| Text swap     | Expanding search | Toast stack   |
-| Copy feedback | Rolling counter  | Accordion     |
+## Give motion a purpose
 
-State button uses a clearly labeled simulated save unless an actual action is supplied. Copy writes to the clipboard. Search filters local demonstration names. Toasts are explicitly local previews. Production integrations must connect the relevant application behavior.
+Progress follows the lifetime of the actual operation. Confirmation follows actual success. Error feedback preserves the next useful action. A decorative delay must not block input or imply work is complete before it is.
 
-## Agent handoff
+Prefer settled states over perpetual movement. Short brand and control animations can reward interaction without competing with the task. Reduced motion preserves meaning, focus, and feedback while removing unnecessary displacement.
 
-The inspector offers React, CSS, and a full agent brief. Briefs include actual source, styles, dependencies, selected export, and integration constraints. Remove the preview frame, helper captions, and sample data when adapting an interaction. Preserve the host application's design and useful behavior. The gallery stylesheet is separate from each module's styles.
+## Keep the visual language precise
 
-`public/transitions/manifest.json` lists downloadable artifacts. Build-time synchronization prevents stale copies. Favor a small, understood source module over a runtime agent service or another framework.
+Use black, neutral borders, restrained surfaces, and legible typography. Let spacing, contrast, and the motion itself establish hierarchy. The SVG mark and wordmark share the same visual discipline as the controls.
+
+The gallery has its own identity; a copied transition belongs to its host application. Inherit the host's fonts and tokens, connect its data, and preserve its layout and accessibility primitives. Expose only parameters that have a clear effect.
+
+## Make the source usable
+
+Every recipe explains its use case, component API, dependencies, and adaptation boundaries. Source and styles must match the live example. Demonstration content stays distinguishable from real application behavior, and gallery framing remains opt-in.
+
+An agent should be able to identify the relevant source, understand which state the application owns, and make a focused integration. The same files must remain understandable and editable by a developer working directly.

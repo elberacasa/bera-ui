@@ -29,6 +29,8 @@ import {
   Accordion,
   ToastStack,
 } from "@/components/transitions/surfaces";
+import { MorphingIconButton } from "@/components/transitions/icons";
+import { Brand } from "@/components/brand";
 import { TransitionInspector } from "@/components/transition-inspector";
 import catalog from "@/lib/transition-catalog.json";
 import { defaultTuning, type MotionTuning } from "@/lib/motion-tuning";
@@ -46,6 +48,7 @@ const components = {
   MorphingMenu,
   Accordion,
   ToastStack,
+  MorphingIconButton,
 };
 const transitions = catalog.map((item) => ({
   ...item,
@@ -84,29 +87,36 @@ export function TransitionLibrary() {
     <MotionConfig reducedMotion="user">
       <main className="transition-library">
         <header className="tl-header">
-          <Link href="/" className="tl-wordmark" aria-label="Bera UI home">
-            bera<span>/</span>ui
-          </Link>
+          <Brand />
           <nav aria-label="Main navigation">
-            <a href="#transitions">Transitions</a>
-            <Link href="/agents">For agents</Link>
+            <a href="#transitions" aria-current="page">
+              Collection
+            </a>
+            <Link href="/agents">Docs</Link>
+            <a
+              href="https://github.com/elberacasa/bera-ui"
+              className="tl-github"
+              aria-label="GitHub repository"
+            >
+              <Braces size={15} /> <span>GitHub</span>
+            </a>
           </nav>
-          <span className="tl-header-note">An ongoing collection</span>
         </header>
         <section className="tl-intro">
-          <div>
-            <h1>Transitions, with feeling.</h1>
+          <h1>
+            Every state,
+            <br />
+            considered.
+          </h1>
+          <div className="tl-intro-detail">
             <p>
-              Choose a detail. Tune its feel.
-              <br />
-              Let your agent make it part of your interface.
+              Transitions for the interfaces you already have. Explore the
+              motion. Make it yours.
             </p>
+            <Link href="/agents" className="tl-agent-button">
+              <Braces size={16} /> Install the skill <ArrowUpRight size={14} />
+            </Link>
           </div>
-          <Link href="/agents" className="tl-agent-button">
-            <Braces size={16} />
-            Get the agent kit
-            <ArrowUpRight size={14} />
-          </Link>
         </section>
         <section id="transitions" aria-label="Transition collection">
           <div className="tl-toolbar">
@@ -177,9 +187,9 @@ export function TransitionLibrary() {
                     layout
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.98 }}
+                    exit={{ opacity: 0 }}
                     transition={{ duration: reduced ? 0 : 0.2 }}
-                    className="tl-card"
+                    className="tl-specimen"
                   >
                     <div className={`tl-preview tl-preview-${item.id}`}>
                       <Demo
@@ -188,14 +198,16 @@ export function TransitionLibrary() {
                         radius={tuning.radius}
                         replayKey={replays[item.id] || 0}
                       />
-                      <button
-                        type="button"
-                        className="tl-replay"
-                        aria-label={`Replay ${item.name}`}
-                        onClick={() => replay(item.id)}
-                      >
-                        <RotateCcw size={13} />
-                      </button>
+                      {item.id !== "state-button" && (
+                        <button
+                          type="button"
+                          className="tl-replay"
+                          aria-label={`Replay ${item.name}`}
+                          onClick={() => replay(item.id)}
+                        >
+                          <RotateCcw size={13} />
+                        </button>
+                      )}
                     </div>
                     <div className="tl-caption">
                       <div>
@@ -211,7 +223,8 @@ export function TransitionLibrary() {
                           setSelectedId(item.id);
                         }}
                       >
-                        <SlidersHorizontal size={15} />
+                        <SlidersHorizontal size={14} />
+                        <span>Customize</span>
                       </button>
                     </div>
                   </motion.article>
@@ -221,16 +234,19 @@ export function TransitionLibrary() {
           </motion.div>
           <div className="tl-collection-end">
             <span>{shown.length} transitions, ready to adapt</span>
-            <p>Customize a preview. Copy for your agent. Keep your design.</p>
+            <Link href="https://github.com/elberacasa/bera-ui/issues">
+              Suggest a transition <ArrowUpRight size={12} />
+            </Link>
           </div>
         </section>
         <footer className="tl-footer">
           <span>bera/ui</span>
-          <Link href="/agents">Install, adapt, refine</Link>
-          <Link href="/studies/iris">
-            Iris, an earlier study
-            <ArrowUpRight size={12} />
-          </Link>
+          <span className="tl-footer-note">
+            Small details. Better interfaces.
+          </span>
+          <a href="https://github.com/elberacasa/bera-ui/blob/main/LICENSE">
+            Open source. MIT.
+          </a>
         </footer>
         <TransitionInspector
           key={selected?.id ?? "closed"}

@@ -106,5 +106,17 @@
     "when": "Expandable help, preferences, and short supporting details.",
     "integration": "Supply items and connect value/onValueChange if controlled. Keep the heading/panel relationship and make closed interactive content inert.",
     "props": "items, value, defaultValue, onValueChange, speed, radius, className, style"
+  },
+  {
+    "id": "morphing-icon-button",
+    "name": "Icon morph",
+    "description": "The same strokes. A different intention.",
+    "category": "Navigation",
+    "group": "icons",
+    "exportName": "MorphingIconButton",
+    "detail": "Three SVG strokes draw together and become a close icon. One continuous motion preserves the shape through rapid reversals.",
+    "when": "A menu or panel toggle that needs a clear change of state.",
+    "integration": "Connect pressed/onPressedChange to the actual panel state. Keep the stable label and existing focus management. Forward aria-controls to the panel and preserve host dismissal behavior. Replay changes only the icon, never the application state.",
+    "props": "pressed, defaultPressed, onPressedChange, label, labels, disabled, buttonRef, native button attributes, speed, radius, className, style"
   }
 ]

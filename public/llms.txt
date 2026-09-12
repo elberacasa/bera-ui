@@ -1,6 +1,6 @@
 # bera/ui
 
-Reusable motion for existing React interfaces. Nine source-available transition recipes, live tempo and radius tuning, and a local coding-agent skill.
+Reusable motion for existing React interfaces. 10 source-available transition recipes, live tempo and radius tuning, and a local coding-agent skill.
 
 - [Agent guide](/agents): download the self-contained kit, install a skill, or copy a selected transition.
 - [Catalog](/transitions/manifest.json): available transitions, props, integration boundaries, and source paths.

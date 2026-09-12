@@ -240,6 +240,15 @@ SOFTWARE.
   max-width: 320px;
   margin-inline: auto;
 }
+.bt-morph-preview[data-preview="true"] {
+  container-type: inline-size;
+}
+.bt-morph-preview[data-preview="true"] .bt-morph-surface {
+  max-width: calc(100% - 24px);
+}
+.bt-morph-preview[data-preview="true"] .bt-morph-content {
+  width: min(236px, calc(100cqw - 26px));
+}
 .bt-morph-surface {
   position: absolute;
   right: 12px;

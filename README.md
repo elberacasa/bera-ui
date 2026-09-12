@@ -1,156 +1,86 @@
-# bera/ui
+<a href="https://bera-ui.vercel.app">
+  <img src="assets/readme-cover.svg" alt="bera/ui — Every state, considered." width="100%" />
+</a>
 
-**Transitions for interfaces people already use.**
+<p align="center">
+  Reusable motion for the interfaces you already have.
+</p>
 
-[MIT licensed](LICENSE) · [Roadmap](docs/ROADMAP.md) · [Contributing](CONTRIBUTING.md)
+<p align="center">
+  <a href="https://bera-ui.vercel.app"><strong>Explore the collection</strong></a>
+  ·
+  <a href="https://bera-ui.vercel.app/agents">Agent guide</a>
+  ·
+  <a href="CONTRIBUTING.md">Contribute</a>
+  ·
+  <a href="LICENSE">MIT</a>
+</p>
 
-A collection of nine interactive motion patterns for React. Try a transition, tune its tempo and corners, then take its source into your project—or hand the complete recipe to your coding agent.
+<p align="center">
+  <a href="https://github.com/elberacasa/bera-ui/actions/workflows/ci.yml">
+    <img src="https://github.com/elberacasa/bera-ui/actions/workflows/ci.yml/badge.svg" alt="CI" />
+  </a>
+</p>
 
-The components use Motion, local CSS, and your application's fonts and colors. The copied source stays editable in your project. There is no Bera runtime service and no account required to use the downloaded kit.
+## The detail is in the transition.
 
-## Start here
+bera/ui is a motion library for React. Explore an interaction, adjust its feel, and bring the source into your product. Each recipe includes the component, its styles, and the guidance your coding agent needs to adapt it.
 
-| I want to…                                  | Start with…                                                                 |
-| ------------------------------------------- | --------------------------------------------------------------------------- |
-| Explore and customize motion                | Run the [gallery](#run-the-gallery) and open a card's customize control.    |
-| Add one transition to a React app           | [Install a component](#install-a-component).                                |
-| Let my coding agent choose and adapt motion | [Install the agent skill](#use-with-a-coding-agent).                        |
-| Improve or contribute a pattern             | Read [CONTRIBUTING.md](CONTRIBUTING.md) and the [roadmap](docs/ROADMAP.md). |
+- **Try it.** Interactive previews, replay, and slow playback reveal how each transition works.
+- **Tune it.** Adjust timing and shape, then carry your settings into the integration.
+- **Make it yours.** Keep your components, content, design tokens, and application state.
+- **Keep the source.** Copy a single React export and its CSS. Edit them in your own project.
 
-## Run the gallery
+## Install the skill
 
-Use Node.js **22.x (22.13 or newer)** and npm.
-
-```sh
-git clone https://github.com/elberacasa/bera-ui.git
-cd bera-ui
-npm ci
-npm run dev
-```
-
-Open [localhost:5173](http://localhost:5173). Every card supports direct interaction and replay. Open its customize control for live tempo and corner settings, React and CSS source, and a complete agent brief. Slow playback helps inspect the motion; it is separate from the settings you export.
-
-The [agent guide](http://localhost:5173/agents) includes a downloadable kit. After extracting `bera-motion.tar.gz`, its installer works locally without downloading packages or contacting a service.
-
-## Install a component
-
-From this repository, point the installer at your existing application:
-
-```sh
-node skills/bera-motion/install.mjs list
-node skills/bera-motion/install.mjs add sliding-tabs --project ../your-app
-```
-
-Replace `../your-app` with your app's path. This copies `sliding-tabs.tsx` and `sliding-tabs.css` into its `components/bera` directory. Use `--dir src/components/bera` if your app keeps source under `src`.
-
-The installer reports required dependencies without modifying `package.json` or running your package manager. Install any missing dependencies in the destination app; the collection uses React, `motion`, and `lucide-react`.
-
-```tsx
-"use client";
-
-import { useState } from "react";
-import { SlidingTabs } from "./components/bera/sliding-tabs";
-
-export function ProjectViews() {
-  const [view, setView] = useState("overview");
-
-  return (
-    <SlidingTabs
-      ariaLabel="Project views"
-      items={[
-        {
-          value: "overview",
-          label: "Overview",
-          content: <p>Project overview</p>,
-        },
-        {
-          value: "activity",
-          label: "Activity",
-          content: <p>Recent activity</p>,
-        },
-      ]}
-      value={view}
-      onValueChange={setView}
-      speed={1}
-      radius={12}
-    />
-  );
-}
-```
-
-Adjust the import for the file's location. Each transition imports its own stylesheet; the gallery stylesheet is unnecessary. Normal imports use natural sizing. `preview` opts into gallery framing and demonstration controls, so leave it off in your application.
-
-Use `--dry-run` to inspect changes or `--json` for structured output. Existing identical files are kept. Different files cause the installer to stop without overwriting your work. Copied files are yours to maintain; installing a new kit is not an automatic merge of your customizations.
-
-## Use with a coding agent
-
-From your application directory, install the skill through the open skills CLI:
+Run this from your application directory:
 
 ```sh
 npx skills add elberacasa/bera-ui --skill bera-motion
 ```
 
-Or install the full kit locally from this repository into the destination project’s skill directory:
+Choose your coding agent when prompted. The skill includes the catalog, complete source, and integration recipes. It helps your agent apply motion to existing components or add a standalone transition.
+
+For one interaction, open the [collection](https://bera-ui.vercel.app), customize a preview, and choose **Copy for agent**. The copied brief includes the source and your selected settings.
+
+<details>
+<summary><strong>Use a component directly</strong></summary>
+
+Download the [portable kit](https://bera-ui.vercel.app/bera-motion.tar.gz) and extract it into your project root. Then install a selected transition:
 
 ```sh
-node skills/bera-motion/install.mjs skill --project ../your-app --agent codex
+node bera-motion/install.mjs add copy-button --project .
 ```
 
-Supported destinations are `codex`, `claude`, `cursor`, and `copilot`. For an extracted download, use `node bera-motion/install.mjs` instead. The standalone installer needs Node.js 18 or newer; running this repository still needs Node.js 22.x (22.13 or newer).
+This creates `components/bera/copy-button.tsx` and its CSS. The installer reports missing dependencies; add them with your project's package manager. It requires Node.js 18 or newer, supports `--dry-run`, and preserves differing destination files.
 
-Then ask your agent:
+```tsx
+import { CopyButton } from "./components/bera/copy-button";
 
-> Use bera-motion to refine the tabs in our project settings. Keep the current layout, colors, content, and keyboard behavior. Start with sliding-tabs, use tempo 1.15 and radius 8, and connect the motion to the existing selected value. Check fast repeated changes and reduced motion.
+<CopyButton text="npm install motion" speed={1.15} radius={8} />;
+```
 
-The skill gives your agent source, recipes, a catalog, and integration rules. It can install a standalone component or transfer the relevant motion into an existing shadcn/Radix component. The agent performs the integration in your codebase; the installer itself only copies files.
+Adjust the import to match your file's location. Components import their own CSS and use React and Motion; some use Lucide icons. Connect real data and callbacks. `preview` enables gallery framing, so leave it off in your application.
 
-For a single interaction, you can also use **Copy for agent** in the gallery. That includes the chosen settings, the selected component's source and styles, and the relevant integration guidance.
+See the [agent guide](https://bera-ui.vercel.app/agents) for the complete local workflow and each recipe's integration notes.
 
-## The collection
+</details>
 
-| Transition ID      | Use it for                      | Connect it to                                  |
-| ------------------ | ------------------------------- | ---------------------------------------------- |
-| `state-button`     | Save and submit feedback        | The real asynchronous `onAction` callback.     |
-| `sliding-tabs`     | Switching views or modes        | `items`, `value`, and `onValueChange`.         |
-| `morphing-menu`    | A compact set of nearby actions | Your menu actions and existing focus behavior. |
-| `text-swap`        | Short changing status messages  | Your `statuses` and selected `value`.          |
-| `expanding-search` | Compact search or filtering     | The actual query, data, and submit handler.    |
-| `toast-stack`      | Layering notification feedback  | Your existing toast provider's lifecycle.      |
-| `copy-button`      | Copying text or a command       | The exact `text` to copy.                      |
-| `rolling-counter`  | Adjustable integer quantities   | Your value, change handler, and range.         |
-| `accordion`        | Revealing supporting details    | Your headings, content, and expanded value.    |
+## Develop
 
-`ToastStack` is a motion reference, not a complete notification provider. The counter reference supports integers from 0–999. Demonstration data must be replaced with real application state. Preserve established accessibility primitives, validation, error handling, and notification lifecycles when adapting a recipe.
-
-## Develop and verify
+Use Node.js **22.x, version 22.13 or newer**.
 
 ```sh
-npm run typecheck
-npm run lint
-npm run test:kit
-npm run build:vercel
+npm ci
+npm run dev
 ```
 
-`npm run dev` uses Next.js, matching the Vercel gallery. `npm run build` and `npm run dev:sites` retain the earlier Cloudflare/Sites target. Both production targets must generate the downloadable recipes from the live component source. Treat `public/transitions/` and the kit's generated recipes as build output; edit the components and catalog instead.
+Open [localhost:5173](http://localhost:5173). Read the [contribution guide](CONTRIBUTING.md) for source generation, checks, and the pull request workflow. GitHub Actions validates changes; Vercel provides previews and the production gallery.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the pull request workflow, [docs/VALIDATION.md](docs/VALIDATION.md) for recorded checks and limits, and [docs/ROADMAP.md](docs/ROADMAP.md) for the next work.
+## Contribute
 
-## Project map
-
-| Path                                  | Purpose                                                   |
-| ------------------------------------- | --------------------------------------------------------- |
-| `components/transitions/`             | Live React implementations and local styles.              |
-| `lib/transition-catalog.json`         | Pattern names, use cases, props, and adaptation guidance. |
-| `components/transition-inspector.tsx` | Interactive tuning, source inspection, and agent handoff. |
-| `skills/bera-motion/`                 | Portable skill, installer, recipes, and references.       |
-| `scripts/sync-components.mjs`         | Generates downloads from the live source.                 |
-| `public/transitions/`                 | Per-transition source, styles, metadata, and briefs.      |
-| `app/studies/iris/`                   | Preserved Iris experiment, separate from the collection.  |
-
-## Reference and attribution
-
-[transitions.dev](https://transitions.dev/) inspired the focus on reusable motion for existing interfaces. Bera's implementation and integration workflow are developed in this repository. Read [docs/DESIGN.md](docs/DESIGN.md) for the design principles. The bundled Manrope font has its own [SIL Open Font License](public/fonts/OFL.txt).
+Refine an interaction, improve an integration, or propose a useful new pattern. Start with the [roadmap](docs/ROADMAP.md) and [open issues](https://github.com/elberacasa/bera-ui/issues).
 
 ## License
 
-[MIT](LICENSE). Use, adapt, and ship the components in personal or commercial projects. Retain the license notice when redistributing source. Dependencies and the bundled font retain their respective licenses.
+[MIT](LICENSE). Use and adapt the source in personal or commercial projects. Dependencies and the bundled [Manrope font](public/fonts/OFL.txt) retain their respective licenses.

@@ -18,6 +18,7 @@ const EXPECTED_IDS = [
   "accordion",
   "copy-button",
   "expanding-search",
+  "morphing-icon-button",
   "morphing-menu",
   "rolling-counter",
   "sliding-tabs",
@@ -172,6 +173,8 @@ function unpackArchive(compressed) {
 }
 
 const CONSUMER_PROPS = {
+  "morphing-icon-button":
+    'pressed={false} onPressedChange={value => update(Number(value))} label="Navigation" aria-controls="navigation-panel" disabled={false}',
   "state-button": "onAction={save}",
   "sliding-tabs":
     'items={[{ value: "first", label: "First", content: <span>Panel</span> }]} value="first" onValueChange={value => update(value)}',
@@ -317,7 +320,7 @@ async function main() {
   let archiveFiles;
   let unpackedKit;
   try {
-    await check("catalog contains the nine complete recipes", async () => {
+    await check("catalog contains every complete recipe", async () => {
       assert.equal(catalog.version, 2);
       assert.deepEqual(
         catalog.transitions.map((item) => item.id).sort(),
@@ -680,8 +683,6 @@ async function main() {
           "scripts/sync-components.mjs",
           "scripts/extract-transition.mjs",
           "lib/transition-catalog.json",
-          "components/origin-popover/origin-popover.tsx",
-          "components/origin-popover/origin-popover.css",
         ];
         const entries = await readJSON(
           path.join(repository, "lib/transition-catalog.json"),

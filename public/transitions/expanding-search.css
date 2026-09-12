@@ -188,8 +188,16 @@ SOFTWARE.
     0 2px 4px #0002,
     inset 0 1px 0 #ffffff03;
 }
-.bs-search-form:focus-within {
-  box-shadow: 0 0 0 2px #bcbcbc;
+.bs-search-form[data-open="true"] {
+  border-color: color-mix(in srgb, var(--bs-border) 70%, var(--bs-text));
+}
+.bs-search-form[data-keyboard-focus="true"] {
+  outline: 1px solid var(--bs-muted);
+  outline-offset: 3px;
+}
+.bs-demo .bs-search-input:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 .bs-search-trigger {
   position: absolute;

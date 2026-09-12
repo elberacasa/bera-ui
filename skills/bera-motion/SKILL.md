@@ -16,7 +16,7 @@ Start with the user's action and the states it connects. Improve that transition
 - **Apply:** Read [integration guidance](references/integration.md), then the selected catalog entry's `recipe`, `source`, and `styles` files. Adapt only the motion needed for the requested interaction.
 - **Refine:** Read the existing implementation and [motion guidance](references/motion.md). Tune the smallest relevant parameters and validate the resulting interaction.
 
-The nine patterns cover action status (**State Button**), changing labels (**Text Swap**), clipboard confirmation (**Copy Feedback**), active selection (**Sliding Tabs**), search disclosure (**Expanding Search**), numeric changes (**Rolling Counter**), menu disclosure (**Morphing Menu**), section disclosure (**Accordion**), and notification arrival/dismissal (**Toast Stack**). Use the catalog's actual IDs and paths; it is the source of truth. Load only the chosen `references/<id>.md` and `recipes/<id>.tsx` plus `.css`.
+The patterns cover action status (**State Button**), changing labels (**Text Swap**), clipboard confirmation (**Copy Feedback**), active selection (**Sliding Tabs**), search disclosure (**Expanding Search**), numeric changes (**Rolling Counter**), menu disclosure (**Morphing Menu**), section disclosure (**Accordion**), and notification arrival/dismissal (**Toast Stack**), and continuous SVG toggles (**Icon Morph**). Use the catalog's actual IDs and paths; it is the source of truth. Load only the chosen `references/<id>.md` and `recipes/<id>.tsx` plus `.css`.
 
 ## Keep the host in charge
 

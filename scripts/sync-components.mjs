@@ -82,15 +82,8 @@ write(
 );
 write(
   "public/llms.txt",
-  `# bera/ui\n\nReusable motion for existing React interfaces. Nine source-available transition recipes, live tempo and radius tuning, and a local coding-agent skill.\n\n- [Agent guide](/agents): download the self-contained kit, install a skill, or copy a selected transition.\n- [Catalog](/transitions/manifest.json): available transitions, props, integration boundaries, and source paths.\n- [Skill](/bera-motion.SKILL.md): discovery, review, apply, and refine workflow.\n- [Portable kit](/bera-motion.tar.gz): all source, styles, recipes, and zero-dependency local installer.\n\nDo not invent an npm package. Read the host project and adapt motion to existing primitives. Components default to natural sizing; preview=true is reserved for the gallery. See each recipe's limitations before integrating.\n`,
+  `# bera/ui\n\nReusable motion for existing React interfaces. ${transitions.length} source-available transition recipes, live tempo and radius tuning, and a local coding-agent skill.\n\n- [Agent guide](/agents): download the self-contained kit, install a skill, or copy a selected transition.\n- [Catalog](/transitions/manifest.json): available transitions, props, integration boundaries, and source paths.\n- [Skill](/bera-motion.SKILL.md): discovery, review, apply, and refine workflow.\n- [Portable kit](/bera-motion.tar.gz): all source, styles, recipes, and zero-dependency local installer.\n\nDo not invent an npm package. Read the host project and adapt motion to existing primitives. Components default to natural sizing; preview=true is reserved for the gallery. See each recipe's limitations before integrating.\n`,
 );
-for (const file of ["origin-popover.tsx", "origin-popover.css"]) {
-  mkdirSync("public/components", { recursive: true });
-  copyFileSync(
-    `components/origin-popover/${file}`,
-    `public/components/${file}`,
-  );
-}
 if (!existsSync(`${kit}/SKILL.md`))
   throw new Error(
     "Author skills/bera-motion/SKILL.md before generating the kit.",

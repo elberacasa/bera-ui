@@ -2,9 +2,24 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "bera/ui — Transitions, with feeling.",
+  metadataBase: new URL("https://bera-ui.vercel.app"),
+  openGraph: {
+    type: "website",
+    url: "https://bera-ui.vercel.app",
+    siteName: "bera/ui",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "bera/ui — Every state, considered.",
+      },
+    ],
+  },
+  twitter: { card: "summary_large_image" },
+  title: "bera/ui — Every state, considered.",
   description:
-    "Familiar interactions, exceptional motion. Explore reusable React transitions with slow playback, complete source, and instructions for your coding agent.",
+    "Reusable transitions for the interfaces you already have. Explore the motion, customize the details, and bring the source into your React project.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

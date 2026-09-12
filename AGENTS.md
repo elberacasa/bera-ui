@@ -1,37 +1,41 @@
 # bera/ui
 
-Build a library of reusable transitions for existing interfaces. The reference is transitions.dev: the product is a collection of exceptional motion patterns, not one new UI object. The user explicitly corrected the scope after the Iris experiment and the single Origin Popover gallery. Preserve Iris at `/studies/iris` as an earlier study.
+Build reusable React transitions for existing interfaces. Each recipe combines useful behavior, deliberate motion, editable source, and clear integration boundaries. The gallery demonstrates the same source that the kit distributes.
 
-## Product and taste
+## Design contract
 
-- Start with ordinary actions; refine how states connect. Motion is the primary product.
-- Dark black shadcn-style surfaces, neutral borders, legible typography, plain `bera/ui` wordmark. No star/sparkle logo.
-- Every transition needs a clear use case, direct interaction, source inspection, slow playback, and integration guidance.
-- Tune onset, sequencing, continuity, reversal, and settlement. Avoid unrequested ambient loops or spectacle unrelated to the action.
-- Keep text unscaled as surfaces change size. Respect reduced motion, keyboard focus, and rapid repeated input.
-- Demo simulations must be explicitly labeled. Real actions, such as copy, report success only after actual success. Replay must never repeat a real application action or take focus from the user's current control.
-- Agent-first means complete source and styles, clear adaptation boundaries, and useful props. No runtime agent infrastructure is needed to copy a transition.
-- Use React and Motion for this collection, with host fonts, tokens, and behavior. Do not add another animation engine for ordinary patterns.
+- Start with an ordinary action and the states it connects. Consider onset, sequencing, continuity, interruption, reversal, and settlement.
+- Use a continuous black canvas, neutral borders, clear typography, and the bera/ui SVG mark. Give each interaction space; avoid decorative containers and ambient effects unrelated to its action.
+- Every pattern needs an obvious use case, direct interaction, replay, slow playback, source inspection, and integration guidance.
+- Keep text sharp as surfaces change shape. SVG morphs must retain legible endpoints and interpolate intentionally between them.
+- Preserve keyboard behavior, focus, controlled state, and reduced motion. Rapid repeated input must settle to the latest intended state.
+- Label demonstration simulations. Report success only after the real operation succeeds. Replay changes presentation without repeating application side effects or moving focus.
+- Keep the host application's content, fonts, tokens, state ownership, and accessibility primitives when adapting a recipe. Use React and Motion; avoid introducing a second animation engine.
 
-## Files
+## Source map
 
-- `components/transition-library.tsx`: gallery registry, filters, playback, per-pattern settings.
-- `components/transition-inspector.tsx`: live customization, individual source, complete agent handoff.
-- `skills/bera-motion/`: portable skill and installer; recipes/catalog are generated.
-- `lib/transition-catalog.json`: the single authored catalog.
-- `components/transitions/feedback.tsx` and `.css`: state button, text swap, copy feedback.
-- `components/transitions/selection.tsx` and `.css`: sliding tabs, expanding search, rolling counter.
-- `components/transitions/surfaces.tsx` and `.css`: morphing menu, accordion, toast stack.
-- `app/transition-library.css`: gallery-only appearance. It is not a dependency of the downloadable modules.
-- `scripts/sync-components.mjs`: synchronizes downloadable source and complete agent briefs before build.
+- `components/transitions/`: transition implementations and local CSS.
+- `lib/transition-catalog.json`: authored pattern metadata, props, and integration guidance.
+- `components/transition-library.tsx`: collection, filters, playback, and per-pattern settings.
+- `components/transition-inspector.tsx`: customization, source inspection, and agent handoff.
+- `app/transition-library.css`: gallery presentation; never a dependency of copied components.
+- `scripts/sync-components.mjs`: generates source downloads, recipes, metadata, and the portable archive.
+- `skills/bera-motion/`: authored skill, installer, reference guidance, and generated recipes.
 - `public/transitions/`: generated downloads and machine-readable manifest.
-- `components/origin-popover/`: earlier small primitive retained as source, not the library's central direction.
-- `app/studies/iris/`, `components/iris/`, `docs/studies/IRIS.md`: preserved experiment.
+- `app/studies/iris/` and `components/iris/`: isolated Iris route and implementation.
+
+## Distribution contract
+
+Each downloaded TSX file exports only its selected component and includes the helpers it needs. Its local stylesheet travels with it. Production imports omit `preview`; gallery framing and demonstration controls remain opt-in. Connect actual data and callbacks, and document any reference-only behavior.
+
+Export only settings that affect the chosen transition. `speed` controls motion timing; `radius` applies where the pattern has a configurable surface. Slow playback is an inspection control and stays separate from exported settings.
+
+Edit live source and the authored catalog, then run `npm run generate`. Do not hand-edit generated recipes or downloads. Keep the skill concise and route detailed guidance to its reference files. The installer must preserve differing destination files, support inspection before writing, and report missing dependencies without installing them.
 
 ## Quality and delivery
 
-Judge the live transitions at desktop and narrow phone widths. Check keyboard navigation, focus return, menu dismissal, controlled inputs, interruption, bounds, copy outcomes, reduced motion, and source/download parity. Run TypeScript, relevant lint, and production compilation. Update the validation record with what was actually checked. Preserve `.openai/hosting.json` and the existing Site project. The primary public deployment is now Vercel, connected to the public MIT GitHub repository `elberacasa/bera-ui`. Keep the Sites build available, but do not create another Site. Vercel Git integration owns deployments; GitHub Actions owns validation. Use a feature branch, conventional commits, a focused PR, and passing required checks before merging. Do not rewrite main.
+Follow [CONTRIBUTING.md](CONTRIBUTING.md), [docs/DESIGN.md](docs/DESIGN.md), and [docs/QUALITY.md](docs/QUALITY.md). Verify changed interactions in the browser at desktop and narrow phone widths, with keyboard input, reduced motion, interruptions, and real operation outcomes. Check source/download parity for export changes.
 
-## Agent distribution
+Use Node.js 22.x, version 22.13 or newer. Required checks are `npm run typecheck`, `npm run lint`, `npm run format:check`, `npm run test:kit`, and `npm run build`.
 
-Every component defaults to natural sizing; `preview` opts into gallery framing and demo controls. `speed` and `radius` are integration settings. Slow gallery playback is separate. Read CONTRIBUTING.md for generation and validation; never hand-edit generated recipe files. Every downloaded TSX exports only its selected component. The installer preserves differing files and never installs dependencies. Keep the SKILL.md concise; longer motion and integration guidance belongs in references.
+GitHub is the source repository and Vercel owns deployment. Use focused branches, conventional commits, and pull requests. GitHub Actions validates changes; Vercel provides previews and production deployments. Do not rewrite `main` or add another deployment path. Report verification results in the pull request, distinguishing checks performed from remaining limits.
