@@ -3,6 +3,7 @@
   --bi-surface: var(--background, #111111);
   --bi-hover: var(--accent, #222222);
   --bi-border: var(--border, #303030);
+  --bi-highlight: color-mix(in srgb, var(--bi-foreground) 7%, transparent);
   position: relative;
   display: inline-grid;
   flex: none;
@@ -15,24 +16,26 @@
   box-sizing: border-box;
   border: 1px solid var(--bi-border);
   border-radius: var(--bera-radius, 12px);
-  background: var(--bi-surface);
+  background: color-mix(in srgb, var(--bi-surface) 97%, var(--bi-foreground));
   color: var(--bi-foreground);
   font: inherit;
+  box-shadow:
+    0 1px 0 var(--bi-highlight) inset,
+    0 1px 2px #00000026,
+    0 3px 7px #00000014;
   vertical-align: middle;
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   transition:
     background-color 140ms ease,
-    border-color 140ms ease;
+    border-color 140ms ease,
+    box-shadow 140ms ease;
 }
 
 .bi-morph-button[aria-pressed="true"] {
   background: var(--bi-hover);
-}
-
-.bi-morph-button:active:not(:disabled) {
-  background: color-mix(in srgb, var(--bi-foreground) 12%, var(--bi-surface));
+  border-color: color-mix(in srgb, var(--bi-border) 86%, var(--bi-foreground));
 }
 
 @media (hover: hover) {
@@ -46,6 +49,11 @@
   }
 }
 
+.bi-morph-button:active:not(:disabled) {
+  background: color-mix(in srgb, var(--bi-foreground) 12%, var(--bi-surface));
+  box-shadow: 0 1px 2px #00000024 inset;
+}
+
 .bi-morph-button:focus-visible {
   outline: 2px solid var(--ring, var(--bi-foreground));
   outline-offset: 4px;
@@ -54,12 +62,13 @@
 .bi-morph-button:disabled {
   opacity: 0.42;
   cursor: default;
+  box-shadow: none;
 }
 
 .bi-morph-icon {
   display: block;
-  width: var(--bera-icon-size, 24px);
-  height: var(--bera-icon-size, 24px);
+  width: var(--bera-icon-size, 26px);
+  height: var(--bera-icon-size, 26px);
   flex: none;
   overflow: visible;
   pointer-events: none;
@@ -83,13 +92,13 @@
   display: grid;
   gap: 5px;
   text-align: center;
-  font-size: 12px;
-  line-height: 1.4;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .bi-morph-caption > :last-child {
   color: var(--muted-foreground, #888888);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 @media (prefers-reduced-motion: reduce) {

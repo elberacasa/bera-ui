@@ -59,3 +59,7 @@ jobs:
         run: npm exec --yes --package=playwright@1.62.1 -- node scripts/test-radix-menu.mjs
       - name: Verify controlled search and focus
         run: npm exec --yes --package=playwright@1.62.1 -- node scripts/test-expanding-search.mjs
+      - name: Build the gallery for browser verification
+        run: npm run build
+      - name: Verify the mobile customizer
+        run: npm exec --yes --package=playwright@1.62.1 -- node scripts/test-gallery.mjs

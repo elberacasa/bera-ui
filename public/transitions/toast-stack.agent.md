@@ -243,10 +243,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 .bt-surface-demo {
-  --bt-foreground: var(--foreground, #eee);
-  --bt-muted: var(--muted-foreground, #888);
-  --bt-popover: var(--popover, #191919);
-  --bt-border: var(--border, #333);
+  --bt-foreground: var(--foreground, #ededed);
+  --bt-muted: var(--muted-foreground, #929292);
+  --bt-popover: var(--popover, #151515);
+  --bt-border: var(--border, #2a2a2a);
+  --bt-ring: var(--ring, var(--bt-foreground));
+  --bt-inset: color-mix(in srgb, var(--bt-foreground) 6%, transparent);
+  --bt-hover: color-mix(in srgb, var(--bt-foreground) 5%, var(--bt-popover));
+  --bt-active: color-mix(in srgb, var(--bt-foreground) 9%, var(--bt-popover));
   position: relative;
   display: grid;
   place-items: center;
@@ -268,7 +272,7 @@ SOFTWARE.
   -webkit-tap-highlight-color: transparent;
 }
 .bt-surface-demo button:focus-visible {
-  outline: 2px solid var(--bt-foreground);
+  outline: 2px solid var(--bt-ring);
   outline-offset: 3px;
 }
 .bt-surface-demo button {
@@ -296,12 +300,12 @@ SOFTWARE.
   background: var(--bt-popover);
   border: 1px solid var(--bt-border);
   box-shadow:
-    0 9px 28px #0005,
-    0 1px 2px #0004,
-    inset 0 1px #ffffff05;
+    0 12px 28px #0005,
+    0 2px 4px #0003,
+    inset 0 1px var(--bt-inset);
 }
 .bt-morph-surface:has(.bt-morph-trigger:focus-visible) {
-  outline: 2px solid var(--bt-foreground);
+  outline: 2px solid var(--bt-ring);
   outline-offset: 4px;
 }
 .bt-morph-trigger {
@@ -331,8 +335,11 @@ SOFTWARE.
   cursor: default;
   opacity: 0.5 !important;
 }
-.bt-morph-trigger:hover {
-  background: #ffffff05;
+.bt-morph-trigger:hover:not(:disabled) {
+  background: var(--bt-hover);
+}
+.bt-morph-trigger:active:not(:disabled) {
+  background: var(--bt-active);
 }
 .bt-morph-trigger:focus-visible {
   outline: none !important;
@@ -350,7 +357,7 @@ SOFTWARE.
   justify-content: space-between;
   padding-left: 10px;
   color: var(--bt-muted);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
 }
 .bt-menu-heading > span {
@@ -371,7 +378,7 @@ SOFTWARE.
 }
 .bt-menu-close:hover {
   color: var(--bt-foreground);
-  background: #ffffff07;
+  background: var(--bt-hover);
 }
 .bt-menu-items {
   display: grid;
@@ -392,29 +399,38 @@ SOFTWARE.
   background: transparent;
   color: var(--bt-foreground);
   text-align: left;
-  font-size: 12px;
-  line-height: 1;
+  font-size: 13px;
+  font-weight: 450;
+  line-height: 1.4;
 }
 .bt-menu-action-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 15px;
+  width: 16px;
   flex-shrink: 0;
   color: var(--bt-muted);
 }
 .bt-menu-action-icon > svg {
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
 }
 .bt-menu-item:hover,
 .bt-menu-item:focus-visible {
-  background: color-mix(in srgb, var(--bt-foreground) 8%, var(--bt-popover));
+  background: var(--bt-active);
   color: var(--bt-foreground);
   outline: none !important;
 }
 .bt-menu-item:focus-visible {
-  box-shadow: inset 0 0 0 1px #444;
+  box-shadow: inset 0 0 0 1px var(--bt-ring);
+}
+.bt-menu-item:hover .bt-menu-action-icon,
+.bt-menu-item:focus-visible .bt-menu-action-icon {
+  color: var(--bt-foreground);
+}
+.bt-menu-item:active,
+.bt-menu-close:active {
+  background: color-mix(in srgb, var(--bt-foreground) 12%, var(--bt-popover));
 }
 .bt-menu-checked {
   margin-left: auto;
@@ -427,7 +443,7 @@ SOFTWARE.
   align-items: center;
   gap: 5px;
   color: var(--bt-muted);
-  font-size: 10px;
+  font-size: 12px;
 }
 .bt-demo-feedback {
   position: absolute;
@@ -438,7 +454,8 @@ SOFTWARE.
   padding-inline: 12px;
   text-align: center;
   color: var(--bt-muted);
-  font-size: 10px;
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 .bt-accordion {
@@ -447,7 +464,9 @@ SOFTWARE.
   border: 1px solid var(--bt-border);
   border-radius: var(--bera-radius, 12px);
   background: var(--bt-popover);
-  box-shadow: 0 5px 20px #0003;
+  box-shadow:
+    0 2px 6px #0003,
+    inset 0 1px var(--bt-inset);
 }
 .bt-accordion-item + .bt-accordion-item {
   border-top: 1px solid var(--bt-border);
@@ -462,21 +481,30 @@ SOFTWARE.
   justify-content: space-between;
   gap: 10px;
   width: 100%;
-  min-height: 45px;
-  padding: 10px 14px;
+  min-height: 48px;
+  padding: 12px 16px;
   border: 0;
   background: transparent;
   text-align: left;
   color: var(--bt-foreground);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 1.5;
 }
-.bt-accordion-trigger:hover,
+.bt-accordion-trigger:hover {
+  background: var(--bt-hover);
+}
+.bt-accordion-trigger:active {
+  background: var(--bt-active);
+}
 .bt-accordion-item[data-open="true"] .bt-accordion-trigger {
   color: var(--bt-foreground);
 }
-.bt-accordion-trigger:focus-visible {
+.bt-accordion-trigger:hover .bt-disclosure,
+.bt-accordion-item[data-open="true"] .bt-disclosure {
+  color: var(--bt-foreground);
+}
+.bt-surface-demo .bt-accordion-trigger:focus-visible {
   position: relative;
   outline-offset: -4px;
   border-radius: 8px;
@@ -491,11 +519,11 @@ SOFTWARE.
   overflow: hidden;
 }
 .bt-accordion-body {
-  padding: 0 32px 14px 14px;
+  padding: 0 36px 16px 16px;
   color: var(--bt-muted);
   font-size: 12px;
   font-weight: 400;
-  line-height: 1.65;
+  line-height: 1.6;
 }
 
 .bt-toast-position {
@@ -518,16 +546,17 @@ SOFTWARE.
   left: 0;
   display: flex;
   align-items: center;
-  gap: 11px;
+  gap: 10px;
   width: 100%;
   min-height: 76px;
-  padding: 14px 43px 14px 14px;
+  padding: 12px 37px 12px 12px;
   border: 1px solid var(--bt-border);
   border-radius: var(--bera-radius, 11px);
   background: var(--bt-popover);
   box-shadow:
-    0 8px 16px #0004,
-    inset 0 1px #ffffff05;
+    0 8px 20px #0004,
+    0 1px 3px #0003,
+    inset 0 1px var(--bt-inset);
 }
 .bt-toast-icon {
   display: grid;
@@ -544,11 +573,11 @@ SOFTWARE.
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
 }
 .bt-toast-title {
   color: var(--bt-foreground);
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.4;
   font-weight: 500;
   white-space: nowrap;
@@ -559,12 +588,12 @@ SOFTWARE.
   margin-left: 2px;
   color: var(--bt-muted);
   font-variant-numeric: tabular-nums;
-  font-size: 10px;
+  font-size: 12px;
 }
 .bt-toast-description {
   color: var(--bt-muted);
-  font-size: 11px;
-  line-height: 1.5;
+  font-size: 12px;
+  line-height: 1.4;
 }
 .bt-toast-dismiss {
   position: absolute;
@@ -581,7 +610,7 @@ SOFTWARE.
   background: transparent;
 }
 .bt-toast-dismiss:hover {
-  background: #ffffff07;
+  background: var(--bt-hover);
   color: var(--bt-foreground);
 }
 .bt-toast-dismiss:focus-visible {
@@ -605,19 +634,25 @@ SOFTWARE.
   justify-content: center;
   gap: 7px;
   min-height: 44px;
-  padding: 0 13px;
+  padding: 0 14px;
   border: 1px solid var(--bt-border);
   border-radius: 8px;
   background: var(--bt-popover);
   color: var(--bt-foreground);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
-  box-shadow: 0 1px 2px #0003;
+  box-shadow:
+    0 1px 2px #0003,
+    inset 0 1px var(--bt-inset);
 }
 .bt-toast-add:hover {
   color: var(--bt-foreground);
-  background: color-mix(in srgb, var(--bt-foreground) 4%, var(--bt-popover));
+  background: var(--bt-hover);
   border-color: color-mix(in srgb, var(--bt-foreground) 20%, var(--bt-border));
+}
+.bt-toast-add:active,
+.bt-toast-dismiss:active {
+  background: var(--bt-active);
 }
 .bt-sr-only {
   position: absolute;

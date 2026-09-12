@@ -1,5 +1,5 @@
 .cx-accordion-host {
-  width: min(100%, 300px);
+  width: min(100%, 320px);
   margin-inline: auto;
   min-height: 252px;
 }
@@ -7,20 +7,23 @@
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  min-height: 42px;
+  min-height: 48px;
   align-items: center;
-  border-top: 1px solid #242424;
-  margin: 0 18px;
-  font-size: 11px;
+  border-top: 1px solid var(--border, #2a2a2a);
+  margin: 0 16px;
+  font-size: 13px;
+  font-weight: 500;
 }
 .cx-sharing-summary > :last-child {
-  color: var(--muted-foreground);
-  font-size: 10px;
+  color: var(--muted-foreground, #929292);
+  font-size: 12px;
+  font-weight: 400;
 }
 .cx-workspace-label {
   font-size: 12px;
-  color: var(--muted-foreground);
-  margin: 0 18px 12px;
+  color: var(--muted-foreground, #929292);
+  font-weight: 500;
+  margin: 0 16px 8px;
 }
 /* The actual recipe and its native baseline use the same interface styles. */
 .cx-accordion-host .mc-accordion {
@@ -40,21 +43,22 @@
 }
 
 .cx-accordion-host .mc-accordion .bt-accordion-trigger {
-  min-height: 47px;
-  padding: 12px 18px;
-  color: var(--foreground);
-  font-size: 12px;
+  min-height: 48px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: var(--foreground, #ededed);
+  font-size: 14px;
 }
 
 .cx-accordion-host .mc-accordion .bt-accordion-body {
-  padding: 0 18px 14px;
-  color: var(--foreground);
+  padding: 0 16px 16px;
+  color: var(--foreground, #ededed);
   line-height: 1.4;
 }
 
 .mc-settings-fields {
   display: grid;
-  gap: 2px;
+  gap: 8px;
 }
 
 .mc-invite-row,
@@ -63,7 +67,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  min-height: 54px;
+  min-height: 64px;
+  padding-block: 8px;
 }
 
 .mc-invite-row {
@@ -72,39 +77,100 @@
 
 .mc-field-copy {
   display: grid;
-  gap: 4px;
+  gap: 5px;
   min-width: 0;
-  font-size: 11px;
+  font-size: 13px;
+  font-weight: 500;
   line-height: 1.4;
 }
 
 .mc-field-copy > :last-child {
-  color: var(--muted-foreground);
-  font-size: 10px;
+  color: var(--muted-foreground, #929292);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.45;
 }
 
 .mc-invite-row input {
+  appearance: none;
+  display: grid;
+  place-items: center;
   flex: none;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   margin: 0;
-  accent-color: var(--foreground);
+  border: 1px solid var(--input, #343434);
+  border-radius: 5px;
+  color: var(--primary-foreground, #121212);
+  background: var(--popover, #151515);
+  box-shadow: inset 0 1px
+    color-mix(in srgb, var(--foreground, #ededed) 5%, transparent);
   cursor: pointer;
+}
+
+.mc-invite-row input::before {
+  content: "";
+  width: 12px;
+  height: 10px;
+  background: currentColor;
+  clip-path: polygon(0 48%, 14% 34%, 40% 61%, 85% 6%, 100% 19%, 41% 94%);
+  visibility: hidden;
+}
+
+.mc-invite-row input:checked {
+  border-color: var(--primary, #ededed);
+  background: var(--primary, #ededed);
+  box-shadow: 0 1px 2px #0002;
+}
+
+.mc-invite-row input:checked::before {
+  visibility: visible;
+}
+
+.mc-invite-row:hover input:not(:checked) {
+  border-color: var(--muted-foreground, #929292);
 }
 
 .mc-role-row select {
   flex: none;
-  width: 96px;
-  min-height: 36px;
-  padding: 0 9px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--background, #080808);
-  color: var(--foreground);
+  width: 98px;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--input, #343434);
+  border-radius: 8px;
+  background: var(--popover, #151515);
+  color: var(--foreground, #ededed);
+  box-shadow:
+    0 1px 2px #0002,
+    inset 0 1px color-mix(in srgb, var(--foreground, #ededed) 5%, transparent);
   font: inherit;
-  font-size: 11px;
+  font-size: 13px;
   cursor: pointer;
 }
+
+.mc-role-row select:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--foreground, #ededed) 20%,
+    var(--border, #2a2a2a)
+  );
+}
+
+.mc-settings-fields :is(input, select):focus-visible {
+  outline: 2px solid var(--ring, #bdbdbd);
+  outline-offset: 3px;
+}
+
+@media (forced-colors: active) {
+  .mc-invite-row input {
+    appearance: auto;
+    accent-color: auto;
+  }
+  .mc-invite-row input::before {
+    display: none;
+  }
+}
+
 @media (max-width: 800px) {
   .mc-role-row select {
     min-height: 44px;

@@ -2,7 +2,8 @@
   width: min(100%, 270px);
   margin-inline: auto;
   color: var(--foreground, #eeeeee);
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .bc-navigation-header {
@@ -51,7 +52,7 @@
   display: grid;
   justify-content: center;
   align-content: center;
-  gap: 18px;
+  gap: 16px;
   width: 100%;
   min-height: 156px;
 }
@@ -59,13 +60,9 @@
 .bc-status-context,
 .bc-status-note {
   padding-left: 48px;
-  font-size: 11px;
-  line-height: 1.4;
-  color: var(--muted-foreground, #999999);
-}
-
-.bc-status-context {
   font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted-foreground, #999999);
 }
 
 .bc-status-preview .bf-status-line {

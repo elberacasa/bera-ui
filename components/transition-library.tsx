@@ -8,6 +8,7 @@ import {
   useReducedMotion,
 } from "motion/react";
 import {
+  ArrowDown,
   ArrowUpRight,
   Braces,
   Gauge,
@@ -116,9 +117,15 @@ export function TransitionLibrary() {
               Transitions for the interfaces you already have. Explore the
               motion. Make it yours.
             </p>
-            <Link href="/agents" className="tl-agent-button">
-              <Braces size={16} /> Install the skill <ArrowUpRight size={14} />
-            </Link>
+            <div className="tl-intro-actions">
+              <Link href="/agents" className="tl-agent-button">
+                <Braces size={16} /> Install the skill{" "}
+                <ArrowUpRight size={14} />
+              </Link>
+              <a href="#transitions" className="tl-browse">
+                Browse components <ArrowDown size={13} aria-hidden="true" />
+              </a>
+            </div>
           </div>
         </section>
         <MotionComparison
@@ -133,6 +140,10 @@ export function TransitionLibrary() {
           }}
         />
         <section id="transitions" aria-label="Transition collection">
+          <div className="tl-collection-heading">
+            <h2>The collection</h2>
+            <p>Choose an interaction. Make it yours.</p>
+          </div>
           <div className="tl-toolbar">
             <div
               className="tl-filters"
@@ -225,7 +236,7 @@ export function TransitionLibrary() {
                     </div>
                     <div className="tl-caption">
                       <div>
-                        <h2>{item.name}</h2>
+                        <h3>{item.name}</h3>
                         <p>{item.description}</p>
                       </div>
                       <button
