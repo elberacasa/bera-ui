@@ -6,6 +6,7 @@ import {
   useRef,
   useState,
   type ComponentType,
+  type CSSProperties,
 } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
@@ -22,7 +23,14 @@ import {
 } from "lucide-react";
 import "./feedback.css";
 
-export type FeedbackDemoProps = { speed?: number; replayKey?: number };
+export type FeedbackDemoProps = {
+  preview?: boolean;
+  speed?: number;
+  replayKey?: number;
+  radius?: number;
+  className?: string;
+  style?: CSSProperties;
+};
 const EASE = [0.22, 1, 0.36, 1] as const;
 const normalizeSpeed = (speed: number) =>
   Number.isFinite(speed) && speed > 0 ? Math.max(0.1, speed) : 1;
@@ -69,13 +77,17 @@ function useSequence() {
 
 type SaveState = "idle" | "loading" | "success" | "error";
 export type StateButtonProps = FeedbackDemoProps & {
-  /** Omit for the explicitly labeled simulation. Supplied actions run only on click. */
+  /** Required for application use. Omit only with preview=true for a labeled simulation. */
   onAction?: () => Promise<void>;
 };
 
 /** Useful for save/submit feedback; the demo simulation can safely be restarted. */
 export function StateButton({
   speed: requestedSpeed = 1,
+  radius = 12,
+  preview = false,
+  className = "",
+  style,
   replayKey = 0,
   onAction,
 }: StateButtonProps) {
@@ -94,7 +106,7 @@ export function StateButton({
     [later, revision, speed],
   );
   const run = useCallback(() => {
-    if (pendingAction.current) return;
+    if (pendingAction.current || (!onAction && !preview)) return;
     const id = cancel();
     setState("loading");
     if (onAction) {
@@ -115,7 +127,7 @@ export function StateButton({
     } else {
       later(id, 850 / speed, () => complete(id));
     }
-  }, [cancel, complete, later, onAction, revision, speed]);
+  }, [cancel, complete, later, onAction, preview, revision, speed]);
   const replay = useCallback(() => {
     // A gallery replay must never repeat a real save or submit action.
     // Its promise cannot be cancelled by clearing a visual timer.
@@ -141,19 +153,33 @@ export function StateButton({
     error: TriangleAlert,
   }[state];
   return (
-    <div className="bf-preview bf-save-preview">
+    <div
+      data-preview={preview}
+      className={`bf-preview bf-save-preview ${className}`}
+      style={
+        {
+          "--bera-radius": `${Math.max(0, Math.min(24, radius))}px`,
+          ...style,
+        } as CSSProperties
+      }
+    >
       <div className="bf-main">
         <motion.button
           type="button"
           className="bf-state-button"
-          disabled={state === "loading" || state === "success"}
+          disabled={
+            (!preview && !onAction) ||
+            state === "loading" ||
+            state === "success"
+          }
           aria-label={labels[state]}
           aria-busy={state === "loading"}
           onClick={run}
           initial={false}
           animate={{
             width: widths[state],
-            borderRadius: state === "loading" ? 24 : 13,
+            borderRadius:
+              state === "loading" ? 24 : Math.max(0, Math.min(24, radius)),
           }}
           transition={{ duration: duration(0.42), ease: EASE }}
         >
@@ -233,28 +259,49 @@ export type TextSwapStatus = {
 };
 export type TextSwapProps = FeedbackDemoProps & {
   statuses?: readonly TextSwapStatus[];
+  /** Controlled status index for application progress or feedback. */
+  value?: number;
 };
 
 /** A status sentence changes directionally; the glyphs never stretch. */
 export function TextSwap({
   speed: requestedSpeed = 1,
+  radius = 12,
+  preview = false,
+  className = "",
+  style,
   replayKey = 0,
-  statuses = STATUSES,
+  statuses,
+  value,
 }: TextSwapProps) {
   const speed = normalizeSpeed(requestedSpeed);
   const reduced = Boolean(useReducedMotion());
   const [step, setStep] = useState(0);
   const next = useCallback(() => setStep((current) => current + 1), []);
   useReplay(replayKey, next);
-  const choices = statuses.length ? statuses : STATUSES;
-  const status = choices[step % choices.length];
+  const choices = statuses?.length ? statuses : preview ? STATUSES : [];
+  const current =
+    value === undefined
+      ? step
+      : Math.max(0, Math.floor(Number.isFinite(value) ? value : 0));
+  const status = choices[current % choices.length];
+  if (!status) return null;
   return (
-    <div className="bf-preview">
+    <div
+      data-preview={preview}
+      className={`bf-preview ${className}`}
+      style={
+        {
+          "--bera-radius": `${Math.max(0, Math.min(24, radius))}px`,
+          ...style,
+        } as CSSProperties
+      }
+    >
       <div className="bf-main">
         <div className="bf-status-line" aria-hidden="true">
           <AnimatePresence initial={false} mode="popLayout">
             <motion.div
-              key={step}
+              key={`${current}-${status.text}`}
               className="bf-status-content"
               initial="enter"
               animate="visible"
@@ -326,7 +373,12 @@ export function TextSwap({
       </div>
       <div className="bf-demo-footer">
         <span>Status feedback</span>
-        <button type="button" className="bf-small-button" onClick={next}>
+        <button
+          type="button"
+          className="bf-small-button"
+          disabled={value !== undefined}
+          onClick={next}
+        >
           Next state
           <ArrowRight size={13} aria-hidden="true" />
         </button>
@@ -341,6 +393,10 @@ type CopyState = "idle" | "pending" | "copied" | "error";
 /** The clipboard write is real. Replay only resets the feedback; it never writes. */
 export function CopyButton({
   speed: requestedSpeed = 1,
+  radius = 12,
+  preview = false,
+  className = "",
+  style,
   replayKey = 0,
   text = "npm install motion",
 }: CopyButtonProps) {
@@ -395,7 +451,16 @@ export function CopyButton({
   const Icon =
     state === "copied" ? Check : state === "error" ? TriangleAlert : Copy;
   return (
-    <div className="bf-preview bf-copy-preview">
+    <div
+      data-preview={preview}
+      className={`bf-preview bf-copy-preview ${className}`}
+      style={
+        {
+          "--bera-radius": `${Math.max(0, Math.min(24, radius))}px`,
+          ...style,
+        } as CSSProperties
+      }
+    >
       <div className="bf-main">
         <div className="bf-copy-block">
           <code className="bf-command" title={text}>

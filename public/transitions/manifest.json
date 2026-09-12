@@ -1,83 +1,176 @@
 {
   "name": "bera/ui",
-  "version": 1,
-  "dependencies": [
-    "react",
-    "motion",
-    "lucide-react"
-  ],
+  "version": 2,
   "transitions": [
     {
       "id": "state-button",
-      "exportName": "StateButton",
+      "name": "State button",
+      "description": "One action. Every state, connected.",
       "category": "Feedback",
-      "source": "/transitions/feedback.tsx",
-      "styles": "/transitions/feedback.css",
-      "agentBrief": "/transitions/state-button.agent.md"
+      "exportName": "StateButton",
+      "detail": "A button that carries the action through progress and completion. Use the demo replay to study the state changes.",
+      "when": "Save and submit actions that already have pending/success/error state.",
+      "integration": "Use the host save callback through onAction. Preserve validation, disabled state, and retry rules. Never use the simulation as real persistence.",
+      "props": "onAction, speed, radius, className, style",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "source": "/transitions/state-button.tsx",
+      "styles": "/transitions/state-button.css",
+      "recipe": "/transitions/state-button.agent.md",
+      "asset": "/transitions/state-button.json"
     },
     {
       "id": "sliding-tabs",
-      "exportName": "SlidingTabs",
+      "name": "Sliding tabs",
+      "description": "A selection that carries its momentum.",
       "category": "Navigation",
-      "source": "/transitions/selection.tsx",
-      "styles": "/transitions/selection.css",
-      "agentBrief": "/transitions/sliding-tabs.agent.md"
+      "exportName": "SlidingTabs",
+      "detail": "A shared selection surface follows the active tab. Designed for a small set of modes or views.",
+      "when": "A small set of modes, filters, or views with an existing selected value.",
+      "integration": "Connect value/onValueChange and supply items. Keep each tab associated with its existing panel.",
+      "props": "items, value, defaultValue, onValueChange, ariaLabel, speed, radius, className, style",
+      "dependencies": [
+        "motion"
+      ],
+      "source": "/transitions/sliding-tabs.tsx",
+      "styles": "/transitions/sliding-tabs.css",
+      "recipe": "/transitions/sliding-tabs.agent.md",
+      "asset": "/transitions/sliding-tabs.json"
     },
     {
       "id": "morphing-menu",
-      "exportName": "MorphingMenu",
+      "name": "Morphing menu",
+      "description": "A small surface becomes the next step.",
       "category": "Surfaces",
-      "source": "/transitions/surfaces.tsx",
-      "styles": "/transitions/surfaces.css",
-      "agentBrief": "/transitions/morphing-menu.agent.md"
+      "exportName": "MorphingMenu",
+      "detail": "A trigger and its options share one visual surface. Keep the menu close to the action it supports.",
+      "when": "A compact action trigger opening a nearby set of commands.",
+      "integration": "Supply actions with onSelect callbacks and a label. Preserve menu focus and keyboard behavior. In an existing Radix menu, adapt the surface motion instead of replacing the primitive.",
+      "props": "actions, label, speed, radius, className, style",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "source": "/transitions/morphing-menu.tsx",
+      "styles": "/transitions/morphing-menu.css",
+      "recipe": "/transitions/morphing-menu.agent.md",
+      "asset": "/transitions/morphing-menu.json"
     },
     {
       "id": "text-swap",
-      "exportName": "TextSwap",
+      "name": "Text swap",
+      "description": "A new thought, without a hard cut.",
       "category": "Feedback",
-      "source": "/transitions/feedback.tsx",
-      "styles": "/transitions/feedback.css",
-      "agentBrief": "/transitions/text-swap.agent.md"
+      "exportName": "TextSwap",
+      "detail": "Soft directional transitions for short statuses and labels. Keep essential information readable and announce changes appropriately.",
+      "when": "Short status messages that change as an operation progresses.",
+      "integration": "Connect the status index with value; supply statuses with text and icons. Keep a single polite announcement for a meaningful change.",
+      "props": "statuses, value, speed, radius, className, style",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "source": "/transitions/text-swap.tsx",
+      "styles": "/transitions/text-swap.css",
+      "recipe": "/transitions/text-swap.agent.md",
+      "asset": "/transitions/text-swap.json"
     },
     {
       "id": "expanding-search",
-      "exportName": "ExpandingSearch",
+      "name": "Expanding search",
+      "description": "Space appears exactly when you need it.",
       "category": "Navigation",
-      "source": "/transitions/selection.tsx",
-      "styles": "/transitions/selection.css",
-      "agentBrief": "/transitions/expanding-search.agent.md"
+      "exportName": "ExpandingSearch",
+      "detail": "A compact search trigger opens into an editable field, with deliberate focus handling and an easy return.",
+      "when": "Compact search or filter controls that need more space on focus.",
+      "integration": "Connect value/onValueChange; onSearch submits the query. Supply actual searchable items or replace demonstration result rendering.",
+      "props": "items, value, defaultValue, onValueChange, onSearch, placeholder, speed, radius, className, style",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "source": "/transitions/expanding-search.tsx",
+      "styles": "/transitions/expanding-search.css",
+      "recipe": "/transitions/expanding-search.agent.md",
+      "asset": "/transitions/expanding-search.json"
     },
     {
       "id": "toast-stack",
-      "exportName": "ToastStack",
+      "name": "Toast stack",
+      "description": "Feedback with a little sense of space.",
       "category": "Surfaces",
-      "source": "/transitions/surfaces.tsx",
-      "styles": "/transitions/surfaces.css",
-      "agentBrief": "/transitions/toast-stack.agent.md"
+      "exportName": "ToastStack",
+      "detail": "Transient feedback stacks and settles as notifications arrive or leave. Preview messages are demonstration data.",
+      "when": "A notification system with multiple recent messages.",
+      "integration": "Adapt the stack geometry to the existing toast provider. This reference uses a local Preview toast control; preserve the host provider's lifecycle, expiry, pause, live region, and dismissal semantics.",
+      "props": "title, description, replayKey, speed, radius, className, style",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "source": "/transitions/toast-stack.tsx",
+      "styles": "/transitions/toast-stack.css",
+      "recipe": "/transitions/toast-stack.agent.md",
+      "asset": "/transitions/toast-stack.json"
     },
     {
       "id": "copy-button",
-      "exportName": "CopyButton",
+      "name": "Copy feedback",
+      "description": "A tiny confirmation that feels complete.",
       "category": "Feedback",
-      "source": "/transitions/feedback.tsx",
-      "styles": "/transitions/feedback.css",
-      "agentBrief": "/transitions/copy-button.agent.md"
+      "exportName": "CopyButton",
+      "detail": "A clipboard action with precise state feedback. Copy succeeds only after the browser accepts the write.",
+      "when": "Copying a command, URL, identifier, or other text.",
+      "integration": "Pass the exact text. Confirm only after the clipboard write succeeds and preserve the manual fallback.",
+      "props": "text, speed, radius, className, style",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "source": "/transitions/copy-button.tsx",
+      "styles": "/transitions/copy-button.css",
+      "recipe": "/transitions/copy-button.agent.md",
+      "asset": "/transitions/copy-button.json"
     },
     {
       "id": "rolling-counter",
-      "exportName": "RollingCounter",
+      "name": "Rolling counter",
+      "description": "Numbers with direction, not distraction.",
       "category": "Navigation",
-      "source": "/transitions/selection.tsx",
-      "styles": "/transitions/selection.css",
-      "agentBrief": "/transitions/rolling-counter.agent.md"
+      "exportName": "RollingCounter",
+      "detail": "Digits move in the direction of the value change. Useful for quantities, totals, and compact numerical adjustments.",
+      "when": "Adjustable integer quantities, totals, or compact counters.",
+      "integration": "Connect value/onValueChange and the allowed range. The reference supports 0–999; adapt digit count explicitly for larger ranges or signed values.",
+      "props": "value, defaultValue, onValueChange, min, max, label, speed, radius, className, style",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "source": "/transitions/rolling-counter.tsx",
+      "styles": "/transitions/rolling-counter.css",
+      "recipe": "/transitions/rolling-counter.agent.md",
+      "asset": "/transitions/rolling-counter.json"
     },
     {
       "id": "accordion",
-      "exportName": "Accordion",
+      "name": "Accordion",
+      "description": "More detail. The same quiet rhythm.",
       "category": "Surfaces",
-      "source": "/transitions/surfaces.tsx",
-      "styles": "/transitions/surfaces.css",
-      "agentBrief": "/transitions/accordion.agent.md"
+      "exportName": "Accordion",
+      "detail": "Disclosure with a continuous height change and a coordinated content reveal. Preserve the relationship between heading and content.",
+      "when": "Expandable help, preferences, and short supporting details.",
+      "integration": "Supply items and connect value/onValueChange if controlled. Keep the heading/panel relationship and make closed interactive content inert.",
+      "props": "items, value, defaultValue, onValueChange, speed, radius, className, style",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "source": "/transitions/accordion.tsx",
+      "styles": "/transitions/accordion.css",
+      "recipe": "/transitions/accordion.agent.md",
+      "asset": "/transitions/accordion.json"
     }
   ]
 }

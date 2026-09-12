@@ -1,0 +1,409 @@
+/*
+MIT License
+
+Copyright (c) 2026 Alejandro Beracasa
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+.bs-demo {
+  --bs-text: var(--foreground, #ececec);
+  --bs-muted: var(--muted-foreground, #888);
+  --bs-surface: var(--popover, #1a1a1a);
+  --bs-border: var(--border, #333);
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 230px;
+  padding: 24px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bs-text);
+  font-family: inherit;
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.bs-demo *,
+.bs-demo *::before,
+.bs-demo *::after {
+  box-sizing: border-box;
+}
+.bs-demo button,
+.bs-demo input {
+  font: inherit;
+}
+.bs-demo button {
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+.bs-demo button:disabled {
+  cursor: default;
+}
+.bs-demo button:focus-visible,
+.bs-tab-panel:focus-visible {
+  outline: 2px solid var(--bs-text);
+  outline-offset: 4px;
+}
+.bs-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.bs-tabs-body {
+  width: 280px;
+  max-width: 100%;
+}
+.bs-tablist {
+  display: flex;
+  gap: 3px;
+  width: 100%;
+  padding: 4px;
+  border: 1px solid var(--bs-border);
+  border-radius: var(--bera-radius, 13px);
+  background: var(--background, #111);
+}
+.bs-tab {
+  position: relative;
+  isolation: isolate;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 36px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--bera-radius, 9px);
+  background: transparent;
+  color: var(--bs-muted);
+  font-size: 12px !important;
+  line-height: 1;
+  white-space: nowrap;
+  transition: color 150ms;
+}
+.bs-tab:hover {
+  color: var(--bs-text);
+}
+.bs-tab[aria-selected="true"] {
+  color: var(--bs-text);
+}
+.bs-tab-pill {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border: 1px solid var(--bs-border);
+  border-radius: var(--bera-radius, 9px);
+  background: var(--accent, #282828);
+  box-shadow:
+    0 1px 3px #0004,
+    inset 0 1px 0 #ffffff06;
+}
+.bs-tab-label {
+  position: relative;
+}
+.bs-tab-panel {
+  min-height: 116px;
+  padding: 15px 3px 0;
+  border-radius: 6px;
+}
+.bs-tab-panel[hidden] {
+  display: none;
+}
+.bs-note-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.bs-note {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  height: 27px;
+}
+.bs-note-dot {
+  flex: 0 0 4px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #383838;
+}
+.bs-note-dot-unread {
+  background: #d3d3d3;
+}
+.bs-note-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  color: var(--bs-text);
+}
+.bs-note-time {
+  margin-left: auto;
+  font-size: 9px;
+  color: var(--bs-muted);
+  white-space: nowrap;
+}
+.bs-note-summary {
+  margin-top: 10px;
+  padding-left: 12px;
+  color: var(--bs-muted);
+  font-size: 10px;
+}
+
+.bs-search-stage {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 36px;
+}
+.bs-search-form {
+  position: relative;
+  max-width: 100%;
+  height: 44px;
+  border: 1px solid var(--bs-border);
+  border-radius: var(--bera-radius, 12px);
+  background: var(--bs-surface);
+  box-shadow:
+    0 2px 4px #0002,
+    inset 0 1px 0 #ffffff03;
+}
+.bs-search-form:focus-within {
+  box-shadow: 0 0 0 2px #bcbcbc;
+}
+.bs-search-trigger {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 42px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--bera-radius, 11px);
+  background: transparent;
+  color: var(--bs-text);
+}
+.bs-search-trigger:hover {
+  color: var(--bs-text);
+}
+.bs-search-icon {
+  position: absolute;
+  left: 13px;
+  top: 12px;
+  display: flex;
+}
+.bs-search-label {
+  position: absolute;
+  top: 13px;
+  left: 40px;
+  line-height: 16px;
+  pointer-events: none;
+}
+.bs-search-input {
+  position: absolute;
+  top: 0;
+  left: 40px;
+  width: calc(100% - 80px);
+  min-width: 0;
+  height: 42px;
+  padding: 0;
+  outline: 0;
+  border: 0;
+  background: transparent;
+  color: var(--bs-text);
+  font-size: 12px !important;
+  caret-color: var(--bs-text);
+}
+.bs-search-input::placeholder {
+  color: var(--bs-muted);
+}
+.bs-search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+.bs-search-clear {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  color: var(--bs-muted);
+  background: transparent;
+  transition:
+    color 150ms,
+    background 150ms;
+}
+.bs-search-clear:hover {
+  color: var(--bs-text);
+  background: #ffffff06;
+}
+.bs-search-clear-glyph {
+  display: grid;
+  place-items: center;
+}
+.bs-search-result-space {
+  width: 100%;
+  min-height: 45px;
+  padding-top: 16px;
+  text-align: center;
+}
+.bs-search-hint {
+  color: var(--bs-muted);
+  font-size: 10px;
+  line-height: 19px;
+}
+.bs-search-results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+.bs-search-result {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border: 1px solid var(--bs-border);
+  border-radius: 5px;
+  color: var(--bs-text);
+  font-size: 10px;
+  line-height: 17px;
+}
+.bs-search-result svg {
+  color: var(--bs-muted);
+}
+
+.bs-counter-demo {
+  flex-direction: column;
+  gap: 14px;
+}
+.bs-counter-label {
+  color: var(--bs-muted);
+  font-size: 11px;
+  line-height: 16px;
+}
+.bs-counter-control {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.bs-counter-button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--bs-border);
+  border-radius: 50%;
+  color: var(--bs-text);
+  background: var(--bs-surface);
+  box-shadow: inset 0 1px 0 #ffffff03;
+  transition:
+    color 150ms,
+    border-color 150ms,
+    background 150ms,
+    opacity 150ms;
+}
+.bs-counter-button:hover:not(:disabled) {
+  color: var(--bs-text);
+  background: var(--accent, #232323);
+  border-color: var(--bs-border);
+}
+.bs-counter-button:disabled {
+  opacity: 0.3;
+}
+.bs-counter-value {
+  position: relative;
+}
+.bs-counter-digits {
+  display: flex;
+  font-size: 48px;
+  line-height: 1;
+  font-weight: 450;
+  letter-spacing: -2px;
+  font-variant-numeric: tabular-nums;
+}
+.bs-digit-place {
+  width: 30px;
+  transition: color 180ms;
+}
+.bs-digit-muted {
+  color: #373737;
+}
+.bs-digit-window {
+  display: block;
+  height: 58px;
+  overflow: hidden;
+  mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent);
+}
+.bs-digit-strip {
+  display: flex;
+  flex-direction: column;
+  height: 2900px;
+  will-change: transform;
+}
+.bs-digit {
+  flex: 0 0 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bs-counter-hint {
+  margin-top: 0;
+  color: var(--bs-muted);
+  font-size: 10px;
+  line-height: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bs-demo *,
+  .bs-demo *::before,
+  .bs-demo *::after {
+    transition-duration: 0s !important;
+  }
+}
+
+@media (pointer: coarse) {
+  .bs-search-input {
+    font-size: 16px !important;
+  }
+}
+
+/* Application imports use the natural component size. */
+.bs-demo[data-preview="false"] {
+  min-height: 0;
+  padding: 0;
+  max-width: 100%;
+  width: fit-content;
+}
+.bs-demo[data-preview="false"] .bs-search-stage {
+  padding-top: 0;
+}
+.bs-demo[data-preview="false"] .bs-counter-hint {
+  display: none;
+}

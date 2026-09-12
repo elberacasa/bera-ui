@@ -6,6 +6,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type CSSProperties,
   type KeyboardEvent,
   type ReactNode,
 } from "react";
@@ -22,6 +23,10 @@ import { ArrowLeft, Check, Minus, Plus, Search, X } from "lucide-react";
 import "./selection.css";
 
 type PlaybackProps = {
+  preview?: boolean;
+  radius?: number;
+  className?: string;
+  style?: CSSProperties;
   /** 1 is normal speed; 0.35 is slow motion. */
   speed?: number;
   /** Replays the interaction without changing or emitting a controlled value. */
@@ -109,6 +114,10 @@ export function SlidingTabs({
   onValueChange,
   ariaLabel = "Filter notes",
   speed = 1,
+  radius = 12,
+  preview = false,
+  className = "",
+  style,
   replayKey = 0,
 }: SlidingTabsProps) {
   const [localValue, setLocalValue] = useState(
@@ -170,7 +179,16 @@ export function SlidingTabs({
   if (!active) return null;
 
   return (
-    <div className="bs-demo bs-tabs-demo">
+    <div
+      data-preview={preview}
+      className={`bs-demo bs-tabs-demo ${className}`}
+      style={
+        {
+          "--bera-radius": `${Math.max(0, Math.min(24, radius))}px`,
+          ...style,
+        } as CSSProperties
+      }
+    >
       <LayoutGroup id={id}>
         <motion.div
           className="bs-tabs-body"
@@ -265,6 +283,10 @@ export function ExpandingSearch({
   onSearch,
   placeholder = "Find a component…",
   speed = 1,
+  radius = 12,
+  preview = false,
+  className = "",
+  style,
   replayKey = 0,
 }: ExpandingSearchProps) {
   const [localValue, setLocalValue] = useState(defaultValue);
@@ -312,7 +334,16 @@ export function ExpandingSearch({
   };
 
   return (
-    <div className="bs-demo bs-search-demo">
+    <div
+      data-preview={preview}
+      className={`bs-demo bs-search-demo ${className}`}
+      style={
+        {
+          "--bera-radius": `${Math.max(0, Math.min(24, radius))}px`,
+          ...style,
+        } as CSSProperties
+      }
+    >
       <motion.div
         className="bs-search-stage"
         initial={false}
@@ -589,6 +620,10 @@ export function RollingCounter({
   max = 999,
   label = "Quantity",
   speed = 1,
+  radius = 12,
+  preview = false,
+  className = "",
+  style,
   replayKey = 0,
 }: RollingCounterProps) {
   const low = clampCount(min, 0, 999);
@@ -629,7 +664,16 @@ export function RollingCounter({
   };
 
   return (
-    <div className="bs-demo bs-counter-demo">
+    <div
+      data-preview={preview}
+      className={`bs-demo bs-counter-demo ${className}`}
+      style={
+        {
+          "--bera-radius": `${Math.max(0, Math.min(24, radius))}px`,
+          ...style,
+        } as CSSProperties
+      }
+    >
       <div className="bs-counter-label" id={`${id}-label`}>
         {label}
       </div>

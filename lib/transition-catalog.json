@@ -1,0 +1,110 @@
+[
+  {
+    "id": "state-button",
+    "name": "State button",
+    "description": "One action. Every state, connected.",
+    "category": "Feedback",
+    "group": "feedback",
+    "exportName": "StateButton",
+    "detail": "A button that carries the action through progress and completion. Use the demo replay to study the state changes.",
+    "when": "Save and submit actions that already have pending/success/error state.",
+    "integration": "Use the host save callback through onAction. Preserve validation, disabled state, and retry rules. Never use the simulation as real persistence.",
+    "props": "onAction, speed, radius, className, style"
+  },
+  {
+    "id": "sliding-tabs",
+    "name": "Sliding tabs",
+    "description": "A selection that carries its momentum.",
+    "category": "Navigation",
+    "group": "selection",
+    "exportName": "SlidingTabs",
+    "detail": "A shared selection surface follows the active tab. Designed for a small set of modes or views.",
+    "when": "A small set of modes, filters, or views with an existing selected value.",
+    "integration": "Connect value/onValueChange and supply items. Keep each tab associated with its existing panel.",
+    "props": "items, value, defaultValue, onValueChange, ariaLabel, speed, radius, className, style"
+  },
+  {
+    "id": "morphing-menu",
+    "name": "Morphing menu",
+    "description": "A small surface becomes the next step.",
+    "category": "Surfaces",
+    "group": "surfaces",
+    "exportName": "MorphingMenu",
+    "detail": "A trigger and its options share one visual surface. Keep the menu close to the action it supports.",
+    "when": "A compact action trigger opening a nearby set of commands.",
+    "integration": "Supply actions with onSelect callbacks and a label. Preserve menu focus and keyboard behavior. In an existing Radix menu, adapt the surface motion instead of replacing the primitive.",
+    "props": "actions, label, speed, radius, className, style"
+  },
+  {
+    "id": "text-swap",
+    "name": "Text swap",
+    "description": "A new thought, without a hard cut.",
+    "category": "Feedback",
+    "group": "feedback",
+    "exportName": "TextSwap",
+    "detail": "Soft directional transitions for short statuses and labels. Keep essential information readable and announce changes appropriately.",
+    "when": "Short status messages that change as an operation progresses.",
+    "integration": "Connect the status index with value; supply statuses with text and icons. Keep a single polite announcement for a meaningful change.",
+    "props": "statuses, value, speed, radius, className, style"
+  },
+  {
+    "id": "expanding-search",
+    "name": "Expanding search",
+    "description": "Space appears exactly when you need it.",
+    "category": "Navigation",
+    "group": "selection",
+    "exportName": "ExpandingSearch",
+    "detail": "A compact search trigger opens into an editable field, with deliberate focus handling and an easy return.",
+    "when": "Compact search or filter controls that need more space on focus.",
+    "integration": "Connect value/onValueChange; onSearch submits the query. Supply actual searchable items or replace demonstration result rendering.",
+    "props": "items, value, defaultValue, onValueChange, onSearch, placeholder, speed, radius, className, style"
+  },
+  {
+    "id": "toast-stack",
+    "name": "Toast stack",
+    "description": "Feedback with a little sense of space.",
+    "category": "Surfaces",
+    "group": "surfaces",
+    "exportName": "ToastStack",
+    "detail": "Transient feedback stacks and settles as notifications arrive or leave. Preview messages are demonstration data.",
+    "when": "A notification system with multiple recent messages.",
+    "integration": "Adapt the stack geometry to the existing toast provider. This reference uses a local Preview toast control; preserve the host provider's lifecycle, expiry, pause, live region, and dismissal semantics.",
+    "props": "title, description, replayKey, speed, radius, className, style"
+  },
+  {
+    "id": "copy-button",
+    "name": "Copy feedback",
+    "description": "A tiny confirmation that feels complete.",
+    "category": "Feedback",
+    "group": "feedback",
+    "exportName": "CopyButton",
+    "detail": "A clipboard action with precise state feedback. Copy succeeds only after the browser accepts the write.",
+    "when": "Copying a command, URL, identifier, or other text.",
+    "integration": "Pass the exact text. Confirm only after the clipboard write succeeds and preserve the manual fallback.",
+    "props": "text, speed, radius, className, style"
+  },
+  {
+    "id": "rolling-counter",
+    "name": "Rolling counter",
+    "description": "Numbers with direction, not distraction.",
+    "category": "Navigation",
+    "group": "selection",
+    "exportName": "RollingCounter",
+    "detail": "Digits move in the direction of the value change. Useful for quantities, totals, and compact numerical adjustments.",
+    "when": "Adjustable integer quantities, totals, or compact counters.",
+    "integration": "Connect value/onValueChange and the allowed range. The reference supports 0–999; adapt digit count explicitly for larger ranges or signed values.",
+    "props": "value, defaultValue, onValueChange, min, max, label, speed, radius, className, style"
+  },
+  {
+    "id": "accordion",
+    "name": "Accordion",
+    "description": "More detail. The same quiet rhythm.",
+    "category": "Surfaces",
+    "group": "surfaces",
+    "exportName": "Accordion",
+    "detail": "Disclosure with a continuous height change and a coordinated content reveal. Preserve the relationship between heading and content.",
+    "when": "Expandable help, preferences, and short supporting details.",
+    "integration": "Supply items and connect value/onValueChange if controlled. Keep the heading/panel relationship and make closed interactive content inert.",
+    "props": "items, value, defaultValue, onValueChange, speed, radius, className, style"
+  }
+]

@@ -1,8 +1,31 @@
+/*
+MIT License
+
+Copyright (c) 2026 Alejandro Beracasa
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
 .bs-demo {
-  --bs-text: #ececec;
-  --bs-muted: #888;
-  --bs-surface: #1a1a1a;
-  --bs-border: #333;
+  --bs-text: var(--foreground, #ececec);
+  --bs-muted: var(--muted-foreground, #888);
+  --bs-surface: var(--popover, #1a1a1a);
+  --bs-border: var(--border, #333);
   box-sizing: border-box;
   width: 100%;
   min-height: 230px;
@@ -34,7 +57,7 @@
 }
 .bs-demo button:focus-visible,
 .bs-tab-panel:focus-visible {
-  outline: 2px solid #ececec;
+  outline: 2px solid var(--bs-text);
   outline-offset: 4px;
 }
 .bs-sr-only {
@@ -58,9 +81,9 @@
   gap: 3px;
   width: 100%;
   padding: 4px;
-  border: 1px solid #242424;
-  border-radius: 13px;
-  background: #111;
+  border: 1px solid var(--bs-border);
+  border-radius: var(--bera-radius, 13px);
+  background: var(--background, #111);
 }
 .bs-tab {
   position: relative;
@@ -70,7 +93,7 @@
   min-height: 36px;
   padding: 0 8px;
   border: 0;
-  border-radius: 9px;
+  border-radius: var(--bera-radius, 9px);
   background: transparent;
   color: var(--bs-muted);
   font-size: 12px !important;
@@ -79,7 +102,7 @@
   transition: color 150ms;
 }
 .bs-tab:hover {
-  color: #ccc;
+  color: var(--bs-text);
 }
 .bs-tab[aria-selected="true"] {
   color: var(--bs-text);
@@ -88,9 +111,9 @@
   position: absolute;
   z-index: -1;
   inset: 0;
-  border: 1px solid #373737;
-  border-radius: 9px;
-  background: #282828;
+  border: 1px solid var(--bs-border);
+  border-radius: var(--bera-radius, 9px);
+  background: var(--accent, #282828);
   box-shadow:
     0 1px 3px #0004,
     inset 0 1px 0 #ffffff06;
@@ -132,18 +155,18 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 11px;
-  color: #bbb;
+  color: var(--bs-text);
 }
 .bs-note-time {
   margin-left: auto;
   font-size: 9px;
-  color: #777;
+  color: var(--bs-muted);
   white-space: nowrap;
 }
 .bs-note-summary {
   margin-top: 10px;
   padding-left: 12px;
-  color: #777;
+  color: var(--bs-muted);
   font-size: 10px;
 }
 
@@ -159,7 +182,7 @@
   max-width: 100%;
   height: 44px;
   border: 1px solid var(--bs-border);
-  border-radius: 12px;
+  border-radius: var(--bera-radius, 12px);
   background: var(--bs-surface);
   box-shadow:
     0 2px 4px #0002,
@@ -175,12 +198,12 @@
   height: 42px;
   padding: 0;
   border: 0;
-  border-radius: 11px;
+  border-radius: var(--bera-radius, 11px);
   background: transparent;
-  color: #bbb;
+  color: var(--bs-text);
 }
 .bs-search-trigger:hover {
-  color: #ececec;
+  color: var(--bs-text);
 }
 .bs-search-icon {
   position: absolute;
@@ -208,10 +231,10 @@
   background: transparent;
   color: var(--bs-text);
   font-size: 12px !important;
-  caret-color: #ececec;
+  caret-color: var(--bs-text);
 }
 .bs-search-input::placeholder {
-  color: #777;
+  color: var(--bs-muted);
 }
 .bs-search-input::-webkit-search-cancel-button {
   -webkit-appearance: none;
@@ -227,14 +250,14 @@
   padding: 0;
   border: 0;
   border-radius: 8px;
-  color: #888;
+  color: var(--bs-muted);
   background: transparent;
   transition:
     color 150ms,
     background 150ms;
 }
 .bs-search-clear:hover {
-  color: #ececec;
+  color: var(--bs-text);
   background: #ffffff06;
 }
 .bs-search-clear-glyph {
@@ -248,7 +271,7 @@
   text-align: center;
 }
 .bs-search-hint {
-  color: #777;
+  color: var(--bs-muted);
   font-size: 10px;
   line-height: 19px;
 }
@@ -264,14 +287,14 @@
   align-items: center;
   gap: 4px;
   padding: 2px 6px;
-  border: 1px solid #292929;
+  border: 1px solid var(--bs-border);
   border-radius: 5px;
-  color: #bbb;
+  color: var(--bs-text);
   font-size: 10px;
   line-height: 17px;
 }
 .bs-search-result svg {
-  color: #888;
+  color: var(--bs-muted);
 }
 
 .bs-counter-demo {
@@ -279,7 +302,7 @@
   gap: 14px;
 }
 .bs-counter-label {
-  color: #888;
+  color: var(--bs-muted);
   font-size: 11px;
   line-height: 16px;
 }
@@ -296,7 +319,7 @@
   padding: 0;
   border: 1px solid var(--bs-border);
   border-radius: 50%;
-  color: #bbb;
+  color: var(--bs-text);
   background: var(--bs-surface);
   box-shadow: inset 0 1px 0 #ffffff03;
   transition:
@@ -306,9 +329,9 @@
     opacity 150ms;
 }
 .bs-counter-button:hover:not(:disabled) {
-  color: #fff;
-  background: #232323;
-  border-color: #484848;
+  color: var(--bs-text);
+  background: var(--accent, #232323);
+  border-color: var(--bs-border);
 }
 .bs-counter-button:disabled {
   opacity: 0.3;
@@ -352,7 +375,7 @@
 }
 .bs-counter-hint {
   margin-top: 0;
-  color: #777;
+  color: var(--bs-muted);
   font-size: 10px;
   line-height: 16px;
 }
@@ -369,4 +392,18 @@
   .bs-search-input {
     font-size: 16px !important;
   }
+}
+
+/* Application imports use the natural component size. */
+.bs-demo[data-preview="false"] {
+  min-height: 0;
+  padding: 0;
+  max-width: 100%;
+  width: fit-content;
+}
+.bs-demo[data-preview="false"] .bs-search-stage {
+  padding-top: 0;
+}
+.bs-demo[data-preview="false"] .bs-counter-hint {
+  display: none;
 }

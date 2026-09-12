@@ -1,3 +1,26 @@
+/*
+MIT License
+
+Copyright (c) 2026 Alejandro Beracasa
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
 .bt-surface-demo {
   --bt-foreground: var(--foreground, #eee);
   --bt-muted: var(--muted-foreground, #888);
@@ -192,7 +215,7 @@
   width: min(282px, calc(100% - 30px));
   overflow: hidden;
   border: 1px solid var(--bt-border);
-  border-radius: 12px;
+  border-radius: var(--bera-radius, 12px);
   background: var(--bt-popover);
   box-shadow: 0 5px 20px #0003;
 }
@@ -270,7 +293,7 @@
   min-height: 76px;
   padding: 14px 43px 14px 14px;
   border: 1px solid var(--bt-border);
-  border-radius: 11px;
+  border-radius: var(--bera-radius, 11px);
   background: var(--bt-popover);
   box-shadow:
     0 8px 16px #0004,
@@ -323,7 +346,7 @@
   height: 44px;
   padding: 0;
   border: 0;
-  border-radius: 10px;
+  border-radius: var(--bera-radius, 10px);
   color: var(--bt-muted);
   background: transparent;
 }
@@ -384,4 +407,41 @@
   .bt-surface-demo *::after {
     scroll-behavior: auto;
   }
+}
+
+/* Gallery framing does not travel into the host application. */
+.bt-surface-demo[data-preview="false"] {
+  height: auto;
+  max-width: 100%;
+  width: fit-content;
+}
+.bt-morph-preview[data-preview="false"] .bt-morph-surface {
+  position: relative;
+  right: auto;
+  bottom: auto;
+}
+.bt-surface-demo[data-preview="false"] .bt-demo-feedback,
+.bt-surface-demo[data-preview="false"] .bt-pin-indicator {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.bt-accordion-preview[data-preview="false"] {
+  width: 282px;
+}
+.bt-accordion-preview[data-preview="false"] .bt-accordion {
+  width: 100%;
+}
+.bt-toast-preview[data-preview="false"] {
+  width: 268px;
+  height: 120px;
+}
+.bt-toast-preview[data-preview="false"] .bt-toast-position {
+  top: 24px;
+  width: 100%;
+}
+.bt-toast-preview[data-preview="false"] .bt-toast-add {
+  display: none;
 }

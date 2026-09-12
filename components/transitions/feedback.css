@@ -58,7 +58,7 @@
   padding: 0;
   border: 1px solid
     color-mix(in srgb, var(--bf-primary) 88%, var(--bf-primary-ink));
-  border-radius: 13px;
+  border-radius: var(--bera-radius, 13px);
   white-space: nowrap;
   font-weight: 550 !important;
   letter-spacing: -0.18px;
@@ -183,7 +183,7 @@
   color: var(--bf-ink);
   background: var(--bf-panel);
   border: 1px solid var(--bf-border);
-  border-radius: 10px;
+  border-radius: var(--bera-radius, 10px);
   box-shadow:
     0 1px 0 #ffffff05 inset,
     0 2px 5px #00000020;
@@ -239,4 +239,18 @@
   .bf-manual-copy input {
     font-size: 16px;
   }
+}
+
+/* Reference controls and the presentation frame are opt-in for galleries. */
+.bf-preview[data-preview="false"] {
+  height: auto;
+  width: fit-content;
+  max-width: 100%;
+}
+.bf-preview[data-preview="false"] .bf-main {
+  height: auto;
+  padding: 0;
+}
+.bf-preview[data-preview="false"] .bf-demo-footer {
+  display: none;
 }

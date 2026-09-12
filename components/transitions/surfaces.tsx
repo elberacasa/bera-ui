@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import type { KeyboardEvent, ReactNode } from "react";
+import type { CSSProperties, KeyboardEvent, ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   Bell,
@@ -17,6 +17,10 @@ import {
 import "./surfaces.css";
 
 export interface SurfaceMotionProps {
+  preview?: boolean;
+  radius?: number;
+  className?: string;
+  style?: CSSProperties;
   /** Playback rate: 1 is normal; .35 is slow motion. */
   speed?: number;
   /** Change this value to exercise the next transition. */
@@ -66,6 +70,10 @@ function useSurfaceMotion(speed: number) {
  */
 export function MorphingMenu({
   speed = 1,
+  radius = 12,
+  preview = false,
+  className = "",
+  style,
   replayKey = 0,
   label = "Actions",
   actions: suppliedActions,
@@ -187,7 +195,16 @@ export function MorphingMenu({
   const menuLabel = label === "Actions" ? "Quick actions" : label;
 
   return (
-    <div className="bt-surface-demo bt-morph-preview">
+    <div
+      data-preview={preview}
+      className={`bt-surface-demo bt-morph-preview ${className}`}
+      style={
+        {
+          "--bera-radius": `${Math.max(0, Math.min(24, radius))}px`,
+          ...style,
+        } as CSSProperties
+      }
+    >
       {pinned ? (
         <span className="bt-pin-indicator">
           <Pin size={12} aria-hidden="true" /> Pinned
@@ -200,7 +217,7 @@ export function MorphingMenu({
         animate={{
           width: open ? 238 : 122,
           height: open ? 53 + Math.min(actions.length, 3) * 45 : 44,
-          borderRadius: open ? 14 : 12,
+          borderRadius: Math.max(0, Math.min(24, radius)),
         }}
         transition={spring}
         onBlur={(event) => {
@@ -362,6 +379,10 @@ export interface AccordionProps extends SurfaceMotionProps {
 /** Intrinsic content height keeps text unscaled, including during reversals. */
 export function Accordion({
   speed = 1,
+  radius = 12,
+  preview = false,
+  className = "",
+  style,
   replayKey = 0,
   items = accordionItems,
   value,
@@ -391,7 +412,16 @@ export function Accordion({
   }
 
   return (
-    <div className="bt-surface-demo bt-accordion-preview">
+    <div
+      data-preview={preview}
+      className={`bt-surface-demo bt-accordion-preview ${className}`}
+      style={
+        {
+          "--bera-radius": `${Math.max(0, Math.min(24, radius))}px`,
+          ...style,
+        } as CSSProperties
+      }
+    >
       <div className="bt-accordion">
         {items.map((item, index) => {
           const isOpen = expanded === index;
@@ -472,6 +502,10 @@ export interface ToastStackProps extends SurfaceMotionProps {
 /** Local preview notifications. The newest is on top; dismiss reveals the next. */
 export function ToastStack({
   speed = 1,
+  radius = 12,
+  preview = false,
+  className = "",
+  style,
   replayKey = 0,
   title = "Preview notification",
   description = "Created locally in this demo.",
@@ -534,7 +568,16 @@ export function ToastStack({
   );
 
   return (
-    <div className="bt-surface-demo bt-toast-preview">
+    <div
+      data-preview={preview}
+      className={`bt-surface-demo bt-toast-preview ${className}`}
+      style={
+        {
+          "--bera-radius": `${Math.max(0, Math.min(24, radius))}px`,
+          ...style,
+        } as CSSProperties
+      }
+    >
       <div className="bt-toast-position">
         <AnimatePresence initial={false}>
           {!toasts.length ? (
