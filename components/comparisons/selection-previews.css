@@ -1,0 +1,55 @@
+.cx-selection > .bs-demo {
+  width: 100%;
+  max-width: 280px;
+}
+
+.cx-instant {
+  --bera-radius: 12px;
+}
+
+.cx-instant *,
+.cx-instant *::before,
+.cx-instant *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+.cx-file-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cx-file {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 29px;
+  font-size: 10px;
+}
+
+.cx-file svg {
+  flex: 0 0 auto;
+  color: var(--bs-muted);
+}
+
+.cx-file-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cx-file-type {
+  margin-left: auto;
+  color: var(--bs-muted);
+  font-size: 9px;
+}
+
+.cx-file-count {
+  margin: 10px 0 0 21px;
+  color: var(--bs-muted);
+  font-size: 10px;
+}

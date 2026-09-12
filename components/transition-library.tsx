@@ -123,20 +123,15 @@ export function TransitionLibrary() {
         </section>
         <MotionComparison
           className="tl-hero-comparison"
-          onExplore={() => {
+          showHeading={false}
+          onExplore={(id) => {
             returnFocus.current =
               document.activeElement instanceof HTMLButtonElement
                 ? document.activeElement
                 : null;
-            setSelectedId("accordion");
+            setSelectedId(id);
           }}
         />
-        <Link className="tl-adapter-link" href="/integrations/radix-menu">
-          <span>
-            Already have a menu? <strong>Add Bera to shadcn / Radix.</strong>
-          </span>
-          <ArrowUpRight size={16} aria-hidden="true" />
-        </Link>
         <section id="transitions" aria-label="Transition collection">
           <div className="tl-toolbar">
             <div

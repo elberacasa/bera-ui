@@ -297,6 +297,10 @@ const defaultSearchItems = ["Button", "Popover", "Tabs", "Search", "Counter"];
 
 export type ExpandingSearchProps = PlaybackProps & {
   items?: readonly string[];
+  /** Controlled disclosure state. External changes never move focus. */
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -307,6 +311,9 @@ export type ExpandingSearchProps = PlaybackProps & {
 /** A compact search that filters local items. Escape restores the trigger's focus. */
 export function ExpandingSearch({
   items = defaultSearchItems,
+  open: controlledOpen,
+  defaultOpen,
+  onOpenChange,
   value,
   defaultValue = "",
   onValueChange,
@@ -321,11 +328,13 @@ export function ExpandingSearch({
 }: ExpandingSearchProps) {
   const [localValue, setLocalValue] = useState(defaultValue);
   const query = value ?? localValue;
-  const [open, setOpen] = useState(Boolean(query));
+  const [localOpen, setLocalOpen] = useState(defaultOpen ?? Boolean(query));
+  const open = controlledOpen ?? localOpen;
   const focus = useKeyboardFocus();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const focusTarget = useRef<"input" | "trigger" | null>(null);
+  const [focusRequest, setFocusRequest] = useState(0);
   const previousReplay = useRef(replayKey);
   const [appliedReplay, setAppliedReplay] = useState(replayKey);
   const id = useId();
@@ -337,26 +346,34 @@ export function ExpandingSearch({
 
   if (appliedReplay !== replayKey) {
     setAppliedReplay(replayKey);
-    setOpen(!open);
+    if (controlledOpen === undefined) setLocalOpen(!open);
   }
 
   useEffect(() => {
     const replayed = previousReplay.current !== replayKey;
     previousReplay.current = replayKey;
-    if (!replayed && open && focusTarget.current === "input")
-      inputRef.current?.focus({ preventScroll: true });
-    else if (!replayed && !open && focusTarget.current === "trigger")
-      triggerRef.current?.focus({ preventScroll: true });
+    const target =
+      open && focusTarget.current === "input"
+        ? inputRef.current
+        : !open && focusTarget.current === "trigger"
+          ? triggerRef.current
+          : null;
+    if (!replayed && target?.getClientRects().length)
+      target.focus({ preventScroll: true });
     focusTarget.current = null;
-  }, [open, replayKey]);
+  }, [open, replayKey, focusRequest]);
 
   const openSearch = () => {
     focusTarget.current = "input";
-    setOpen(true);
+    setFocusRequest((request) => request + 1);
+    if (controlledOpen === undefined) setLocalOpen(true);
+    onOpenChange?.(true);
   };
   const closeSearch = () => {
     focusTarget.current = "trigger";
-    setOpen(false);
+    setFocusRequest((request) => request + 1);
+    if (controlledOpen === undefined) setLocalOpen(false);
+    onOpenChange?.(false);
   };
 
   const change = (next: string) => {
@@ -419,8 +436,13 @@ export function ExpandingSearch({
             aria-label={open ? "Submit search" : "Open search"}
             aria-expanded={open}
             aria-controls={`${id}-search-input`}
-            onClick={() => {
-              if (!open) openSearch();
+            onClick={(event) => {
+              if (!open) {
+                // The controlled update changes this button to type=submit.
+                // Cancel this opening click's default action before that commit.
+                event.preventDefault();
+                openSearch();
+              }
             }}
             whileTap={timing.reduced ? undefined : { scale: 0.94 }}
             transition={timing.settle}

@@ -56,8 +56,8 @@
     "exportName": "ExpandingSearch",
     "detail": "A compact search trigger opens into an editable field, with deliberate focus handling and an easy return.",
     "when": "Compact search or filter controls that need more space on focus.",
-    "integration": "Connect value/onValueChange; onSearch submits the query. Supply actual searchable items or replace demonstration result rendering.",
-    "props": "items, value, defaultValue, onValueChange, onSearch, placeholder, speed, radius, className, style"
+    "integration": "Connect value/onValueChange and optionally open/onOpenChange. Only direct interaction moves focus; external disclosure updates and controlled replay preserve it. onSearch submits the query. Supply actual searchable items or replace demonstration result rendering.",
+    "props": "items, open, defaultOpen, onOpenChange, value, defaultValue, onValueChange, onSearch, placeholder, speed, radius, className, style"
   },
   {
     "id": "toast-stack",

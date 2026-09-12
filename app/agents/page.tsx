@@ -53,9 +53,6 @@ export default function AgentsPage() {
         </p>
       </section>
       <MotionComparison className="ba-comparison" showHeading />
-      <Link className="ba-example-link" href="/#accordion">
-        Explore the accordion recipe <ArrowUpRight size={13} />
-      </Link>
       <section className="ba-section">
         <div className="ba-section-title">
           <h2>Your components stay yours.</h2>

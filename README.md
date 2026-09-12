@@ -26,16 +26,28 @@
 
 bera/ui is a motion library for React. Explore an interaction, adjust its feel, and bring the source into your product. Each recipe includes the component, its styles, and the guidance your coding agent needs to adapt it.
 
-<a href="https://bera-ui.vercel.app">
+<a href="https://bera-ui.vercel.app/#compare-accordion">
   <picture>
     <source media="(prefers-reduced-motion: reduce)" srcset="assets/comparison.png" />
     <img src="assets/comparison.gif" alt="The same workspace settings without motion and with Bera’s accordion transition" width="100%" />
   </picture>
 </a>
 
-The same interface and shared state. The Bera view uses the [accordion recipe](https://bera-ui.vercel.app/#accordion). Recorded with the gallery’s **0.4× slow playback** enabled; [try it at normal speed](https://bera-ui.vercel.app).
+The same interface and shared state, using the [accordion recipe](https://bera-ui.vercel.app/#accordion). This recording used **0.4× slow playback**; [try the current comparison at normal speed](https://bera-ui.vercel.app/#compare-accordion).
 
-- **Compare it.** A shared-state example shows what motion changes in an existing interface.
+## See what changes
+
+Six live comparisons share the same content, styling, and application state on both sides. Try either preview, or use **Play all** to advance each comparison together. **0.35× slow playback** reveals the motion without changing the preview's content or settings.
+
+| Comparison                                                                | Use case                    | Without Bera                            | With Bera                                                     |
+| ------------------------------------------------------------------------- | --------------------------- | --------------------------------------- | ------------------------------------------------------------- |
+| [Sliding tabs](https://bera-ui.vercel.app/#compare-sliding-tabs)          | Filter project files        | Selection switches instantly.           | The active indicator travels between tabs as content changes. |
+| [Accordion](https://bera-ui.vercel.app/#compare-accordion)                | Reveal workspace settings   | Content appears at its final height.    | The section opens and closes to its content height.           |
+| [Expanding search](https://bera-ui.vercel.app/#compare-expanding-search)  | Find a component            | The button becomes a field immediately. | The field grows from the button, then reveals its controls.   |
+| [Rolling counter](https://bera-ui.vercel.app/#compare-rolling-counter)    | Adjust team seats           | Digits change instantly.                | Changed digits roll in the direction of the adjustment.       |
+| [Morphing icon](https://bera-ui.vercel.app/#compare-morphing-icon-button) | Toggle workspace navigation | Menu and close shapes switch instantly. | The same SVG strokes reshape into the next icon.              |
+| [Text swap](https://bera-ui.vercel.app/#compare-text-swap)                | Preview review statuses     | The status text changes instantly.      | Words and their icon move through a sequenced handoff.        |
+
 - **Try it.** Interactive previews, replay, and slow playback reveal how each transition works.
 - **Tune it.** Adjust timing and shape, then carry your settings into the integration.
 - **Make it yours.** Keep your components, content, design tokens, and application state.

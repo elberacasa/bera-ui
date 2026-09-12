@@ -1,0 +1,19 @@
+.bc-search-preview {
+  display: grid;
+  place-items: center;
+  width: min(100%, 280px);
+  min-height: 148px;
+  margin-inline: auto;
+}
+
+.bc-search-preview .bs-demo.bs-search-demo {
+  width: 100%;
+}
+
+.bc-search-preview[data-enhanced="false"],
+.bc-search-preview[data-enhanced="false"] *,
+.bc-search-preview[data-enhanced="false"] *::before,
+.bc-search-preview[data-enhanced="false"] *::after {
+  animation: none !important;
+  transition: none !important;
+}
