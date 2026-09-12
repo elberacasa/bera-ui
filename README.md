@@ -37,7 +37,7 @@ The same interface and shared state, using the [accordion recipe](https://bera-u
 
 ## See what changes
 
-Six live comparisons share the same content, styling, and application state on both sides. Try either preview, or use **Play all** to advance each comparison together. **0.35× slow playback** reveals the motion without changing the preview's content or settings.
+Six live comparisons share the same content, styling, and application state on both sides. Their resting states match: use the action beside each example to see what motion changes. Jump directly to a pattern or inspect it with **0.35× slow playback**. On mobile, choose **Without bera** or **With bera**, then repeat the same action.
 
 | Comparison                                                                | Use case                    | Without Bera                            | With Bera                                                     |
 | ------------------------------------------------------------------------- | --------------------------- | --------------------------------------- | ------------------------------------------------------------- |

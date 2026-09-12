@@ -129,7 +129,7 @@ try {
     channel: flags.get("--channel"),
   });
   const context = await browser.newContext({
-    viewport: { width: 320, height: 900 },
+    viewport: { width: 1440, height: 960 },
     // Geometry is measured at rest; the actual built components still run.
     reducedMotion: "reduce",
   });
@@ -146,6 +146,282 @@ try {
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto(origin);
   await page.evaluate(() => document.fonts.ready);
+  const views = page.getByRole("navigation", { name: "Gallery views" });
+  const componentsLink = views.getByRole("link", {
+    name: "Components",
+    exact: true,
+  });
+  const compareLink = views.getByRole("link", {
+    name: "Compare motion",
+    exact: true,
+  });
+  const collection = page.locator("#transitions");
+  const comparisons = page.locator("#compare");
+  async function expectView(view) {
+    const collectionActive = view === "components";
+    await (collectionActive ? collection : comparisons).waitFor({
+      state: "visible",
+    });
+    await (collectionActive ? comparisons : collection).waitFor({
+      state: "hidden",
+    });
+    assert.equal(
+      await (collectionActive ? componentsLink : compareLink).getAttribute(
+        "aria-current",
+      ),
+      "page",
+    );
+    assert.notEqual(
+      await (collectionActive ? compareLink : componentsLink).getAttribute(
+        "aria-current",
+      ),
+      "page",
+    );
+    assert.equal(
+      await (collectionActive ? comparisons : collection)
+        .getByRole("button")
+        .count(),
+      0,
+      "The hidden gallery view must not expose its controls to assistive technology",
+    );
+  }
+
+  await expectView("components");
+  assert.equal(await componentsLink.getAttribute("href"), "#transitions");
+  assert.equal(await compareLink.getAttribute("href"), "#compare");
+  assert.equal(
+    await comparisons.count(),
+    1,
+    "Comparisons remain available in the mounted hidden view",
+  );
+  assert.equal(await page.evaluate(() => scrollY), 0);
+  const firstPreview = await collection
+    .locator(".tl-preview")
+    .first()
+    .boundingBox();
+  assert.ok(
+    firstPreview &&
+      Math.min(firstPreview.y + firstPreview.height, 960) -
+        Math.max(firstPreview.y, 0) >=
+        100,
+    "The default collection must show a usable component preview above the fold",
+  );
+  passed(
+    "homepage opens on an above-fold collection with accessible view navigation",
+  );
+
+  // Use a real component's local state, so remounting the hidden collection is
+  // caught even if both views look correct after navigation.
+  const counter = collection.locator("#rolling-counter");
+  const originalCount = Number(await counter.locator("output").textContent());
+  await counter
+    .getByRole("button", { name: "Increase quantity", exact: true })
+    .click();
+  await compareLink.click();
+  await expectView("compare");
+  await page.goBack();
+  await expectView("components");
+  assert.equal(
+    Number(await counter.locator("output").textContent()),
+    originalCount + 1,
+  );
+  await page.goForward();
+  await expectView("compare");
+  await componentsLink.click();
+  await expectView("components");
+  assert.equal(
+    Number(await counter.locator("output").textContent()),
+    originalCount + 1,
+  );
+  passed(
+    "browser history switches views without resetting collection component state",
+  );
+
+  await page.goto(`${origin}/#compare-expanding-search`);
+  await page.reload();
+  await expectView("compare");
+  await page.waitForFunction(() => {
+    const target = document
+      .getElementById("compare-expanding-search")
+      .getBoundingClientRect();
+    return target.top < innerHeight && target.bottom > 0;
+  });
+  await page.goto(`${origin}/#sliding-tabs`);
+  await expectView("components");
+  await collection.locator("#sliding-tabs").waitFor({ state: "visible" });
+  await page.waitForFunction(() => {
+    const target = document
+      .getElementById("sliding-tabs")
+      .getBoundingClientRect();
+    return target.top < innerHeight && target.bottom > 0;
+  });
+  await collection
+    .getByRole("group", { name: "Filter transitions" })
+    .getByRole("button", { name: "Feedback", exact: true })
+    .click();
+  await collection.locator("#sliding-tabs").waitFor({ state: "hidden" });
+  await compareLink.click();
+  await page.goto(`${origin}/#sliding-tabs`);
+  await expectView("components");
+  await collection.locator("#sliding-tabs").waitFor({ state: "visible" });
+  assert.equal(
+    await collection
+      .getByRole("group", { name: "Filter transitions" })
+      .getByRole("button", { name: /^All/ })
+      .getAttribute("aria-pressed"),
+    "true",
+  );
+  passed(
+    "direct fragments select the right view and reveal filtered-out components",
+  );
+
+  const patterns = [
+    ["sliding-tabs", '[role="tab"][aria-selected="true"]', "text"],
+    ["accordion", ".bt-accordion-trigger", "aria-expanded"],
+    ["expanding-search", ".bs-search-form", "data-open"],
+    ["rolling-counter", ".bs-counter-value output", "text"],
+    ["morphing-icon-button", ".bi-morph-button", "aria-expanded"],
+    ["text-swap", '[role="status"]', "text"],
+  ];
+  async function readPair(row, selector, attribute) {
+    return row
+      .locator(selector)
+      .evaluateAll(
+        (nodes, attribute) =>
+          nodes.map((node) =>
+            attribute === "text"
+              ? node.textContent.trim()
+              : node.getAttribute(attribute),
+          ),
+        attribute,
+      );
+  }
+  for (const width of [1440, 320]) {
+    await page.setViewportSize({ width, height: 960 });
+    await compareLink.click();
+    await expectView("compare");
+    for (const [id, selector, attribute] of patterns) {
+      const row = comparisons.locator(`#compare-${id}`);
+      const action = row.locator(".cx-row-play");
+      const before = await readPair(row, selector, attribute);
+      assert.equal(
+        await action.count(),
+        1,
+        `${id} needs one clear local action`,
+      );
+      await action.click();
+      const after = await readPair(row, selector, attribute);
+      assert.equal(after.length, 2);
+      assert.equal(
+        after[0],
+        after[1],
+        `${id} must update both previews together`,
+      );
+      assert.notDeepEqual(
+        after,
+        before,
+        `${id} local action must change its actual state`,
+      );
+      assert.ok(
+        await action.evaluate((node) => node === document.activeElement),
+        `${id} must preserve the action's focus`,
+      );
+    }
+    await comparisons
+      .locator("#compare-rolling-counter")
+      .evaluate((row) =>
+        row.scrollIntoView({ block: "start", behavior: "instant" }),
+      );
+    const navigationBounds = await views.boundingBox();
+    assert.ok(
+      navigationBounds && navigationBounds.y <= 1,
+      "Gallery navigation should be stuck at the viewport edge",
+    );
+    if (width === 1440) {
+      const header = await comparisons
+        .locator("thead th")
+        .first()
+        .boundingBox();
+      assert.ok(
+        header && header.y >= navigationBounds.y + navigationBounds.height - 1,
+        "Sticky comparison headings must sit below gallery navigation",
+      );
+    } else {
+      assert.equal(
+        await comparisons.locator(".cx-without").getByRole("button").count(),
+        0,
+      );
+      for (const [name, view] of [
+        ["Without bera", "without"],
+        ["With bera", "with"],
+      ]) {
+        const toggle = comparisons.getByRole("button", { name, exact: true });
+        const hit = await toggle.evaluate((button) => {
+          const bounds = button.getBoundingClientRect();
+          const x = bounds.left + bounds.width / 2;
+          const y = bounds.top + bounds.height / 2;
+          return {
+            x,
+            y,
+            reachable:
+              document.elementFromPoint(x, y)?.closest("button") === button,
+          };
+        });
+        assert.ok(hit.reachable, `${name} is covered by another sticky header`);
+        // Click the measured position directly: an automatic scroll must not
+        // conceal the overlap that a person encounters midway down the table.
+        await page.mouse.click(hit.x, hit.y);
+        await page.waitForFunction(
+          (view) => document.querySelector(".cx-table").dataset.view === view,
+          view,
+        );
+        assert.equal(
+          await comparisons
+            .locator(view === "with" ? ".cx-without" : ".cx-with")
+            .getByRole("button")
+            .count(),
+          0,
+        );
+      }
+    }
+    passed(
+      `${width}px comparison exposes working local actions with synchronized state and stable focus`,
+    );
+  }
+  passed(
+    "sticky comparison headings and mobile switches remain reachable below gallery navigation",
+  );
+
+  const workspace = comparisons.locator(
+    "#compare-morphing-icon-button .cx-with",
+  );
+  const workspaceToggle = workspace.getByRole("button", {
+    name: "Workspace navigation",
+    exact: true,
+  });
+  if ((await workspaceToggle.getAttribute("aria-expanded")) !== "true")
+    await workspaceToggle.click();
+  await workspace
+    .getByRole("link", { name: "Transitions", exact: true })
+    .click();
+  await expectView("components");
+  assert.equal(new URL(page.url()).hash, "#transitions");
+  await compareLink.click();
+  await expectView("compare");
+  await page.getByRole("link", { name: "Bera UI home", exact: true }).click();
+  await expectView("components");
+  assert.equal(new URL(page.url()).hash, "#top");
+  await page.waitForFunction(() => {
+    const heading = document.querySelector("h1").getBoundingClientRect();
+    return heading.top >= 0 && heading.bottom <= innerHeight;
+  });
+  passed(
+    "workspace and brand links reveal the collection through native fragment navigation",
+  );
+
+  await componentsLink.click();
+  await expectView("components");
+  await page.setViewportSize({ width: 320, height: 900 });
   const trigger = page.locator("#sliding-tabs").getByRole("button", {
     name: "Customize Sliding tabs",
     exact: true,

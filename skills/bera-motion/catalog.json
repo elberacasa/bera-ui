@@ -5,7 +5,7 @@
     {
       "id": "state-button",
       "name": "State button",
-      "description": "One action. Every state, connected.",
+      "description": "Save, progress, and confirmation in one button.",
       "category": "Feedback",
       "exportName": "StateButton",
       "detail": "A button that carries the action through progress and completion. Use the demo replay to study the state changes.",
@@ -23,7 +23,7 @@
     {
       "id": "sliding-tabs",
       "name": "Sliding tabs",
-      "description": "A selection that carries its momentum.",
+      "description": "Switch views with a selection that follows your lead.",
       "category": "Navigation",
       "exportName": "SlidingTabs",
       "detail": "A shared selection surface follows the active tab. Designed for a small set of modes or views.",
@@ -40,7 +40,7 @@
     {
       "id": "morphing-menu",
       "name": "Morphing menu",
-      "description": "A small surface becomes the next step.",
+      "description": "Turn a compact trigger into a menu of actions.",
       "category": "Surfaces",
       "exportName": "MorphingMenu",
       "detail": "A trigger and its options share one visual surface. Keep the menu close to the action it supports.",
@@ -58,7 +58,7 @@
     {
       "id": "text-swap",
       "name": "Text swap",
-      "description": "A new thought, without a hard cut.",
+      "description": "Keep changing statuses readable and connected.",
       "category": "Feedback",
       "exportName": "TextSwap",
       "detail": "Soft directional transitions for short statuses and labels. Keep essential information readable and announce changes appropriately.",
@@ -76,7 +76,7 @@
     {
       "id": "expanding-search",
       "name": "Expanding search",
-      "description": "Space appears exactly when you need it.",
+      "description": "Open a search field without leaving your place.",
       "category": "Navigation",
       "exportName": "ExpandingSearch",
       "detail": "A compact search trigger opens into an editable field, with deliberate focus handling and an easy return.",
@@ -94,7 +94,7 @@
     {
       "id": "toast-stack",
       "name": "Toast stack",
-      "description": "Feedback with a little sense of space.",
+      "description": "Layer notifications without taking over the screen.",
       "category": "Surfaces",
       "exportName": "ToastStack",
       "detail": "Transient feedback stacks and settles as notifications arrive or leave. Preview messages are demonstration data.",
@@ -112,7 +112,7 @@
     {
       "id": "copy-button",
       "name": "Copy feedback",
-      "description": "A tiny confirmation that feels complete.",
+      "description": "Copy a command. Confirm it right where you clicked.",
       "category": "Feedback",
       "exportName": "CopyButton",
       "detail": "A clipboard action with precise state feedback. Copy succeeds only after the browser accepts the write.",
@@ -130,7 +130,7 @@
     {
       "id": "rolling-counter",
       "name": "Rolling counter",
-      "description": "Numbers with direction, not distraction.",
+      "description": "Give changing quantities a sense of direction.",
       "category": "Navigation",
       "exportName": "RollingCounter",
       "detail": "Digits move in the direction of the value change. Useful for quantities, totals, and compact numerical adjustments.",
@@ -148,7 +148,7 @@
     {
       "id": "accordion",
       "name": "Accordion",
-      "description": "More detail. The same quiet rhythm.",
+      "description": "Reveal details with a coordinated height and content transition.",
       "category": "Surfaces",
       "exportName": "Accordion",
       "detail": "Disclosure with a continuous height change and a coordinated content reveal. Preserve the relationship between heading and content.",
@@ -166,7 +166,7 @@
     {
       "id": "morphing-icon-button",
       "name": "Icon morph",
-      "description": "The same strokes. A different intention.",
+      "description": "Connect open and close with the same SVG strokes.",
       "category": "Navigation",
       "exportName": "MorphingIconButton",
       "detail": "Three SVG strokes draw together and become a close icon. One continuous motion preserves the shape through rapid reversals.",

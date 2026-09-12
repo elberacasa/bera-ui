@@ -40,6 +40,13 @@ const write = (path, value) => {
   writeFileSync(path, value);
 };
 const json = (value) => JSON.stringify(value, null, 2) + "\n";
+// Author this subscription once, but keep every distributed recipe self-contained.
+const motionPreferenceSource = readFileSync(
+  "components/transitions/use-motion-preference.ts",
+  "utf8",
+).replace(/^"use client";\s*/, "");
+const motionPreferenceImport =
+  'import { useMotionPreference } from "./use-motion-preference";';
 
 // These directories contain generated files only. Authored guidance lives beside them.
 for (const path of [
@@ -55,7 +62,10 @@ const transitions = entries.map((entry) => {
   const source =
     licenseComment +
     extractTransition(
-      readFileSync(`components/transitions/${group}.tsx`, "utf8"),
+      readFileSync(`components/transitions/${group}.tsx`, "utf8").replace(
+        motionPreferenceImport,
+        motionPreferenceSource,
+      ),
       entry.exportName,
       entry.id,
     );

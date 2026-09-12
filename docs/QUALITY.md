@@ -67,7 +67,11 @@ If Chrome is already installed, pass `--channel chrome` to the second command in
 
 For search changes, run `scripts/test-expanding-search.mjs` through the same Playwright command. It checks controlled and uncontrolled disclosure, accepted and rejected requests, mirrored focus, explicit submission, replay, and reduced motion.
 
-For gallery or customizer layout changes, run `npm run build`, then `scripts/test-gallery.mjs` through the same Playwright command. It serves the static export locally and verifies that the narrow customizer contains its preview, exposes named sliders, and restores focus. All three regression scripts run in CI's `test:browser` job.
+For gallery or customizer changes, run `npm run build`, then `scripts/test-gallery.mjs` through the same Playwright command. It serves the static export locally and checks view navigation, direct links, history, preserved interaction state, local comparison actions, sticky control hit targets, and the narrow customizer's geometry, named sliders, and focus return.
+
+For motion-preference changes, run `scripts/test-motion-preference.mjs` through the same Playwright command. It exercises authored and freshly generated recipes with initial preferences, live changes on subsequent interactions, controlled state, focus, and pending callbacks. Existing positional animations mounted with reduction enabled may need a reload to restore motion; finite animations already running may finish before reduction applies to the next interaction. Track those remaining limits in [issue #3](https://github.com/elberacasa/bera-ui/issues/3).
+
+All four browser regression scripts run in CI's `test:browser` job.
 
 Run checks relevant to the change before requesting review. Add regression coverage for meaningful behavior and failure paths; avoid tests that merely restate implementation details. A successful build does not substitute for inspecting the changed interaction.
 

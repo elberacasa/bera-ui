@@ -1,6 +1,6 @@
 # Expanding search
 
-Space appears exactly when you need it.
+Open a search field without leaving your place.
 
 ## Choose this for
 

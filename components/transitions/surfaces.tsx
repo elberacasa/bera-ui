@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import type { CSSProperties, KeyboardEvent, ReactNode } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import {
   Bell,
   Check,
@@ -14,6 +14,7 @@ import {
   RotateCcw,
   X,
 } from "lucide-react";
+import { useMotionPreference } from "./use-motion-preference";
 import "./surfaces.css";
 
 export interface SurfaceMotionProps {
@@ -42,7 +43,7 @@ export interface MorphingMenuProps extends SurfaceMotionProps {
 }
 
 function useSurfaceMotion(speed: number) {
-  const reduced = useReducedMotion();
+  const reduced = useMotionPreference();
   const rate = Number.isFinite(speed) ? Math.max(0.15, speed) : 1;
   return {
     reduced,

@@ -1,6 +1,6 @@
 # Morphing menu
 
-A small surface becomes the next step.
+Turn a compact trigger into a menu of actions.
 
 ## Choose this for
 
@@ -57,8 +57,25 @@ SOFTWARE.
 "use client";
 import { useEffect, useId, useRef, useState } from "react";
 import type { CSSProperties, KeyboardEvent, ReactNode } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { Check, Copy, MoreHorizontal, Pin, RotateCcw, X } from "lucide-react";
+import { useContext, useSyncExternalStore } from "react";
+import { MotionConfigContext } from "motion/react";
+const motionPreferenceQuery = "(prefers-reduced-motion: reduce)";
+function subscribeMotionPreference(notify: () => void) {
+    const query = window.matchMedia(motionPreferenceQuery);
+    query.addEventListener("change", notify);
+    return () => query.removeEventListener("change", notify);
+}
+function readMotionPreference() {
+    return window.matchMedia(motionPreferenceQuery).matches;
+}
+/** Follow live user preference and any stronger host policy; render still on the server. */
+function useMotionPreference() {
+    const preference = useSyncExternalStore(subscribeMotionPreference, readMotionPreference, () => true);
+    const { reducedMotion } = useContext(MotionConfigContext);
+    return reducedMotion === "always" || preference;
+}
 import "./morphing-menu.css";
 interface SurfaceMotionProps {
     preview?: boolean;
@@ -83,7 +100,7 @@ interface MorphingMenuProps extends SurfaceMotionProps {
     actions?: readonly MorphingMenuAction[];
 }
 function useSurfaceMotion(speed: number) {
-    const reduced = useReducedMotion();
+    const reduced = useMotionPreference();
     const rate = Number.isFinite(speed) ? Math.max(0.15, speed) : 1;
     return {
         reduced,

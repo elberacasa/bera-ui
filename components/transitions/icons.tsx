@@ -7,13 +7,8 @@ import type {
   MouseEvent,
   Ref,
 } from "react";
-import {
-  animate,
-  motion,
-  useMotionValue,
-  useReducedMotion,
-  useTransform,
-} from "motion/react";
+import { animate, motion, useMotionValue, useTransform } from "motion/react";
+import { useMotionPreference } from "./use-motion-preference";
 import "./icons.css";
 
 export interface MorphingIconButtonProps extends Omit<
@@ -81,7 +76,7 @@ export function MorphingIconButton({
   const [localPressed, setLocalPressed] = useState(defaultPressed);
   const localValue = useRef(defaultPressed);
   const active = pressed ?? localPressed;
-  const reduced = Boolean(useReducedMotion());
+  const reduced = Boolean(useMotionPreference());
   const rate = Number.isFinite(speed) ? Math.max(0.1, Math.min(4, speed)) : 1;
   const progress = useMotionValue(active ? 1 : 0);
   const previousReplay = useRef(replayKey);

@@ -1,6 +1,6 @@
 # Morphing menu
 
-A small surface becomes the next step.
+Turn a compact trigger into a menu of actions.
 
 ## Choose this for
 

@@ -1,6 +1,6 @@
 # Rolling counter
 
-Numbers with direction, not distraction.
+Give changing quantities a sense of direction.
 
 ## Choose this for
 

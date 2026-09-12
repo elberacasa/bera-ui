@@ -2,8 +2,9 @@
 
 import { useId, useState, type ReactNode } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Play } from "lucide-react";
+import { ArrowUpRight, Gauge, Play } from "lucide-react";
 import { MotionConfig } from "motion/react";
+import { useMotionPreference } from "./transitions/use-motion-preference";
 import { AccordionComparisonPreview } from "./comparisons/accordion-preview";
 import {
   TabsComparisonPreview,
@@ -53,6 +54,7 @@ export function MotionComparison({
   const [count, setCount] = useState(8);
   const [navigation, setNavigation] = useState(false);
   const [status, setStatus] = useState(0);
+  const reduced = useMotionPreference();
   const speed = slow ? 0.35 : 1;
   const playTabs = () =>
     setTab((value) => tabs[(tabs.indexOf(value) + 1) % tabs.length]);
@@ -61,20 +63,12 @@ export function MotionComparison({
   const playCounter = () => setCount((value) => (value >= 99 ? 1 : value + 1));
   const playIcon = () => setNavigation((value) => !value);
   const playStatus = () => setStatus((value) => (value + 1) % statuses.length);
-  function playAll() {
-    playTabs();
-    playAccordion();
-    playSearch();
-    playCounter();
-    playIcon();
-    playStatus();
-  }
-
   const rows: Row[] = [
     {
       id: "sliding-tabs",
-      name: "Selection",
-      description: "The active view travels with your attention.",
+      name: "Sliding tabs",
+      description:
+        "One indicator slides between tabs. The new content follows with a short fade.",
       action: "Switch tab",
       play: playTabs,
       preview: (enhanced) => (
@@ -89,8 +83,9 @@ export function MotionComparison({
     },
     {
       id: "accordion",
-      name: "Disclosure",
-      description: "Content unfolds. The space around it follows.",
+      name: "Accordion",
+      description:
+        "The panel grows to its content height and reverses from its current position.",
       action: open ? "Close details" : "Open details",
       play: playAccordion,
       preview: (enhanced) => (
@@ -108,8 +103,9 @@ export function MotionComparison({
     },
     {
       id: "expanding-search",
-      name: "Expansion",
-      description: "A compact control makes room for the next step.",
+      name: "Expanding search",
+      description:
+        "The field grows from its trigger as the input and controls appear.",
       action: searchOpen ? "Close search" : "Open search",
       play: playSearch,
       preview: (enhanced) => (
@@ -126,8 +122,9 @@ export function MotionComparison({
     },
     {
       id: "rolling-counter",
-      name: "Numbers",
-      description: "Every digit carries the direction of the change.",
+      name: "Rolling counter",
+      description:
+        "Changed digits roll in the direction of the adjustment. Other digits stay still.",
       action: count >= 99 ? "Reset seats" : "Add a seat",
       play: playCounter,
       preview: (enhanced) => (
@@ -142,8 +139,9 @@ export function MotionComparison({
     },
     {
       id: "morphing-icon-button",
-      name: "SVG morphing",
-      description: "The same strokes become a different symbol.",
+      name: "Icon morph",
+      description:
+        "Three SVG strokes gather and reshape into a close icon, then return.",
       action: navigation ? "Close navigation" : "Open navigation",
       play: playIcon,
       preview: (enhanced) => (
@@ -158,8 +156,9 @@ export function MotionComparison({
     },
     {
       id: "text-swap",
-      name: "Status",
-      description: "One message gives way to the next.",
+      name: "Text swap",
+      description:
+        "Words and their icon enter and leave in a short, staggered sequence.",
       action: "Next status",
       play: playStatus,
       preview: (enhanced) => (
@@ -177,28 +176,44 @@ export function MotionComparison({
     <MotionConfig reducedMotion="user">
       <section
         id="compare"
+        tabIndex={-1}
         className={`cx-comparison ${className}`}
         aria-label="Compare transitions with and without Bera"
       >
         <div className="cx-intro">
           <div>
             {showHeading && <h2>See what motion changes.</h2>}
-            <p>Six comparisons. Only the motion changes.</p>
+            <p>
+              Both versions look the same at rest. Use each action to see the
+              transition.
+            </p>
           </div>
           <div className="cx-playback">
-            <button type="button" className="cx-play-all" onClick={playAll}>
-              <Play size={12} aria-hidden="true" /> Play all
-            </button>
             <button
               type="button"
               className="cx-slow"
               aria-pressed={slow}
+              disabled={reduced}
               onClick={() => setSlow((value) => !value)}
             >
+              <Gauge size={14} aria-hidden="true" />
               {slow ? "0.35× playback" : "Slow motion"}
             </button>
           </div>
         </div>
+        <nav className="cx-index" aria-label="Comparison patterns">
+          {rows.map((row) => (
+            <a key={row.id} href={`#compare-${row.id}`}>
+              {row.name}
+            </a>
+          ))}
+        </nav>
+        {reduced && (
+          <p className="cx-motion-notice" role="status">
+            Reduced motion is on. State changes stay available without the
+            movement.
+          </p>
+        )}
         <div
           className="cx-mobile-switch"
           role="group"
@@ -212,14 +227,21 @@ export function MotionComparison({
               aria-controls={`${id}-table`}
               onClick={() => setView(option)}
             >
-              {option === "with" ? "With bera" : "Without bera"}
+              <span>{option === "with" ? "With bera" : "Without bera"}</span>
+              <span className="cx-view-detail" aria-hidden="true">
+                {option === "with"
+                  ? reduced
+                    ? "Reduced motion"
+                    : "Animated"
+                  : "Instant"}
+              </span>
             </button>
           ))}
         </div>
         <table id={`${id}-table`} className="cx-table" data-view={view}>
           <caption className="cx-sr-only">
-            Interactive comparison of six transitions. Change either preview to
-            update both.
+            Interactive comparison of six transitions. Resting states match. Use
+            the action in each row or change either preview to update both.
           </caption>
           <thead>
             <tr>
@@ -230,33 +252,35 @@ export function MotionComparison({
           </thead>
           <tbody>
             {rows.map((row) => (
-              <tr key={row.id} id={`compare-${row.id}`}>
+              <tr key={row.id} id={`compare-${row.id}`} tabIndex={-1}>
                 <th scope="row" className="cx-description">
                   <h3>{row.name}</h3>
                   <p>{row.description}</p>
-                  <button
-                    type="button"
-                    className="cx-row-play"
-                    onClick={row.play}
-                  >
-                    {row.action}
-                    <Play size={10} aria-hidden="true" />
-                  </button>
-                  {onExplore ? (
+                  <div className="cx-actions">
                     <button
                       type="button"
-                      className="cx-explore"
-                      onClick={() => onExplore(row.id)}
+                      className="cx-row-play"
+                      onClick={row.play}
                     >
-                      Get transition{" "}
-                      <ArrowUpRight size={12} aria-hidden="true" />
+                      <Play size={11} aria-hidden="true" />
+                      <span>{row.action}</span>
                     </button>
-                  ) : (
-                    <Link className="cx-explore" href={`/#${row.id}`}>
-                      Explore transition{" "}
-                      <ArrowUpRight size={12} aria-hidden="true" />
-                    </Link>
-                  )}
+                    {onExplore ? (
+                      <button
+                        type="button"
+                        className="cx-explore"
+                        onClick={() => onExplore(row.id)}
+                      >
+                        Get transition{" "}
+                        <ArrowUpRight size={12} aria-hidden="true" />
+                      </button>
+                    ) : (
+                      <Link className="cx-explore" href={`/#${row.id}`}>
+                        Explore transition{" "}
+                        <ArrowUpRight size={12} aria-hidden="true" />
+                      </Link>
+                    )}
+                  </div>
                 </th>
                 {(["without", "with"] as const).map((option) => (
                   <td key={option} className={`cx-cell cx-${option}`}>

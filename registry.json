@@ -8,7 +8,7 @@
       "name": "state-button",
       "type": "registry:component",
       "title": "State button",
-      "description": "One action. Every state, connected.",
+      "description": "Save, progress, and confirmation in one button.",
       "dependencies": [
         "motion@^12.43.0",
         "lucide-react@^1.31.0"
@@ -36,7 +36,7 @@
       "name": "sliding-tabs",
       "type": "registry:component",
       "title": "Sliding tabs",
-      "description": "A selection that carries its momentum.",
+      "description": "Switch views with a selection that follows your lead.",
       "dependencies": [
         "motion@^12.43.0"
       ],
@@ -63,7 +63,7 @@
       "name": "morphing-menu",
       "type": "registry:component",
       "title": "Morphing menu",
-      "description": "A small surface becomes the next step.",
+      "description": "Turn a compact trigger into a menu of actions.",
       "dependencies": [
         "motion@^12.43.0",
         "lucide-react@^1.31.0"
@@ -91,7 +91,7 @@
       "name": "text-swap",
       "type": "registry:component",
       "title": "Text swap",
-      "description": "A new thought, without a hard cut.",
+      "description": "Keep changing statuses readable and connected.",
       "dependencies": [
         "motion@^12.43.0",
         "lucide-react@^1.31.0"
@@ -119,7 +119,7 @@
       "name": "expanding-search",
       "type": "registry:component",
       "title": "Expanding search",
-      "description": "Space appears exactly when you need it.",
+      "description": "Open a search field without leaving your place.",
       "dependencies": [
         "motion@^12.43.0",
         "lucide-react@^1.31.0"
@@ -147,7 +147,7 @@
       "name": "toast-stack",
       "type": "registry:component",
       "title": "Toast stack",
-      "description": "Feedback with a little sense of space.",
+      "description": "Layer notifications without taking over the screen.",
       "dependencies": [
         "motion@^12.43.0",
         "lucide-react@^1.31.0"
@@ -175,7 +175,7 @@
       "name": "copy-button",
       "type": "registry:component",
       "title": "Copy feedback",
-      "description": "A tiny confirmation that feels complete.",
+      "description": "Copy a command. Confirm it right where you clicked.",
       "dependencies": [
         "motion@^12.43.0",
         "lucide-react@^1.31.0"
@@ -203,7 +203,7 @@
       "name": "rolling-counter",
       "type": "registry:component",
       "title": "Rolling counter",
-      "description": "Numbers with direction, not distraction.",
+      "description": "Give changing quantities a sense of direction.",
       "dependencies": [
         "motion@^12.43.0",
         "lucide-react@^1.31.0"
@@ -231,7 +231,7 @@
       "name": "accordion",
       "type": "registry:component",
       "title": "Accordion",
-      "description": "More detail. The same quiet rhythm.",
+      "description": "Reveal details with a coordinated height and content transition.",
       "dependencies": [
         "motion@^12.43.0",
         "lucide-react@^1.31.0"
@@ -259,7 +259,7 @@
       "name": "morphing-icon-button",
       "type": "registry:component",
       "title": "Icon morph",
-      "description": "The same strokes. A different intention.",
+      "description": "Connect open and close with the same SVG strokes.",
       "dependencies": [
         "motion@^12.43.0"
       ],

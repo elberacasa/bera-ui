@@ -120,7 +120,9 @@ export function IconComparisonPreview({
       </div>
       <div className="bc-navigation-space">
         <nav id={navigationId} aria-label="Workspace" hidden={!value}>
-          <Link href="/#transitions">Transitions</Link>
+          {/* Native fragment navigation notifies the gallery's hash subscription. */}
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+          <a href="/#transitions">Transitions</a>
           <Link href="/agents">Agent skill</Link>
         </nav>
       </div>

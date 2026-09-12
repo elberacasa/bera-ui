@@ -1084,6 +1084,7 @@ async function main() {
           "package.json",
           "scripts/sync-components.mjs",
           "scripts/extract-transition.mjs",
+          "components/transitions/use-motion-preference.ts",
           "lib/transition-catalog.json",
           "lib/adapter-catalog.json",
         ];

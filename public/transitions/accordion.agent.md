@@ -1,6 +1,6 @@
 # Accordion
 
-More detail. The same quiet rhythm.
+Reveal details with a coordinated height and content transition.
 
 ## Choose this for
 
@@ -57,8 +57,25 @@ SOFTWARE.
 "use client";
 import { useId, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { ChevronDown } from "lucide-react";
+import { useContext, useSyncExternalStore } from "react";
+import { MotionConfigContext } from "motion/react";
+const motionPreferenceQuery = "(prefers-reduced-motion: reduce)";
+function subscribeMotionPreference(notify: () => void) {
+    const query = window.matchMedia(motionPreferenceQuery);
+    query.addEventListener("change", notify);
+    return () => query.removeEventListener("change", notify);
+}
+function readMotionPreference() {
+    return window.matchMedia(motionPreferenceQuery).matches;
+}
+/** Follow live user preference and any stronger host policy; render still on the server. */
+function useMotionPreference() {
+    const preference = useSyncExternalStore(subscribeMotionPreference, readMotionPreference, () => true);
+    const { reducedMotion } = useContext(MotionConfigContext);
+    return reducedMotion === "always" || preference;
+}
 import "./accordion.css";
 interface SurfaceMotionProps {
     preview?: boolean;
@@ -71,7 +88,7 @@ interface SurfaceMotionProps {
     replayKey?: number;
 }
 function useSurfaceMotion(speed: number) {
-    const reduced = useReducedMotion();
+    const reduced = useMotionPreference();
     const rate = Number.isFinite(speed) ? Math.max(0.15, speed) : 1;
     return {
         reduced,
