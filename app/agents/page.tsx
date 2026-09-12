@@ -1,33 +1,22 @@
 import Link from "next/link";
-import { Brand } from "@/components/brand";
 import { ArrowDownToLine, ArrowLeft, ArrowUpRight } from "lucide-react";
+import { Brand } from "@/components/brand";
 import { CopyControl } from "@/components/copy-control";
+import { MotionComparison } from "@/components/motion-comparison";
 import "../transition-library.css";
 import "./agents.css";
 
 export const metadata = {
-  title: "For agents — bera/ui",
+  title: "The motion skill — bera/ui",
   description:
-    "A portable motion skill. Copy one transition or teach your coding agent to adapt motion to the interface you already have.",
+    "See the difference motion makes. Give your coding agent complete React source and the guidance to adapt it to your existing interface.",
 };
 const quickInstall = "npx skills add elberacasa/bera-ui --skill bera-motion";
-const install =
-  "node ./bera-motion/install.mjs skill --project . --agent codex";
-const add = "node ./bera-motion/install.mjs add sliding-tabs --project .";
-const requests = [
-  {
-    title: "Apply to an existing component",
-    text: "Use bera-motion to refine the transitions in my existing tabs. Read the current component first. Keep its layout, design tokens, accessibility primitive, and state behavior. Choose an appropriate recipe, implement the motion, and verify keyboard navigation and reduced motion.",
-  },
-  {
-    title: "Use your chosen settings",
-    text: "Use bera-motion to add copy feedback to this command. Use speed 1.3 and radius 8. Connect the exact text to the clipboard action and show success only after the copy succeeds. Match the existing button style.",
-  },
-  {
-    title: "Review before changing",
-    text: "Use bera-motion to review the motion in this interface. Identify three specific improvements to continuity, timing, or feedback, with the relevant recipes. Explain the tradeoffs. Do not edit files yet.",
-  },
-];
+const install = "node bera-motion/install.mjs skill --project . --agent codex";
+const add = "node bera-motion/install.mjs add sliding-tabs --project .";
+const request =
+  "Use bera-motion to refine my existing tabs. Keep their content, design tokens, accessibility primitive, and state behavior. Adapt the appropriate motion recipe, then verify keyboard navigation and reduced motion.";
+
 export default function AgentsPage() {
   return (
     <main className="transition-library ba-guide">
@@ -35,89 +24,140 @@ export default function AgentsPage() {
         <Brand />
         <Link className="ba-back" href="/">
           <ArrowLeft size={14} />
-          Transitions
+          Collection
         </Link>
       </header>
       <section className="ba-intro">
         <h1>
           Your interface.
-          <br />A better way to move.
+          <br />
+          Better in motion.
         </h1>
         <p>
-          Give your agent the recipes, the source, and the judgment to make
-          motion fit what you already have.
+          Give your coding agent the source and guidance to refine what you
+          already have.
         </p>
-        <div className="ba-intro-actions">
+        <div className="ba-command ba-install-command" id="installation">
+          <code>{quickInstall}</code>
+          <CopyControl value={quickInstall} label="Copy install command" />
+        </div>
+        <p className="ba-small">
+          Run from your project directory and choose your agent.
+        </p>
+      </section>
+      <MotionComparison className="ba-comparison" showHeading />
+      <Link className="ba-example-link" href="/#accordion">
+        Explore the accordion recipe <ArrowUpRight size={13} />
+      </Link>
+      <section className="ba-section">
+        <div className="ba-section-title">
+          <h2>Your components stay yours.</h2>
+        </div>
+        <div className="ba-section-body">
+          <p>
+            The skill includes complete React and CSS recipes, a catalog, and
+            integration notes. Your agent reads the existing component first,
+            preserves its behavior, and adapts the motion to your fonts, colors,
+            and layout.
+          </p>
+          <p>
+            Use it with Codex, Claude Code, Cursor, or another agent that
+            supports project skills. Start with the component you want to
+            improve:
+          </p>
+          <div className="ba-request">
+            <p>{request}</p>
+            <CopyControl value={request} label="Copy request" />
+          </div>
+          <p>
+            For one specific detail, open the{" "}
+            <Link href="/#transitions">collection</Link>, customize a
+            transition, and choose <strong>Copy for agent</strong>. The handoff
+            contains your settings and the complete source.
+          </p>
+        </div>
+      </section>
+      <section className="ba-section">
+        <div className="ba-section-title">
+          <h2>
+            A small workflow.
+            <br />A visible difference.
+          </h2>
+        </div>
+        <div className="ba-section-body">
+          <dl className="ba-workflow">
+            <div>
+              <dt>Discover</dt>
+              <dd>
+                Ask your agent which transition fits the action and the states
+                it connects.
+              </dd>
+            </div>
+            <div>
+              <dt>Apply</dt>
+              <dd>
+                Adapt the recipe to the existing component. Keep its real data,
+                callbacks, and accessibility behavior.
+              </dd>
+            </div>
+            <div>
+              <dt>Refine</dt>
+              <dd>
+                Adjust timing and shape in the collection, then copy the chosen
+                settings into your project.
+              </dd>
+            </div>
+            <div>
+              <dt>Verify</dt>
+              <dd>
+                Test the action, keyboard focus, interruption, narrow layouts,
+                and reduced motion.
+              </dd>
+            </div>
+          </dl>
+          <p>
+            These are instructions for your coding agent. The kit works locally;
+            the gallery previews and exports recipes.
+          </p>
+        </div>
+      </section>
+      <section className="ba-section">
+        <div className="ba-section-title">
+          <h2>Take the source.</h2>
+        </div>
+        <div className="ba-section-body">
+          <p>
+            Prefer direct installation? Download and extract the portable kit
+            into your project root.
+          </p>
           <a className="tl-agent-button" href="/bera-motion.tar.gz" download>
             <ArrowDownToLine size={15} />
-            Download agent kit
+            Download the kit
           </a>
-          <a
-            className="ba-text-link"
-            href="https://github.com/elberacasa/bera-ui"
-          >
-            View source
-            <ArrowUpRight size={15} />
-          </a>
-        </div>
-        <p className="ba-small">React + Motion · MIT · Runs locally</p>
-      </section>
-      <section className="ba-section">
-        <div className="ba-section-title">
-          <span>01</span>
-          <h2>One transition? Copy and go.</h2>
-        </div>
-        <div className="ba-section-body">
-          <p>
-            Open a transition in the <Link href="/">collection</Link>, set its
-            tempo and corners, then choose <strong>Copy for agent</strong>.
-            Paste it into your coding agent with the component you want to
-            improve.
-          </p>
-          <p>
-            The handoff includes your settings, one standalone component,
-            matching styles, and instructions for adapting it. Your agent can
-            apply the motion directly to an existing shadcn or Radix component.
-          </p>
-        </div>
-      </section>
-      <section className="ba-section">
-        <div className="ba-section-title">
-          <span>02</span>
-          <h2>Keep the whole collection close.</h2>
-        </div>
-        <div className="ba-section-body">
-          <p>
-            From your project directory, add the skill through the open skills
-            CLI:
-          </p>
           <div className="ba-command">
-            <code>{quickInstall}</code>
-            <CopyControl value={quickInstall} label="Copy command" />
+            <code>{add}</code>
+            <CopyControl value={add} label="Copy add command" />
           </div>
           <p>
-            Choose your agent when prompted. The skill includes every recipe,
-            source file, and integration guide.
+            This copies one TSX file and its CSS into{" "}
+            <code>components/bera</code>. The installer reports missing
+            dependencies and preserves differing files. It needs Node.js 18 or
+            newer. Use <code>--dry-run</code> to inspect the result or{" "}
+            <code>--dir src/components/bera</code> to choose the destination.
           </p>
-          <p>
-            Prefer an offline kit? Download and extract the kit into your
-            project root. You should see a <code>bera-motion</code> folder. From
-            your project root, run:
-          </p>
-          <div className="ba-command">
-            <code>{install}</code>
-            <CopyControl value={install} label="Copy command" />
-          </div>
-          <p>
-            The installer creates a project-local skill with all recipes and
-            source. It needs Node 18 or newer and works without network access.
-            It never installs dependencies or overwrites a different file.
-          </p>
-          <div className="ba-agent-paths">
-            <span>
-              Use <code>--agent</code> to choose your tool:
-            </span>
-            <dl>
+          <details className="ba-details">
+            <summary>Install the skill from the offline kit</summary>
+            <div className="ba-command">
+              <code>{install}</code>
+              <CopyControl
+                value={install}
+                label="Copy offline install command"
+              />
+            </div>
+            <p>
+              Choose your project-local destination with <code>--agent</code>:
+            </p>
+            <dl className="ba-agent-paths">
               <div>
                 <dt>codex</dt>
                 <dd>.agents/skills/bera-motion</dd>
@@ -135,86 +175,46 @@ export default function AgentsPage() {
                 <dd>.github/skills/bera-motion</dd>
               </div>
             </dl>
-          </div>
-          <p>
-            Your tool must support project skills. Start a fresh conversation if
-            it has already loaded its skill list. For any other agent, provide{" "}
-            <code>bera-motion/SKILL.md</code> as context directly.
-          </p>
-        </div>
-      </section>
-      <section className="ba-section">
-        <div className="ba-section-title">
-          <span>03</span>
-          <h2>Say what should feel better.</h2>
-        </div>
-        <div className="ba-section-body">
-          <p>
-            These are prompts for your coding agent. It reads your project,
-            chooses a recipe, and makes the changes.
-          </p>
-          <div className="ba-prompts">
-            {requests.map((request) => (
-              <article key={request.title}>
-                <div>
-                  <h3>{request.title}</h3>
-                  <CopyControl value={request.text} label="Copy prompt" />
-                </div>
-                <p>{request.text}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-      <section className="ba-section">
-        <div className="ba-section-title">
-          <span>04</span>
-          <h2>Prefer the source?</h2>
-        </div>
-        <div className="ba-section-body">
-          <p>
-            Install a single TSX file and its CSS directly. The command reports
-            any missing dependencies; use your project’s package manager to add
-            them.
-          </p>
-          <div className="ba-command">
-            <code>{add}</code>
-            <CopyControl value={add} label="Copy command" />
-          </div>
-          <p>
-            Files go into <code>components/bera</code>. Use{" "}
-            <code>--dir src/components/bera</code> to choose another
-            project-relative folder, or <code>--dry-run</code> to inspect the
-            result first.
-          </p>
-          <p>
-            Components use natural sizing by default. Connect your own data and
-            callbacks, set <code>speed</code> and <code>radius</code>, and
-            inherit your site’s styles. <code>preview</code> enables gallery
-            spacing and demonstration controls; leave it off in your app.
-          </p>
-          <p>
-            The toast stack is a motion reference for your notification
-            provider. The save button requires a real <code>onAction</code>{" "}
-            callback outside its labeled preview. Each recipe documents its
-            integration boundaries.
-          </p>
+            <p>
+              Start a fresh conversation if your agent has already loaded its
+              skill list. For other tools, provide{" "}
+              <code>bera-motion/SKILL.md</code> as context.
+            </p>
+          </details>
+          <details className="ba-details">
+            <summary>Component integration boundaries</summary>
+            <p>
+              Components use natural sizing. Leave <code>preview</code> off in
+              your application; it enables gallery spacing and demonstration
+              controls. Connect actual data and callbacks.
+            </p>
+            <p>
+              The save button requires a real <code>onAction</code>. Toast stack
+              is a motion reference for an existing notification provider. Each
+              recipe documents the behavior your application owns.
+            </p>
+          </details>
           <div className="ba-resources">
-            <a href="/bera-motion.SKILL.md" download>
+            <a href="https://github.com/elberacasa/bera-ui">
+              GitHub
+              <ArrowUpRight size={13} />
+            </a>
+            <a href="/bera-motion.SKILL.md">
               Read the skill
               <ArrowUpRight size={13} />
             </a>
             <a href="/transitions/manifest.json">
-              Machine-readable catalog
+              Catalog JSON
               <ArrowUpRight size={13} />
             </a>
           </div>
         </div>
       </section>
       <footer className="tl-footer">
-        <p>A little motion. A lot of care.</p>
+        <span>bera/ui</span>
         <Link href="/">
-          Back to the collection <ArrowUpRight size={13} />
+          Explore the collection
+          <ArrowUpRight size={13} />
         </Link>
       </footer>
     </main>

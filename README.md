@@ -26,6 +26,16 @@
 
 bera/ui is a motion library for React. Explore an interaction, adjust its feel, and bring the source into your product. Each recipe includes the component, its styles, and the guidance your coding agent needs to adapt it.
 
+<a href="https://bera-ui.vercel.app">
+  <picture>
+    <source media="(prefers-reduced-motion: reduce)" srcset="assets/comparison.png" />
+    <img src="assets/comparison.gif" alt="The same workspace settings without motion and with Bera’s accordion transition" width="100%" />
+  </picture>
+</a>
+
+The same interface and shared state. The Bera view uses the [accordion recipe](https://bera-ui.vercel.app/#accordion). Recorded with the gallery’s **0.4× slow playback** enabled; [try it at normal speed](https://bera-ui.vercel.app).
+
+- **Compare it.** A shared-state example shows what motion changes in an existing interface.
 - **Try it.** Interactive previews, replay, and slow playback reveal how each transition works.
 - **Tune it.** Adjust timing and shape, then carry your settings into the integration.
 - **Make it yours.** Keep your components, content, design tokens, and application state.

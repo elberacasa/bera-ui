@@ -30,6 +30,8 @@ import {
   ToastStack,
 } from "@/components/transitions/surfaces";
 import { MorphingIconButton } from "@/components/transitions/icons";
+import { MotionComparison } from "@/components/motion-comparison";
+import { GithubMark } from "@/components/github-mark";
 import { Brand } from "@/components/brand";
 import { TransitionInspector } from "@/components/transition-inspector";
 import catalog from "@/lib/transition-catalog.json";
@@ -92,13 +94,13 @@ export function TransitionLibrary() {
             <a href="#transitions" aria-current="page">
               Collection
             </a>
-            <Link href="/agents">Docs</Link>
+            <Link href="/agents">Skill</Link>
             <a
               href="https://github.com/elberacasa/bera-ui"
               className="tl-github"
               aria-label="GitHub repository"
             >
-              <Braces size={15} /> <span>GitHub</span>
+              <GithubMark /> <span>GitHub</span>
             </a>
           </nav>
         </header>
@@ -118,6 +120,16 @@ export function TransitionLibrary() {
             </Link>
           </div>
         </section>
+        <MotionComparison
+          className="tl-hero-comparison"
+          onExplore={() => {
+            returnFocus.current =
+              document.activeElement instanceof HTMLButtonElement
+                ? document.activeElement
+                : null;
+            setSelectedId("accordion");
+          }}
+        />
         <section id="transitions" aria-label="Transition collection">
           <div className="tl-toolbar">
             <div

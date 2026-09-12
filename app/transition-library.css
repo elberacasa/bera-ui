@@ -10,30 +10,19 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 96px;
+  height: 84px;
   gap: 32px;
 }
 .tl-brand {
   display: inline-flex;
   border-radius: 3px;
 }
-.tl-brand > span {
-  display: flex;
+.tl-brand {
   align-items: center;
-  gap: 10px;
+  min-height: 44px;
 }
 .tl-brand svg {
   display: block;
-}
-.tl-brand-name {
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: -1px;
-}
-.tl-brand-ui {
-  font-weight: 400;
-  color: #828282;
-  margin-left: 2px;
 }
 .tl-header nav {
   display: flex;
@@ -60,10 +49,10 @@
   grid-template-columns: 1.25fr 1fr;
   gap: 64px;
   align-items: end;
-  padding: 48px 0 64px;
+  padding: 38px 0 38px;
 }
 .tl-intro h1 {
-  font-size: clamp(46px, 5.1vw, 64px);
+  font-size: clamp(36px, 3.8vw, 48px);
   font-weight: 500;
   letter-spacing: -0.055em;
   line-height: 1.09;
@@ -471,7 +460,7 @@
     padding: 42px 0 52px;
   }
   .tl-intro h1 {
-    font-size: 52px;
+    font-size: 42px;
   }
   .tl-intro p {
     font-size: 14px;
@@ -500,20 +489,13 @@
   .tl-github span {
     display: none;
   }
-  .tl-brand-name {
-    font-size: 22px;
-  }
-  .tl-brand svg {
-    width: 27px;
-    height: 27px;
-  }
   .tl-intro {
     grid-template-columns: 1fr;
     gap: 25px;
     padding: 32px 0 40px;
   }
   .tl-intro h1 {
-    font-size: 49px;
+    font-size: 42px;
   }
   .tl-intro-detail {
     justify-self: start;
@@ -633,7 +615,7 @@
     gap: 18px;
   }
   .tl-intro h1 {
-    font-size: 44px;
+    font-size: 38px;
   }
   .tl-inspector {
     padding: 16px;
@@ -858,4 +840,8 @@
   .tl-integration-note p {
     font-size: 11px;
   }
+}
+
+.tl-hero-comparison {
+  margin: 0 0 56px;
 }

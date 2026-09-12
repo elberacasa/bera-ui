@@ -1,0 +1,312 @@
+.mc-comparison {
+  --mc-foreground: var(--foreground, #ededed);
+  --mc-muted: var(--muted-foreground, #929292);
+  --mc-border: var(--border, #2a2a2a);
+  --mc-surface: var(--popover, #151515);
+  width: 100%;
+  color: var(--mc-foreground);
+  font-family: inherit;
+}
+
+.mc-comparison *,
+.mc-comparison *::before,
+.mc-comparison *::after {
+  box-sizing: border-box;
+}
+
+.mc-heading {
+  margin: 0 0 24px;
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 550;
+  letter-spacing: -0.8px;
+  line-height: 1.2;
+}
+
+.mc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 48px;
+  max-width: 960px;
+  margin-inline: auto;
+  min-height: 267px;
+}
+
+.mc-view {
+  min-width: 0;
+}
+
+.mc-view-label {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--mc-muted);
+}
+
+.mc-with .mc-view-label {
+  color: var(--mc-foreground);
+}
+
+.mc-workspace {
+  overflow: hidden;
+  border: 1px solid var(--mc-border);
+  border-radius: 12px;
+  background: var(--mc-surface);
+}
+
+.mc-workspace-heading {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 68px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--mc-border);
+}
+
+.mc-workspace-avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--mc-border);
+  border-radius: 7px;
+  background: var(--background, #080808);
+  font-size: 11px;
+  font-weight: 550;
+}
+
+.mc-workspace-heading p {
+  margin: 0 0 3px;
+  font-size: 13px;
+  font-weight: 550;
+  line-height: 1.3;
+}
+
+.mc-workspace-heading > div > span {
+  color: var(--mc-muted);
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+/* The actual recipe and its native baseline use the same interface styles. */
+.mc-comparison .mc-view .mc-accordion {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  margin: 0;
+}
+
+.mc-comparison .mc-accordion .bt-accordion {
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.mc-comparison .mc-accordion .bt-accordion-trigger {
+  min-height: 47px;
+  padding: 12px 18px;
+  color: var(--mc-foreground);
+  font-size: 12px;
+}
+
+.mc-comparison .mc-accordion .bt-accordion-body {
+  padding: 0 18px 14px;
+  color: var(--mc-foreground);
+  line-height: 1.4;
+}
+
+.mc-settings-fields {
+  display: grid;
+  gap: 2px;
+}
+
+.mc-invite-row,
+.mc-role-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 54px;
+}
+
+.mc-invite-row {
+  cursor: pointer;
+}
+
+.mc-field-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.mc-field-copy > :last-child {
+  color: var(--mc-muted);
+  font-size: 10px;
+}
+
+.mc-invite-row input {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--mc-foreground);
+  cursor: pointer;
+}
+
+.mc-role-row select {
+  flex: none;
+  width: 96px;
+  min-height: 36px;
+  padding: 0 9px;
+  border: 1px solid var(--mc-border);
+  border-radius: 6px;
+  background: var(--background, #080808);
+  color: var(--mc-foreground);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+/* This view has no Motion components or animated CSS properties. */
+.mc-without *,
+.mc-without *::before,
+.mc-without *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+.mc-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  margin: 14px auto 0;
+  max-width: 960px;
+}
+
+.mc-controls button,
+.mc-mobile-switch button {
+  min-height: 40px;
+  border: 0;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.mc-shared-toggle {
+  padding: 0 13px;
+  border: 1px solid var(--mc-border) !important;
+  border-radius: 7px;
+  background: var(--background, #080808);
+  color: var(--mc-foreground);
+}
+
+.mc-explore {
+  padding: 0;
+  background: transparent;
+  color: var(--mc-muted);
+}
+
+.mc-controls .mc-speed-toggle {
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--mc-muted);
+}
+
+.mc-controls .mc-speed-toggle[aria-pressed="true"] {
+  border-color: var(--mc-border);
+  background: var(--mc-surface);
+  color: var(--mc-foreground);
+}
+
+.mc-controls button:hover {
+  color: var(--mc-foreground);
+}
+
+.mc-shared-toggle:hover {
+  background: var(--mc-surface);
+}
+
+.mc-helper {
+  margin: 9px auto 0;
+  max-width: 960px;
+  color: var(--mc-muted);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.mc-comparison button:focus-visible,
+.mc-comparison input:focus-visible,
+.mc-comparison select:focus-visible {
+  outline: 2px solid var(--ring, var(--mc-foreground));
+  outline-offset: 3px;
+}
+
+.mc-mobile-switch,
+.mc-mobile-copy {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .mc-mobile-switch {
+    display: inline-flex;
+    gap: 2px;
+    margin-bottom: 16px;
+    padding: 3px;
+    border: 1px solid var(--mc-border);
+    border-radius: 8px;
+  }
+
+  .mc-mobile-switch button {
+    min-height: 36px;
+    padding: 0 11px;
+    border-radius: 5px;
+    background: transparent;
+    color: var(--mc-muted);
+  }
+
+  .mc-mobile-switch button[aria-pressed="true"] {
+    background: var(--mc-surface);
+    color: var(--mc-foreground);
+  }
+
+  .mc-grid {
+    gap: 0;
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 239px;
+  }
+
+  .mc-view[data-selected="false"] {
+    display: none;
+  }
+
+  .mc-view-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .mc-desktop-copy {
+    display: none;
+  }
+
+  .mc-mobile-copy {
+    display: inline;
+  }
+}
