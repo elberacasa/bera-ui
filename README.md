@@ -53,6 +53,19 @@ Choose your coding agent when prompted. The skill includes the catalog, complete
 
 For one interaction, open the [collection](https://bera-ui.vercel.app), customize a preview, and choose **Copy for agent**. The copied brief includes the source and your selected settings.
 
+<details>
+<summary><strong>Bring motion to an existing Radix menu</strong></summary>
+
+```sh
+npx shadcn@latest add https://bera-ui.vercel.app/r/radix-menu-motion.json
+```
+
+Import the installed CSS and add `data-bera-menu-motion` to your existing `DropdownMenuContent` and `DropdownMenuSubContent`. The adapter adds no dependencies and keeps your menu's state, commands, styling, and keyboard behavior. Remove only conflicting enter/exit animation utilities from the opted-in content.
+
+[Try the live integration](https://bera-ui.vercel.app/integrations/radix-menu) or follow the [host diff and integration guide](skills/bera-motion/references/radix-menu-motion.md). Entry uses modern `@starting-style`; older browsers get immediate entry. Reduced motion and Radix's native exit lifecycle are preserved.
+
+</details>
+
 ## Add a standalone component
 
 From a React project with shadcn configured:

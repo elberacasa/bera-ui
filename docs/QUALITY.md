@@ -16,6 +16,8 @@ Navigate with the keyboard. Check activation, focus visibility, focus entry and 
 
 Enable the operating system or browser's reduced-motion preference. State, feedback, and focus must remain correct when unnecessary movement is removed. Slow playback is a separate inspection tool and does not replace this check.
 
+For a host adapter, also change reduced motion during an active exit. Confirm the primitive finishes unmounting, restores page interaction and accessibility, and returns focus correctly. Test reopening during exit without replacing the content node or jumping back to an animation endpoint.
+
 ## Layout and themes
 
 Inspect desktop and narrow phone widths, including 320px. Check touch targets, overflow, long content, and the source inspector. A copied component must fit its host without requiring gallery styles.
@@ -25,6 +27,8 @@ Test representative host tokens when styling changes. Foreground, surfaces, bord
 ## Source and kit
 
 Verify that generated TSX and CSS match the live implementation. Each extracted TSX module must compile in a consumer project and export only its selected component. Keep dependencies and integration notes accurate.
+
+CSS adapters distribute only their declared stylesheet. Verify that installing one leaves the host primitive, theme, dependencies, and configuration unchanged; keep its discovery metadata distinct from standalone components.
 
 For distribution changes, exercise installation into a temporary project: inspect `--dry-run`, install one selected pair, repeat the operation, and preserve differing destination files. Check skill contents, archive extraction, and deterministic generation. Use real application callbacks in integration examples and clearly identify reference-only behavior.
 
@@ -49,6 +53,15 @@ npm exec --yes --package=shadcn@4.21.0 -- node scripts/test-shadcn-registry.mjs
 ```
 
 It downloads dependencies into temporary consumer projects and checks actual installs, alias resolution, edited-file preservation, and compilation. The CLI version must match the registry's recorded tested version. The offline `test:kit` suite also compiles every usage example shown in the Install tab.
+
+For Radix menu adapter changes, run the browser regression check:
+
+```sh
+npm exec --yes --package=playwright@1.62.1 -- playwright install chromium
+npm exec --yes --package=playwright@1.62.1 -- node scripts/test-radix-menu.mjs
+```
+
+If Chrome is already installed, pass `--channel chrome` to the second command instead of installing Chromium. The check uses the installed Radix primitive with the actual adapter stylesheet in a temporary fixture. It verifies exit cleanup, page interaction, uninterrupted reversal, and reduced motion changed during exit. CI runs the same check in Chromium. Safari and Firefox require separate verification.
 
 Run checks relevant to the change before requesting review. Add regression coverage for meaningful behavior and failure paths; avoid tests that merely restate implementation details. A successful build does not substitute for inspecting the changed interaction.
 

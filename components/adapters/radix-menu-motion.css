@@ -1,0 +1,81 @@
+/* Add data-bera-menu-motion to your existing Radix Content or SubContent.
+ * Keep its Root, Portal, items, state, callbacks, and appearance unchanged.
+ * Import this after your menu styles; remove its old enter/exit animation classes.
+ */
+[data-bera-menu-motion][data-state] {
+  --bera-menu-shift-x: 0px;
+  --bera-menu-shift-y: calc(-1 * var(--bera-menu-distance, 6px));
+  --bera-menu-closed-clip: inset(0 0 70% 0);
+
+  opacity: 1;
+  translate: 0 0;
+  clip-path: inset(-32px);
+  animation: none;
+  transition-property: opacity, translate, clip-path;
+  transition-duration: var(--bera-menu-enter-duration, 220ms);
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Radix updates data-side when collision handling changes the placement. */
+[data-bera-menu-motion][data-side="top"] {
+  --bera-menu-shift-y: var(--bera-menu-distance, 6px);
+  --bera-menu-closed-clip: inset(70% 0 0 0);
+}
+
+[data-bera-menu-motion][data-side="left"] {
+  --bera-menu-shift-x: var(--bera-menu-distance, 6px);
+  --bera-menu-shift-y: 0px;
+  --bera-menu-closed-clip: inset(0 0 0 70%);
+}
+
+[data-bera-menu-motion][data-side="right"] {
+  --bera-menu-shift-x: calc(-1 * var(--bera-menu-distance, 6px));
+  --bera-menu-shift-y: 0px;
+  --bera-menu-closed-clip: inset(0 70% 0 0);
+}
+
+[data-bera-menu-motion][data-state="closed"] {
+  opacity: 0;
+  translate: var(--bera-menu-shift-x) var(--bera-menu-shift-y);
+  clip-path: var(--bera-menu-closed-clip);
+  transition-duration: var(--bera-menu-exit-duration, 100ms);
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  animation: bera-menu-presence var(--bera-menu-exit-duration, 100ms) linear 1
+    both;
+  /* Radix can supply inline pointer-events inside another modal layer. */
+  pointer-events: none !important;
+}
+
+@starting-style {
+  [data-bera-menu-motion][data-state="open"] {
+    opacity: 0;
+    translate: var(--bera-menu-shift-x) var(--bera-menu-shift-y);
+    clip-path: var(--bera-menu-closed-clip);
+  }
+}
+
+/* Radix Presence waits for CSS animationend, not transitionend. This finite
+ * clock retains its native exit lifecycle while transitions can reverse from
+ * their current values. It does not animate any visual or layout property.
+ */
+@keyframes bera-menu-presence {
+  from {
+    --bera-menu-presence: 0;
+  }
+  to {
+    --bera-menu-presence: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-bera-menu-motion][data-state] {
+    /* Preserve the clock's name if this preference changes during an exit.
+     * Canceling it with animation:none would strand Radix's suspended Presence.
+     * A zero-duration clock completes immediately without any visual motion.
+     */
+    animation-duration: 0s;
+    transition: none;
+    translate: none;
+    clip-path: none;
+  }
+}

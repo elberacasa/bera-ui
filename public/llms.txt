@@ -1,8 +1,8 @@
 # bera/ui
 
-> Reusable motion for existing React interfaces: 10 inspectable transition recipes, live tuning, and an optional coding-agent skill.
+> Reusable motion for existing React interfaces: 10 standalone transition recipes, CSS host adapters, live tuning, and an optional coding-agent skill.
 
-Read the host project and preserve its primitives, state ownership, and styles. Components default to natural sizing and preview=false. Registry installation adds the original recipe; pass chosen speed and radius in the consuming code. Review dependency changes and each recipe's integration boundary.
+Read the host project and preserve its primitives, state ownership, and styles. Standalone components default to natural sizing and preview=false. Standalone registry installation adds the original recipe; pass chosen speed and radius in the consuming code. CSS host adapters use their documented custom properties instead. Review dependency changes and each recipe's integration boundary.
 
 ## Integration
 
@@ -24,6 +24,10 @@ Read the host project and preserve its primitives, state ownership, and styles. 
 - [Rolling counter](https://bera-ui.vercel.app/transitions/rolling-counter.agent.md): Adjustable integer quantities, totals, or compact counters.
 - [Accordion](https://bera-ui.vercel.app/transitions/accordion.agent.md): Expandable help, preferences, and short supporting details.
 - [Icon morph](https://bera-ui.vercel.app/transitions/morphing-icon-button.agent.md): A menu or panel toggle that needs a clear change of state.
+
+## Host adapters
+
+- [Radix menu motion](https://bera-ui.vercel.app/adapters/radix-menu-motion.agent.md): An existing Radix or Radix-based shadcn dropdown menu whose behavior and styles must stay host-owned.
 
 ## Optional
 

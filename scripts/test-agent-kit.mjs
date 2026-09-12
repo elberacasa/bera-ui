@@ -332,12 +332,145 @@ async function main() {
         for (const file of [entry.source, entry.styles, entry.recipe])
           assert.ok((await fs.stat(path.join(kit, file))).isFile(), file);
       }
+      assert.deepEqual(
+        catalog.adapters.map((entry) => entry.id),
+        ["radix-menu-motion"],
+      );
+      assert.ok(
+        !catalog.transitions.some((entry) => entry.id === "radix-menu-motion"),
+      );
+      for (const entry of catalog.adapters) {
+        assert.equal(entry.kind, "adapter");
+        assert.deepEqual(entry.dependencies, []);
+        assert.deepEqual(entry.files, [
+          { source: `adapters/${entry.id}.css`, target: `${entry.id}.css` },
+        ]);
+      }
     });
     await check("installer list returns the actual catalog", async () => {
       const output = await runInstaller(installer, ["list"]);
       assert.equal(output.version, catalog.version);
       assert.deepEqual(output.transitions, catalog.transitions);
+      assert.deepEqual(output.adapters, catalog.adapters);
     });
+    await check(
+      "CSS adapter dry run and install preserve the host menu, theme, and packages",
+      async () => {
+        const root = await project({ dependencies: { "radix-ui": "^1.6.7" } });
+        await fs.mkdir(path.join(root, "components/ui"), { recursive: true });
+        await fs.writeFile(
+          path.join(root, "components/ui/dropdown-menu.tsx"),
+          "// Host-owned menu with custom handlers.\n",
+        );
+        await fs.writeFile(
+          path.join(root, "theme.css"),
+          ":root { --foreground: 0 0% 98%; }\n",
+        );
+        const args = [
+          "add",
+          "radix-menu-motion",
+          "--project",
+          root,
+          "--dir",
+          "src/motion",
+        ];
+        const before = await snapshot(root);
+        const preview = await runInstaller(installer, [...args, "--dry-run"]);
+        assert.equal(preview.kind, "adapter");
+        assert.equal(preview.files.length, 1);
+        assert.deepEqual(preview.dependencies, []);
+        assert.deepEqual(preview.missingDependencies, []);
+        assert.deepEqual(await snapshot(root), before);
+        await runInstaller(installer, args);
+        const after = await snapshot(root);
+        for (const [file, hash] of Object.entries(before))
+          assert.equal(after[file], hash, file);
+        assert.deepEqual(
+          Object.keys(after).filter((file) => !(file in before)),
+          ["src/", "src/motion/", "src/motion/radix-menu-motion.css"],
+        );
+        await sameFile(
+          path.join(root, "src/motion/radix-menu-motion.css"),
+          path.join(kit, "adapters/radix-menu-motion.css"),
+        );
+        assert.equal(
+          (await runInstaller(installer, args)).files[0].status,
+          "unchanged",
+        );
+        assert.deepEqual(await snapshot(root), after);
+        await fs.appendFile(
+          path.join(root, "src/motion/radix-menu-motion.css"),
+          "/* Host adaptation. */\n",
+        );
+        const edited = await snapshot(root);
+        assert.equal(
+          (await runInstaller(installer, args, 1)).error.code,
+          "CONFLICT",
+        );
+        assert.deepEqual(await snapshot(root), edited);
+      },
+    );
+    await check(
+      "CSS adapters reject unsafe file declarations, duplicate IDs, and missing files",
+      async () => {
+        for (const mutation of [
+          (data) => {
+            data.adapters[0].files[0].target = "../escape.css";
+          },
+          (data) => {
+            data.adapters[0].files[0].source = "../escape.css";
+          },
+          (data) => {
+            data.adapters.push(data.adapters[0]);
+          },
+          (data) => {
+            data.adapters[0].id = data.transitions[0].id;
+          },
+        ]) {
+          const copied = await fs.mkdtemp(
+            path.join(temporary, "adapter-invalid-"),
+          );
+          await fs.cp(kit, copied, { recursive: true });
+          const data = structuredClone(catalog);
+          mutation(data);
+          await fs.writeFile(
+            path.join(copied, "catalog.json"),
+            JSON.stringify(data),
+          );
+          const root = await project();
+          const before = await snapshot(root);
+          assert.equal(
+            (
+              await runInstaller(
+                path.join(copied, "install.mjs"),
+                ["add", "radix-menu-motion", "--project", root],
+                1,
+              )
+            ).error.code,
+            "INVALID_KIT",
+          );
+          assert.deepEqual(await snapshot(root), before);
+        }
+        const copied = await fs.mkdtemp(
+          path.join(temporary, "adapter-missing-"),
+        );
+        await fs.cp(kit, copied, { recursive: true });
+        await fs.rm(path.join(copied, "adapters/radix-menu-motion.css"));
+        const root = await project();
+        const before = await snapshot(root);
+        assert.equal(
+          (
+            await runInstaller(
+              path.join(copied, "install.mjs"),
+              ["add", "radix-menu-motion", "--project", root],
+              1,
+            )
+          ).error.code,
+          "INVALID_KIT",
+        );
+        assert.deepEqual(await snapshot(root), before);
+      },
+    );
     await check(
       "help is JSON and invalid commands, flags, and IDs fail",
       async () => {
@@ -598,6 +731,17 @@ async function main() {
         );
         const root = await project();
         await add(root, [], executable);
+        const adapterOutput = await runInstaller(executable, [
+          "add",
+          "radix-menu-motion",
+          "--project",
+          root,
+        ]);
+        assert.equal(adapterOutput.files.length, 1);
+        await sameFile(
+          path.join(root, "components/bera/radix-menu-motion.css"),
+          path.join(kit, "adapters/radix-menu-motion.css"),
+        );
         await sameFile(
           path.join(root, "components/bera/state-button.tsx"),
           path.join(kit, stateButton.source),
@@ -721,7 +865,7 @@ async function main() {
         assert.equal(index.homepage, "https://bera-ui.vercel.app");
         assert.deepEqual(
           index.items.map((item) => item.name),
-          catalog.transitions.map((item) => item.id),
+          [...catalog.transitions, ...catalog.adapters].map((item) => item.id),
         );
         assert.equal(manifest.registry.url, "/r/registry.json");
         assert.equal(manifest.compatibility.react, "^19.0.0");
@@ -808,6 +952,71 @@ async function main() {
               `https://bera-ui.vercel.app/transitions/${entry.id}.agent.md`,
             ),
           );
+        for (const adapter of catalog.adapters) {
+          const item = await readJSON(
+            path.join(repository, "public/r", `${adapter.id}.json`),
+          );
+          assert.equal(item.type, "registry:file");
+          assert.deepEqual(item.dependencies, []);
+          assert.equal(item.files.length, 1);
+          assert.deepEqual(
+            Object.keys(item).sort(),
+            [
+              "$schema",
+              "name",
+              "type",
+              "title",
+              "description",
+              "dependencies",
+              "files",
+              "docs",
+              "categories",
+            ].sort(),
+          );
+          assert.equal(
+            item.files[0].path,
+            `skills/bera-motion/adapters/${adapter.id}.css`,
+          );
+          assert.equal(
+            item.files[0].target,
+            `@components/bera/${adapter.id}.css`,
+          );
+          assert.equal(item.files[0].type, "registry:file");
+          const css = await fs.readFile(
+            path.join(kit, adapter.files[0].source),
+            "utf8",
+          );
+          assert.equal(item.files[0].content, css);
+          await sameFile(
+            path.join(repository, "public/adapters", `${adapter.id}.css`),
+            path.join(kit, adapter.files[0].source),
+          );
+          const guide = await fs.readFile(
+            path.join(repository, "public/adapters", `${adapter.id}.agent.md`),
+            "utf8",
+          );
+          assert.ok(guide.includes(css));
+          assert.ok(
+            !guide.includes("](../adapters/") &&
+              !guide.includes("](../catalog.json)"),
+          );
+          const published = manifest.adapters.find(
+            (entry) => entry.id === adapter.id,
+          );
+          assert.deepEqual(published.files, [
+            {
+              source: `/adapters/${adapter.id}.css`,
+              target: `${adapter.id}.css`,
+            },
+          ]);
+          assert.equal(published.recipe, `/adapters/${adapter.id}.agent.md`);
+          assert.equal(published.registry, `/r/${adapter.id}.json`);
+          assert.ok(
+            llms.includes(
+              `https://bera-ui.vercel.app/adapters/${adapter.id}.agent.md`,
+            ),
+          );
+        }
       },
     );
     await check(
@@ -819,6 +1028,7 @@ async function main() {
           ...catalog.transitions.map(
             (entry) => `transitions/${entry.id}.agent.md`,
           ),
+          ...catalog.adapters.map((entry) => `adapters/${entry.id}.agent.md`),
           "transitions/integration.md",
           "transitions/motion.md",
         ];
@@ -833,6 +1043,17 @@ async function main() {
             );
             if (target.origin !== "https://bera-ui.vercel.app") continue;
             if (target.pathname === "/agents") continue; // Next page, not a public asset.
+            if (target.pathname.startsWith("/integrations/")) {
+              assert.ok(
+                (
+                  await fs.stat(
+                    path.join(repository, "app", target.pathname, "page.tsx"),
+                  )
+                ).isFile(),
+                `Missing integration page: ${target.pathname}`,
+              );
+              continue;
+            }
             const destination = path.join(
               repository,
               "public",
@@ -864,10 +1085,15 @@ async function main() {
           "scripts/sync-components.mjs",
           "scripts/extract-transition.mjs",
           "lib/transition-catalog.json",
+          "lib/adapter-catalog.json",
         ];
         const entries = await readJSON(
           path.join(repository, "lib/transition-catalog.json"),
         );
+        for (const adapter of await readJSON(
+          path.join(repository, "lib/adapter-catalog.json"),
+        ))
+          files.push(adapter.source);
         for (const group of new Set(entries.map((item) => item.group)))
           files.push(
             `components/transitions/${group}.tsx`,
@@ -906,6 +1132,10 @@ async function main() {
         assert.deepEqual(
           await snapshot(path.join(clone, "public/r")),
           await snapshot(path.join(repository, "public/r")),
+        );
+        assert.deepEqual(
+          await snapshot(path.join(clone, "public/adapters")),
+          await snapshot(path.join(repository, "public/adapters")),
         );
         await sameFile(
           path.join(clone, "registry.json"),

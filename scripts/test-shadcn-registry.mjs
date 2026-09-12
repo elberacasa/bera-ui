@@ -417,6 +417,70 @@ try {
     "all CLI-transformed recipes strictly compile, retain one export, and resolve matching CSS",
     () => compileInstalled(custom, manifest.transitions),
   );
+  const adapted = await fixture("existing-radix-menu", "src", "widgets");
+  const existingMenu = path.join(
+    adapted.root,
+    "src/widgets/ui/dropdown-menu.tsx",
+  );
+  await fs.mkdir(path.dirname(existingMenu), { recursive: true });
+  await fs.writeFile(
+    existingMenu,
+    '// Host menu owns its Radix primitive, items, and callbacks.\nexport const hostMenu = "keep me";\n',
+  );
+  const adapterBefore = await snapshot(adapted.root);
+  await check(
+    "CSS adapter dry run leaves an existing host menu and configuration unchanged",
+    async () => {
+      await run(
+        adapted.root,
+        ["add", `${origin}/r/radix-menu-motion.json`],
+        ["--dry-run"],
+      );
+      assert.deepEqual(await snapshot(adapted.root), adapterBefore);
+    },
+  );
+  await check(
+    "CSS adapter namespace install adds one stylesheet and no packages or primitives",
+    async () => {
+      await run(adapted.root, ["add", "@bera/radix-menu-motion"], ["--yes"]);
+      const after = await snapshot(adapted.root);
+      for (const [file, hash] of Object.entries(adapterBefore))
+        assert.equal(after[file], hash, file);
+      assert.deepEqual(
+        Object.keys(after).filter((file) => !(file in adapterBefore)),
+        ["src/widgets/bera/", "src/widgets/bera/radix-menu-motion.css"],
+      );
+      assert.equal(
+        await fs.readFile(
+          path.join(adapted.destination, "radix-menu-motion.css"),
+          "utf8",
+        ),
+        await fs.readFile(
+          path.join(repository, "public/adapters/radix-menu-motion.css"),
+          "utf8",
+        ),
+      );
+      await assert.rejects(fs.access(path.join(adapted.root, "node_modules")));
+      await assert.rejects(
+        fs.access(path.join(adapted.root, "package-lock.json")),
+      );
+    },
+  );
+  await check(
+    "CSS adapter reruns preserve both identical and host-edited stylesheets",
+    async () => {
+      const before = await snapshot(adapted.root);
+      await run(adapted.root, ["add", "@bera/radix-menu-motion"], ["--yes"]);
+      assert.deepEqual(await snapshot(adapted.root), before);
+      await fs.appendFile(
+        path.join(adapted.destination, "radix-menu-motion.css"),
+        "\n/* Host motion tuning. */\n",
+      );
+      const edited = await snapshot(adapted.root);
+      await run(adapted.root, ["add", "@bera/radix-menu-motion"], ["--yes"]);
+      assert.deepEqual(await snapshot(adapted.root), edited);
+    },
+  );
   const javascript = await fixture(
     "javascript-consumer",
     "src",
@@ -458,7 +522,7 @@ try {
     async () => {
       const output = path.join(temporary, "native-build");
       await run(repository, ["build", "registry.json"], ["--output", output]);
-      for (const entry of manifest.transitions) {
+      for (const entry of [...manifest.transitions, ...manifest.adapters]) {
         const item = await readJSON(path.join(output, `${entry.id}.json`));
         registryItemSchema.parse(item);
         for (const file of item.files)

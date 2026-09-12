@@ -18,7 +18,8 @@ const HELP = `Bera motion kit — Node.js 18+
   node install.mjs skill --project <path> [--agent codex|claude|cursor|copilot] [--dry-run] [--json]
   node install.mjs --help
 
-add copies one transition's TSX and CSS; it reports missing dependencies.
+add copies one transition's TSX/CSS or a CSS adapter's explicit files.
+list reports standalone transitions and host adapters separately.
 skill copies the complete kit into the selected agent's project skill folder.
 Codex is the default agent (.agents/skills/bera-motion).
 Existing identical files are kept. Different files cause an error before copying.
@@ -79,7 +80,7 @@ function parse(argv) {
     fail(
       "USAGE",
       command === "add"
-        ? "Provide exactly one transition ID."
+        ? "Provide exactly one transition or adapter ID."
         : `Unexpected arguments for ${command}.`,
     );
   }
@@ -87,7 +88,7 @@ function parse(argv) {
   if (command !== "list" && !options.project)
     fail("USAGE", "--project is required.");
   if (options.id && !validId(options.id))
-    fail("INVALID_ID", `Invalid transition ID: ${options.id}`);
+    fail("INVALID_ID", `Invalid item ID: ${options.id}`);
   if (command === "add")
     options.dir = relativeDir(options.dir ?? "components/bera");
   if (command === "skill") {
@@ -190,6 +191,33 @@ async function catalog() {
     ) {
       fail("INVALID_KIT", `Invalid catalog entry: ${item.id}`);
     }
+  }
+  // Older version 2 kits contain only transitions. Adapters are additive and
+  // explicitly CSS-only; no fabricated component export or package is needed.
+  if (data.adapters === undefined) data.adapters = [];
+  if (!Array.isArray(data.adapters))
+    fail("INVALID_KIT", "Expected an adapters array.");
+  for (const item of data.adapters) {
+    if (!item || !validId(item.id) || ids.has(item.id))
+      fail(
+        "INVALID_KIT",
+        "Catalog contains an invalid or duplicate adapter ID.",
+      );
+    ids.add(item.id);
+    if (
+      item.kind !== "adapter" ||
+      typeof item.name !== "string" ||
+      !item.name ||
+      typeof item.category !== "string" ||
+      item.recipe !== `references/${item.id}.md` ||
+      !Array.isArray(item.dependencies) ||
+      item.dependencies.length !== 0 ||
+      !Array.isArray(item.files) ||
+      item.files.length !== 1 ||
+      item.files[0]?.source !== `adapters/${item.id}.css` ||
+      item.files[0]?.target !== `${item.id}.css`
+    )
+      fail("INVALID_KIT", `Invalid CSS adapter entry: ${item.id}`);
   }
   return data;
 }
@@ -362,6 +390,7 @@ async function fullKit(data) {
   for (const [folder, extension] of [
     ["references", /\.md$/],
     ["recipes", /\.(tsx|css)$/],
+    ...(data.adapters.length ? [["adapters", /\.css$/]] : []),
   ]) {
     const folderPath = path.join(KIT, folder);
     const stat = await statOrNull(folderPath);
@@ -382,6 +411,15 @@ async function fullKit(data) {
         fail("INVALID_KIT", `Missing kit file: ${required}`);
     }
   }
+  for (const item of data.adapters) {
+    for (const required of [
+      item.recipe,
+      ...item.files.map((file) => file.source),
+    ]) {
+      if (!relativeFiles.includes(required))
+        fail("INVALID_KIT", `Missing kit file: ${required}`);
+    }
+  }
   return Promise.all(relativeFiles.map(kitFile));
 }
 
@@ -392,6 +430,11 @@ function report(result, json) {
   }
   if (result.command === "list") {
     for (const item of result.transitions)
+      process.stdout.write(
+        `${item.id.padEnd(24)} ${item.name} (${item.category})\n`,
+      );
+    if (result.adapters.length) process.stdout.write("\nHost adapters:\n");
+    for (const item of result.adapters)
       process.stdout.write(
         `${item.id.padEnd(24)} ${item.name} (${item.category})\n`,
       );
@@ -429,6 +472,7 @@ async function main() {
         command: "list",
         version: data.version,
         transitions: data.transitions,
+        adapters: data.adapters,
       },
       options.json,
     );
@@ -436,30 +480,43 @@ async function main() {
   }
   const root = await projectRoot(options.project);
   if (options.command === "add") {
-    const transition = data.transitions.find((item) => item.id === options.id);
-    if (!transition)
+    const transition = data.transitions.find(
+      (entry) => entry.id === options.id,
+    );
+    const item =
+      transition ?? data.adapters.find((entry) => entry.id === options.id);
+    if (!item)
       fail(
         "UNKNOWN_ID",
-        `Unknown transition: ${options.id}. Run list to see available IDs.`,
+        `Unknown transition or adapter: ${options.id}. Run list to see available IDs.`,
       );
+    const declarations = transition
+      ? [item.source, item.styles].map((source) => ({
+          source,
+          target: path.basename(source),
+        }))
+      : item.files;
     const sourceFiles = await Promise.all(
-      [transition.source, transition.styles, transition.recipe].map(kitFile),
+      declarations.map(async (file) => ({
+        ...(await kitFile(file.source)),
+        target: file.target,
+      })),
     );
-    const required = await dependencies(root, transition.dependencies);
+    await kitFile(item.recipe);
+    const required = await dependencies(root, item.dependencies);
     const destination = path.resolve(root, options.dir);
     const files = await copyFiles(
       root,
       destination,
-      sourceFiles
-        .slice(0, 2)
-        .map((file) => ({ ...file, target: path.basename(file.relative) })),
+      sourceFiles,
       options.dryRun,
     );
     report(
       {
         ok: true,
         command: "add",
-        id: transition.id,
+        id: item.id,
+        kind: transition ? "transition" : "adapter",
         dryRun: options.dryRun,
         project: root,
         destination,
