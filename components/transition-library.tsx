@@ -94,6 +94,7 @@ export function TransitionLibrary() {
             <a href="#transitions" aria-current="page">
               Collection
             </a>
+            <Link href="/integrations/radix-menu">Integrations</Link>
             <Link href="/agents">Skill</Link>
             <a
               href="https://github.com/elberacasa/bera-ui"
@@ -130,6 +131,12 @@ export function TransitionLibrary() {
             setSelectedId("accordion");
           }}
         />
+        <Link className="tl-adapter-link" href="/integrations/radix-menu">
+          <span>
+            Already have a menu? <strong>Add Bera to shadcn / Radix.</strong>
+          </span>
+          <ArrowUpRight size={16} aria-hidden="true" />
+        </Link>
         <section id="transitions" aria-label="Transition collection">
           <div className="tl-toolbar">
             <div

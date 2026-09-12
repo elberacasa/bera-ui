@@ -82,6 +82,12 @@ export default function AgentsPage() {
             transition, and choose <strong>Copy for agent</strong>. The handoff
             contains your settings and the complete source.
           </p>
+          <p>
+            Already using a Radix dropdown menu? The{" "}
+            <Link href="/integrations/radix-menu">menu motion adapter</Link>{" "}
+            adds motion with one stylesheet and an attribute. Try the live
+            comparison and copy its integration guide for your agent.
+          </p>
         </div>
       </section>
       <section className="ba-section">

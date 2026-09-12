@@ -11,6 +11,9 @@ import { gzipSync } from "node:zlib";
 import { extractTransition } from "./extract-transition.mjs";
 
 const entries = JSON.parse(readFileSync("lib/transition-catalog.json", "utf8"));
+const adapterEntries = JSON.parse(
+  readFileSync("lib/adapter-catalog.json", "utf8"),
+);
 const kit = "skills/bera-motion";
 const packageJSON = JSON.parse(readFileSync("package.json", "utf8"));
 const homepage = "https://bera-ui.vercel.app";
@@ -39,7 +42,13 @@ const write = (path, value) => {
 const json = (value) => JSON.stringify(value, null, 2) + "\n";
 
 // These directories contain generated files only. Authored guidance lives beside them.
-for (const path of ["public/transitions", "public/r", `${kit}/recipes`])
+for (const path of [
+  "public/transitions",
+  "public/adapters",
+  "public/r",
+  `${kit}/recipes`,
+  `${kit}/adapters`,
+])
   rmSync(path, { recursive: true, force: true });
 const transitions = entries.map((entry) => {
   const { group, ...metadata } = entry;
@@ -126,7 +135,63 @@ const transitions = entries.map((entry) => {
     recipe: `references/${entry.id}.md`,
   };
 });
-const catalog = { name: "bera/ui", version: 2, transitions };
+const adapters = adapterEntries.map(
+  ({ source: authoredSource, ...metadata }) => {
+    if (transitions.some((item) => item.id === metadata.id))
+      throw new Error(`Duplicate installable ID: ${metadata.id}`);
+    const css = licenseComment + readFileSync(authoredSource, "utf8");
+    const source = `adapters/${metadata.id}.css`;
+    const target = `${metadata.id}.css`;
+    const recipe = `references/${metadata.id}.md`;
+    const guide = readFileSync(`${kit}/${recipe}`, "utf8");
+    const publicGuide = guide
+      .replaceAll(
+        `](../adapters/${target})`,
+        `](${homepage}/adapters/${target})`,
+      )
+      .replaceAll(
+        "](../catalog.json)",
+        `](${homepage}/transitions/manifest.json)`,
+      )
+      .replaceAll(
+        "](integration.md)",
+        `](${homepage}/transitions/integration.md)`,
+      );
+    write(`${kit}/${source}`, css);
+    write(`public/adapters/${target}`, css);
+    write(
+      `public/adapters/${metadata.id}.agent.md`,
+      `${publicGuide}\n\n## Complete stylesheet\n\n\`\`\`css\n${css}\n\`\`\`\n`,
+    );
+    const item = {
+      $schema: "https://ui.shadcn.com/schema/registry-item.json",
+      name: metadata.id,
+      type: "registry:file",
+      title: metadata.name,
+      description: metadata.description,
+      dependencies: [],
+      files: [
+        {
+          path: `${kit}/${source}`,
+          type: "registry:file",
+          target: `@components/bera/${target}`,
+          content: css,
+        },
+      ],
+      docs: `${metadata.integration} Read the adaptation guide: ${homepage}/adapters/${metadata.id}.agent.md. Live example: ${homepage}${metadata.page}.`,
+      categories: ["adapter", "motion"],
+    };
+    registryItems.push(item);
+    write(`public/r/${metadata.id}.json`, json(item));
+    return {
+      ...metadata,
+      dependencies: [],
+      files: [{ source, target }],
+      recipe,
+    };
+  },
+);
+const catalog = { name: "bera/ui", version: 2, transitions, adapters };
 write(`${kit}/catalog.json`, json(catalog));
 write(`${kit}/LICENSE`, license);
 const registryIndex = {
@@ -148,6 +213,15 @@ write(
     ...catalog,
     registry,
     compatibility,
+    adapters: adapters.map((item) => ({
+      ...item,
+      files: item.files.map((file) => ({
+        ...file,
+        source: `/adapters/${file.target}`,
+      })),
+      recipe: `/adapters/${item.id}.agent.md`,
+      registry: `/r/${item.id}.json`,
+    })),
     transitions: transitions.map((item) => ({
       ...item,
       source: `/transitions/${item.id}.tsx`,
@@ -160,7 +234,7 @@ write(
 );
 write(
   "public/llms.txt",
-  `# bera/ui\n\n> Reusable motion for existing React interfaces: ${transitions.length} inspectable transition recipes, live tuning, and an optional coding-agent skill.\n\nRead the host project and preserve its primitives, state ownership, and styles. Components default to natural sizing and preview=false. Registry installation adds the original recipe; pass chosen speed and radius in the consuming code. Review dependency changes and each recipe's integration boundary.\n\n## Integration\n\n- [Agent guide](${homepage}/agents): choose a registry install, portable kit, or skill.\n- [Catalog](${homepage}/transitions/manifest.json): IDs, props, compatibility, and source paths.\n- [shadcn registry](${homepage}/r/registry.json): discover recipes; install with npx shadcn@latest add ${homepage}/r/<id>.json.\n- [Skill](${homepage}/bera-motion.SKILL.md): discover, review, apply, and refine workflow.\n- [Portable kit](${homepage}/bera-motion.tar.gz): complete source, styles, recipes, and zero-dependency local installer.\n\n## Recipes\n\n${transitions.map((entry) => `- [${entry.name}](${homepage}/transitions/${entry.id}.agent.md): ${entry.when}`).join("\n")}\n\n## Optional\n\n${transitions.map((entry) => `- [${entry.name} registry item](${homepage}/r/${entry.id}.json): installable source, companion CSS, and dependencies.`).join("\n")}\n`,
+  `# bera/ui\n\n> Reusable motion for existing React interfaces: ${transitions.length} standalone transition recipes, CSS host adapters, live tuning, and an optional coding-agent skill.\n\nRead the host project and preserve its primitives, state ownership, and styles. Standalone components default to natural sizing and preview=false. Standalone registry installation adds the original recipe; pass chosen speed and radius in the consuming code. CSS host adapters use their documented custom properties instead. Review dependency changes and each recipe's integration boundary.\n\n## Integration\n\n- [Agent guide](${homepage}/agents): choose a registry install, portable kit, or skill.\n- [Catalog](${homepage}/transitions/manifest.json): IDs, props, compatibility, and source paths.\n- [shadcn registry](${homepage}/r/registry.json): discover recipes; install with npx shadcn@latest add ${homepage}/r/<id>.json.\n- [Skill](${homepage}/bera-motion.SKILL.md): discover, review, apply, and refine workflow.\n- [Portable kit](${homepage}/bera-motion.tar.gz): complete source, styles, recipes, and zero-dependency local installer.\n\n## Recipes\n\n${transitions.map((entry) => `- [${entry.name}](${homepage}/transitions/${entry.id}.agent.md): ${entry.when}`).join("\n")}\n\n## Host adapters\n\n${adapters.map((entry) => `- [${entry.name}](${homepage}/adapters/${entry.id}.agent.md): ${entry.when}`).join("\n")}\n\n## Optional\n\n${transitions.map((entry) => `- [${entry.name} registry item](${homepage}/r/${entry.id}.json): installable source, companion CSS, and dependencies.`).join("\n")}\n`,
 );
 if (!existsSync(`${kit}/SKILL.md`))
   throw new Error(
@@ -169,6 +243,12 @@ if (!existsSync(`${kit}/SKILL.md`))
 // Publish guidance with working website links; the archived skill keeps its
 // portable relative links for local agent use.
 let publicSkill = readFileSync(`${kit}/SKILL.md`, "utf8");
+for (const adapter of adapters) {
+  publicSkill = publicSkill.replaceAll(
+    `](references/${adapter.id}.md)`,
+    `](${homepage}/adapters/${adapter.id}.agent.md)`,
+  );
+}
 publicSkill = publicSkill.replaceAll(
   "](catalog.json)",
   `](${homepage}/transitions/manifest.json)`,
@@ -179,10 +259,16 @@ for (const reference of ["integration", "motion"]) {
     `](${homepage}/transitions/${reference}.md)`,
   );
   let guidance = readFileSync(`${kit}/references/${reference}.md`, "utf8");
+  for (const adapter of adapters) {
+    guidance = guidance.replaceAll(
+      `](${adapter.id}.md)`,
+      `](${homepage}/adapters/${adapter.id}.agent.md)`,
+    );
+  }
   if (reference === "integration") {
     guidance = guidance.replace(
-      /Read the selected entry in `\.\.\/catalog\.json`, then its `\.\.\/references\/<id>\.md`, `\.\.\/recipes\/<id>\.tsx`, and `\.\.\/recipes\/<id>\.css`\./,
-      `Read the selected entry in the [catalog](${homepage}/transitions/manifest.json), then follow its recipe, source, and styles URLs relative to ${homepage}.`,
+      "Read the selected entry in `../catalog.json`, then its declared reference and source files.",
+      `Read the selected entry in the [catalog](${homepage}/transitions/manifest.json), then follow its declared recipe and source URLs relative to ${homepage}.`,
     );
   }
   write(`public/transitions/${reference}.md`, guidance);
@@ -230,5 +316,5 @@ const archive = gzipSync(Buffer.concat(blocks), { level: 9 });
 archive[9] = 255;
 write("public/bera-motion.tar.gz", archive);
 console.log(
-  `Generated ${transitions.length} standalone transitions and the portable agent kit.`,
+  `Generated ${transitions.length} standalone transitions, ${adapters.length} host adapters, and the portable agent kit.`,
 );

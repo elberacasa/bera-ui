@@ -898,3 +898,32 @@
 .tl-hero-comparison {
   margin: 0 0 56px;
 }
+.tl-adapter-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 0 32px;
+  color: #929292;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.tl-adapter-link strong {
+  color: #ccc;
+  font-weight: 400;
+}
+.tl-adapter-link:hover strong {
+  color: #fff;
+}
+.tl-adapter-link svg {
+  flex-shrink: 0;
+}
+@media (max-width: 400px) {
+  .tl-header {
+    gap: 10px;
+  }
+  .tl-header nav {
+    gap: 12px;
+    font-size: 11px;
+  }
+}

@@ -1,0 +1,13 @@
+[
+  {
+    "id": "radix-menu-motion",
+    "name": "Radix menu motion",
+    "kind": "adapter",
+    "category": "Host integration",
+    "description": "Add motion to the menu you already have.",
+    "when": "An existing Radix or Radix-based shadcn dropdown menu whose behavior and styles must stay host-owned.",
+    "integration": "Import the CSS and opt the existing menu content into the adapter. Preserve the host's trigger, items, handlers, portal, placement, and focus behavior. Remove competing animation utilities only from the opted-in content. No UI primitives or packages are installed.",
+    "source": "components/adapters/radix-menu-motion.css",
+    "page": "/integrations/radix-menu"
+  }
+]

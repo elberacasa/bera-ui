@@ -280,6 +280,26 @@
         "navigation",
         "motion"
       ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "radix-menu-motion",
+      "type": "registry:file",
+      "title": "Radix menu motion",
+      "description": "Add motion to the menu you already have.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "skills/bera-motion/adapters/radix-menu-motion.css",
+          "type": "registry:file",
+          "target": "@components/bera/radix-menu-motion.css"
+        }
+      ],
+      "docs": "Import the CSS and opt the existing menu content into the adapter. Preserve the host's trigger, items, handlers, portal, placement, and focus behavior. Remove competing animation utilities only from the opted-in content. No UI primitives or packages are installed. Read the adaptation guide: https://bera-ui.vercel.app/adapters/radix-menu-motion.agent.md. Live example: https://bera-ui.vercel.app/integrations/radix-menu.",
+      "categories": [
+        "adapter",
+        "motion"
+      ]
     }
   ]
 }

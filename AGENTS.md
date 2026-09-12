@@ -15,7 +15,10 @@ Build reusable React transitions for existing interfaces. Each recipe combines u
 ## Source map
 
 - `components/transitions/`: transition implementations and local CSS.
+- `components/adapters/`: CSS motion layers for existing host primitives.
+- `components/integrations/` and `app/integrations/`: live examples using real host actions and state.
 - `lib/transition-catalog.json`: authored pattern metadata, props, and integration guidance.
+- `lib/adapter-catalog.json`: authored host adapter metadata and source paths.
 - `components/transition-library.tsx`: collection, filters, playback, and per-pattern settings.
 - `components/transition-inspector.tsx`: customization, source inspection, and agent handoff.
 - `app/transition-library.css`: gallery presentation; never a dependency of copied components.
@@ -27,6 +30,8 @@ Build reusable React transitions for existing interfaces. Each recipe combines u
 ## Distribution contract
 
 Each downloaded TSX file exports only its selected component and includes the helpers it needs. Its local stylesheet travels with it. Production imports omit `preview`; gallery framing and demonstration controls remain opt-in. Connect actual data and callbacks, and document any reference-only behavior.
+
+Host adapters are separate catalog entries. The Radix menu adapter distributes one CSS file and introduces no packages or replacement primitives. Preserve the host's mounting lifecycle, portals, positioning, state, and callbacks. Its live example's responsive placement and theme controls belong to the demonstration, not the adapter.
 
 Export only settings that affect the chosen transition. `speed` controls motion timing; `radius` applies where the pattern has a configurable surface. Slow playback is an inspection control and stays separate from exported settings.
 

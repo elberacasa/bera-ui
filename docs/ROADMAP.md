@@ -5,7 +5,7 @@ The collection grows through useful interface actions and strong integration exa
 ## Ecosystem priorities
 
 - **Existing components first.** Provide small integrations that apply motion to a host primitive and show exactly which state, callbacks, and accessibility behavior remain with the host.
-- **One catalog, consistent distribution.** Generate the gallery metadata, skill recipes, downloads, shadcn registry, and discovery index from the authored catalog. Keep dependencies, paths, and integration boundaries aligned.
+- **Consistent distribution.** Generate skill guidance, downloads, the shadcn registry, and discovery indexes from authored recipe and adapter metadata. Keep standalone components distinct from adapters for existing primitives, with accurate files, dependencies, and integration boundaries.
 - **Reliable consumer installs.** Verify direct URL and configured namespace installs in representative React projects. Cover component aliases, local CSS imports, host tokens, and dependency changes.
 - **Focused agent context.** Route an agent from the index to one relevant recipe, with working source links and clear application requirements. Add discovery formats only when a consumer can use them.
 
@@ -13,12 +13,12 @@ The collection grows through useful interface actions and strong integration exa
 
 The [integration milestone](https://github.com/elberacasa/bera-ui/milestone/1) groups these tasks:
 
-| Task                                                                             | Acceptance criteria                                                                                                                           |
-| -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| [#1 · Existing shadcn menu](https://github.com/elberacasa/bera-ui/issues/1)      | Apply surface motion while preserving the host primitive, actions, dismissal, and keyboard focus. Provide a usable example.                   |
-| [#2 · Notification provider](https://github.com/elberacasa/bera-ui/issues/2)     | Connect stack motion to a real provider without changing expiry, pause behavior, announcements, or dismissal semantics.                       |
-| [#3 · Reduced motion and themes](https://github.com/elberacasa/bera-ui/issues/3) | Exercise each recipe with reduced motion and representative host themes. Verify final state, contrast, keyboard behavior, and narrow layouts. |
-| [#4 · Focused CSS downloads](https://github.com/elberacasa/bera-ui/issues/4)     | Include only the selected recipe's required styles while preserving source parity and consumer behavior.                                      |
+| Task                                                                             | Acceptance criteria                                                                                                                                                                   |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [#1 · Existing shadcn menu](https://github.com/elberacasa/bera-ui/issues/1)      | Verify the [Radix menu adapter](../skills/bera-motion/references/radix-menu-motion.md) with real commands, submenu collision handling, finite exit, focus return, and reduced motion. |
+| [#2 · Notification provider](https://github.com/elberacasa/bera-ui/issues/2)     | Connect stack motion to a real provider without changing expiry, pause behavior, announcements, or dismissal semantics.                                                               |
+| [#3 · Reduced motion and themes](https://github.com/elberacasa/bera-ui/issues/3) | Exercise each recipe with reduced motion and representative host themes. Verify final state, contrast, keyboard behavior, and narrow layouts.                                         |
+| [#4 · Focused CSS downloads](https://github.com/elberacasa/bera-ui/issues/4)     | Include only the selected recipe's required styles while preserving source parity and consumer behavior.                                                                              |
 
 ## Pattern priorities
 
