@@ -367,6 +367,61 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "playback-toggle",
+      "type": "registry:component",
+      "title": "Play / pause",
+      "description": "One shape, two states. Continuous in both directions.",
+      "dependencies": [
+        "motion@^12.43.0"
+      ],
+      "files": [
+        {
+          "path": "skills/bera-motion/recipes/playback-toggle.tsx",
+          "type": "registry:component",
+          "target": "@components/bera/playback-toggle.tsx"
+        },
+        {
+          "path": "skills/bera-motion/recipes/playback-toggle.css",
+          "type": "registry:file",
+          "target": "@components/bera/playback-toggle.css"
+        }
+      ],
+      "docs": "Import { PlaybackToggle } from your configured components alias under bera/playback-toggle. Keep its companion CSS. Connect playing to the actual media or animation state, and onPlayingChange to a playback request. Update state from real play, pause, and ended events; handle rejected play promises in the host. The button does not operate media itself. Supply accessible Play/Pause labels and keep native keyboard behavior. The optional local preview is a finite animation, not an audio or video player. Replay changes only the icon, never playback state or callbacks. Defaults: preview=false, speed=1, radius=12. Tested with React 19 and shadcn 4.21.0; use complete CSS color tokens. Integration: https://bera-ui.vercel.app/transitions/playback-toggle.agent.md",
+      "categories": [
+        "actions",
+        "motion"
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "confirm-action",
+      "type": "registry:component",
+      "title": "Confirm action",
+      "description": "Make room for a deliberate second click.",
+      "dependencies": [
+        "motion@^12.43.0",
+        "lucide-react@^1.31.0"
+      ],
+      "files": [
+        {
+          "path": "skills/bera-motion/recipes/confirm-action.tsx",
+          "type": "registry:component",
+          "target": "@components/bera/confirm-action.tsx"
+        },
+        {
+          "path": "skills/bera-motion/recipes/confirm-action.css",
+          "type": "registry:file",
+          "target": "@components/bera/confirm-action.css"
+        }
+      ],
+      "docs": "Import { ConfirmAction } from your configured components alias under bera/confirm-action. Keep its companion CSS. Supply the real onConfirm operation. Opening only arms the control and focuses Cancel; Enter or Space cannot confirm through a held key. Cancel and Escape return to the original action before commitment. Pending operations cannot overlap or be canceled by closing the control. Rejection keeps confirmation available with an error; success persists until the host remounts for a restored or different resource. Keep resource state and restoration in the host. Without onConfirm the production control is disabled. The preview archives and restores local data only. Replay changes presentation without changing state, invoking callbacks, or moving focus. Defaults: preview=false, speed=1, radius=12. Tested with React 19 and shadcn 4.21.0; use complete CSS color tokens. Integration: https://bera-ui.vercel.app/transitions/confirm-action.agent.md",
+      "categories": [
+        "actions",
+        "motion"
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "radix-menu-motion",
       "type": "registry:file",
       "title": "Radix menu motion",

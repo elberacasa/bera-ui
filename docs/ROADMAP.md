@@ -24,8 +24,9 @@ The [integration milestone](https://github.com/elberacasa/bera-ui/milestone/1) g
 
 Candidate additions must include directly interactive examples, complete source, and a clear integration contract. These are directions for new work, not a list of released features.
 
-- **SVG state morphs:** connect meaningful icon states, extending the menu/close recipe to play/pause and other useful toggles, with consistent optical weight and reversible path motion.
+- **SVG state morphs:** [Play / pause](https://bera-ui.vercel.app/#playback-toggle) joins the menu/close recipe with continuous filled-path geometry. Additional toggles should connect useful states with the same care for optical weight and reversal.
 - **Button state morphs:** connect idle, pending, success, and retry states while preserving the real action's lifetime and the host button's semantics.
+- **Explicit confirmation:** [Confirm action](https://bera-ui.vercel.app/#confirm-action) unfolds a compact control into confirmation and cancellation. It keeps pending, failure, and success tied to the real operation.
 - **Inline editing:** [Inline edit](https://bera-ui.vercel.app/#inline-edit) now covers short values, validation, cancellation, and asynchronous save outcomes. Expand only for host workflows that need additional behavior.
 - **List changes:** [Animated list](https://bera-ui.vercel.app/#animated-list) now covers keyed insertion, removal, and reordering. [Selection toolbar](https://bera-ui.vercel.app/#selection-toolbar) adds contextual bulk actions. Drag reordering remains a separate host interaction.
 - **Expanded number ranges:** define behavior for signed values and changing digit counts before extending the counter's documented bounds.

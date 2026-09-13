@@ -15,6 +15,7 @@ export const metadata = {
 const quickInstall = "npx skills add elberacasa/bera-ui --skill bera-motion";
 const install = "node bera-motion/install.mjs skill --project . --agent codex";
 const add = "node bera-motion/install.mjs add sliding-tabs --project .";
+const search = 'node bera-motion/install.mjs search "submit" --json';
 const registryAdd = registryInstallCommand("copy-button");
 const registryConfig = `{
   "registries": {
@@ -190,6 +191,16 @@ export default function AgentsPage() {
               <ArrowDownToLine size={15} />
               Download the kit
             </a>
+            <p>Find the right recipe by the action it serves:</p>
+            <div className="ba-command">
+              <code>{search}</code>
+              <CopyControl value={search} label="Copy search command" />
+            </div>
+            <p>
+              Search reads the local catalog and returns matching source and
+              guidance paths. Add <code>--category Feedback</code> to narrow the
+              results. It makes no changes to your project.
+            </p>
             <div className="ba-command">
               <code>{add}</code>
               <CopyControl value={add} label="Copy add command" />

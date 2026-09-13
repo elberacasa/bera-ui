@@ -14,12 +14,15 @@ const AGENTS = {
 const HELP = `Bera motion kit — Node.js 18+
 
   node install.mjs list [--json]
+  node install.mjs search <query> [--category <name>] [--json]
   node install.mjs add <id> --project <path> [--dir components/bera] [--dry-run] [--json]
   node install.mjs skill --project <path> [--agent codex|claude|cursor|copilot] [--dry-run] [--json]
   node install.mjs --help
 
 add copies one transition's TSX/CSS or a CSS adapter's explicit files.
 list reports standalone transitions and host adapters separately.
+search matches every query word across IDs, names, descriptions, categories, and use cases.
+Search is read-only; use quotes for multiword queries or categories.
 skill copies the complete kit into the selected agent's project skill folder.
 Codex is the default agent (.agents/skills/bera-motion).
 Existing identical files are kept. Different files cause an error before copying.
@@ -42,6 +45,7 @@ function parse(argv) {
   if (argv.length === 0) return { help: true, json: false };
   const allowed = {
     list: new Set(["--json", "--help"]),
+    search: new Set(["--category", "--json", "--help"]),
     add: new Set(["--project", "--dir", "--dry-run", "--json", "--help"]),
     skill: new Set(["--project", "--agent", "--dry-run", "--json", "--help"]),
   };
@@ -76,7 +80,14 @@ function parse(argv) {
     }
   }
   if (options.help) return options;
-  if (positional.length !== (command === "add" ? 1 : 0)) {
+  if (command === "search") {
+    options.query = positional.join(" ").trim().replace(/\s+/g, " ");
+    if (!options.query) fail("USAGE", "Provide a nonempty search query.");
+    if (options.category !== undefined) {
+      options.category = options.category.trim();
+      if (!options.category) fail("USAGE", "Provide a nonempty category.");
+    }
+  } else if (positional.length !== (command === "add" ? 1 : 0)) {
     fail(
       "USAGE",
       command === "add"
@@ -85,7 +96,7 @@ function parse(argv) {
     );
   }
   if (command === "add") options.id = positional[0];
-  if (command !== "list" && !options.project)
+  if (["add", "skill"].includes(command) && !options.project)
     fail("USAGE", "--project is required.");
   if (options.id && !validId(options.id))
     fail("INVALID_ID", `Invalid item ID: ${options.id}`);
@@ -428,16 +439,26 @@ function report(result, json) {
     process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     return;
   }
-  if (result.command === "list") {
-    for (const item of result.transitions)
+  if (["list", "search"].includes(result.command)) {
+    const searching = result.command === "search";
+    if (searching && !result.transitions.length && !result.adapters.length) {
+      process.stdout.write(
+        "No matches. Try fewer terms or run list to see all available IDs.\n",
+      );
+      return;
+    }
+    const print = (item) => {
       process.stdout.write(
         `${item.id.padEnd(24)} ${item.name} (${item.category})\n`,
       );
+      if (searching)
+        process.stdout.write(
+          `  ${item.when || item.description || ""}\n  Read: ${item.recipe}\n`,
+        );
+    };
+    result.transitions.forEach(print);
     if (result.adapters.length) process.stdout.write("\nHost adapters:\n");
-    for (const item of result.adapters)
-      process.stdout.write(
-        `${item.id.padEnd(24)} ${item.name} (${item.category})\n`,
-      );
+    result.adapters.forEach(print);
     return;
   }
   process.stdout.write(
@@ -465,6 +486,42 @@ async function main() {
     return;
   }
   const data = await catalog();
+  if (options.command === "search") {
+    const terms = options.query.toLowerCase().split(/\s+/);
+    const matches = (item) => {
+      if (
+        options.category &&
+        item.category.toLowerCase() !== options.category.toLowerCase()
+      )
+        return false;
+      const text = [
+        item.id,
+        item.name,
+        item.description,
+        item.category,
+        item.when,
+        item.useCases,
+      ]
+        .flat()
+        .filter((value) => typeof value === "string")
+        .join(" ")
+        .toLowerCase();
+      return terms.every((term) => text.includes(term));
+    };
+    report(
+      {
+        ok: true,
+        command: "search",
+        version: data.version,
+        query: options.query,
+        category: options.category ?? null,
+        transitions: data.transitions.filter(matches),
+        adapters: data.adapters.filter(matches),
+      },
+      options.json,
+    );
+    return;
+  }
   if (options.command === "list") {
     report(
       {

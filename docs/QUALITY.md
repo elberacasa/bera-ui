@@ -73,7 +73,9 @@ For motion-preference changes, run `scripts/test-motion-preference.mjs` through 
 
 For inline editing, keyed lists, and selection actions, run `scripts/test-inline-edit.mjs`, `scripts/test-animated-list.mjs`, and `scripts/test-selection-toolbar.mjs` through the same Playwright command. They exercise real transactions, cancellation and failure paths, preserved item identity, exit focus, controlled selection, and reduced motion.
 
-All seven browser regression scripts run in CI's `test:browser` job.
+For playback and confirmation changes, run `scripts/test-playback-toggle.mjs` and `scripts/test-confirm-action.mjs` through the same Playwright command. They check controlled playback requests, real intermediate SVG geometry, visibility and completion of the local preview, explicit confirmation, held keys, pending and failure behavior, server rendering, and narrow layouts. The gallery suite also checks search discovery and the hydrated SVG comparison.
+
+All nine browser regression scripts run in CI's `test:browser` job.
 
 Run checks relevant to the change before requesting review. Add regression coverage for meaningful behavior and failure paths; avoid tests that merely restate implementation details. A successful build does not substitute for inspecting the changed interaction.
 

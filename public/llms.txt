@@ -1,6 +1,6 @@
 # bera/ui
 
-> Reusable motion for existing React interfaces: 13 standalone transition recipes, CSS host adapters, live tuning, and an optional coding-agent skill.
+> Reusable motion for existing React interfaces: 15 standalone transition recipes, CSS host adapters, live tuning, and an optional coding-agent skill.
 
 Read the host project and preserve its primitives, state ownership, and styles. Standalone components default to natural sizing and preview=false. Standalone registry installation adds the original recipe; pass chosen speed and radius in the consuming code. CSS host adapters use their documented custom properties instead. Review dependency changes and each recipe's integration boundary.
 
@@ -27,6 +27,8 @@ Read the host project and preserve its primitives, state ownership, and styles. 
 - [Inline edit](https://bera-ui.vercel.app/transitions/inline-edit.agent.md): Project names, short titles, and metadata that can be edited in place.
 - [Animated list](https://bera-ui.vercel.app/transitions/animated-list.agent.md): Changing file lists, search results, queues, or selected items.
 - [Selection toolbar](https://bera-ui.vercel.app/transitions/selection-toolbar.agent.md): Bulk actions for selected files, messages, or table rows.
+- [Play / pause](https://bera-ui.vercel.app/transitions/playback-toggle.agent.md): Play and pause controls for video, audio, or user-controlled animation.
+- [Confirm action](https://bera-ui.vercel.app/transitions/confirm-action.agent.md): Confirming an archive, removal, reset, or other consequential action in context.
 
 ## Host adapters
 
@@ -47,3 +49,5 @@ Read the host project and preserve its primitives, state ownership, and styles. 
 - [Inline edit registry item](https://bera-ui.vercel.app/r/inline-edit.json): installable source, companion CSS, and dependencies.
 - [Animated list registry item](https://bera-ui.vercel.app/r/animated-list.json): installable source, companion CSS, and dependencies.
 - [Selection toolbar registry item](https://bera-ui.vercel.app/r/selection-toolbar.json): installable source, companion CSS, and dependencies.
+- [Play / pause registry item](https://bera-ui.vercel.app/r/playback-toggle.json): installable source, companion CSS, and dependencies.
+- [Confirm action registry item](https://bera-ui.vercel.app/r/confirm-action.json): installable source, companion CSS, and dependencies.

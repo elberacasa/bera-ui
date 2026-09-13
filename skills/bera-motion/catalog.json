@@ -233,6 +233,41 @@
       "source": "recipes/selection-toolbar.tsx",
       "styles": "recipes/selection-toolbar.css",
       "recipe": "references/selection-toolbar.md"
+    },
+    {
+      "id": "playback-toggle",
+      "name": "Play / pause",
+      "description": "One shape, two states. Continuous in both directions.",
+      "category": "Actions",
+      "exportName": "PlaybackToggle",
+      "detail": "Two filled SVG paths reshape a play symbol into pause bars. A shared spring keeps their geometry connected through interruption and reversal.",
+      "when": "Play and pause controls for video, audio, or user-controlled animation.",
+      "integration": "Connect playing to the actual media or animation state, and onPlayingChange to a playback request. Update state from real play, pause, and ended events; handle rejected play promises in the host. The button does not operate media itself. Supply accessible Play/Pause labels and keep native keyboard behavior. The optional local preview is a finite animation, not an audio or video player. Replay changes only the icon, never playback state or callbacks.",
+      "props": "playing, defaultPlaying, onPlayingChange, labels, disabled, buttonRef, native button attributes, speed, radius, className, style",
+      "dependencies": [
+        "motion"
+      ],
+      "source": "recipes/playback-toggle.tsx",
+      "styles": "recipes/playback-toggle.css",
+      "recipe": "references/playback-toggle.md"
+    },
+    {
+      "id": "confirm-action",
+      "name": "Confirm action",
+      "description": "Make room for a deliberate second click.",
+      "category": "Actions",
+      "exportName": "ConfirmAction",
+      "detail": "A compact action unfolds into confirmation and cancellation in the same surface. The operation begins only after explicit confirmation, and feedback follows its real outcome.",
+      "when": "Confirming an archive, removal, reset, or other consequential action in context.",
+      "integration": "Supply the real onConfirm operation. Opening only arms the control and focuses Cancel; Enter or Space cannot confirm through a held key. Cancel and Escape return to the original action before commitment. Pending operations cannot overlap or be canceled by closing the control. Rejection keeps confirmation available with an error; success persists until the host remounts for a restored or different resource. Keep resource state and restoration in the host. Without onConfirm the production control is disabled. The preview archives and restores local data only. Replay changes presentation without changing state, invoking callbacks, or moving focus.",
+      "props": "onConfirm, label, confirmLabel, cancelLabel, pendingLabel, successLabel, speed, radius, className, style",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "source": "recipes/confirm-action.tsx",
+      "styles": "recipes/confirm-action.css",
+      "recipe": "references/confirm-action.md"
     }
   ],
   "adapters": [

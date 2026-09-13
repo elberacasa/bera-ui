@@ -20,6 +20,7 @@ import {
   ListComparisonPreview,
   type FileComparisonId,
 } from "./comparisons/list-preview";
+import { PlaybackComparisonPreview } from "./comparisons/playback-preview";
 import "../app/motion-comparison.css";
 
 type View = "without" | "with";
@@ -31,7 +32,7 @@ type Row = {
   play: () => void;
   preview: (enhanced: boolean) => ReactNode;
 };
-export const comparisonCount = 7;
+export const comparisonCount = 8;
 const defaultFileOrder: FileComparisonId[] = ["brief", "tokens", "readme"];
 const tabs: TabsComparisonValue[] = ["all", "code", "docs"];
 const statuses = ["Draft saved", "Ready for review", "Changes approved"];
@@ -61,6 +62,7 @@ export function MotionComparison({
   const [navigation, setNavigation] = useState(false);
   const [status, setStatus] = useState(0);
   const [fileOrder, setFileOrder] = useState(defaultFileOrder);
+  const [playing, setPlaying] = useState(false);
   const reduced = useMotionPreference();
   const speed = slow ? 0.35 : 1;
   const playTabs = () =>
@@ -71,6 +73,22 @@ export function MotionComparison({
   const playIcon = () => setNavigation((value) => !value);
   const playStatus = () => setStatus((value) => (value + 1) % statuses.length);
   const rows: Row[] = [
+    {
+      id: "playback-toggle",
+      name: "Play / pause",
+      description:
+        "The same two paths reshape into the next icon. Reversing continues from the current shape.",
+      action: playing ? "Show play" : "Show pause",
+      play: () => setPlaying((value) => !value),
+      preview: (enhanced) => (
+        <PlaybackComparisonPreview
+          enhanced={enhanced}
+          speed={speed}
+          playing={playing}
+          onPlayingChange={setPlaying}
+        />
+      ),
+    },
     {
       id: "animated-list",
       name: "Animated list",
