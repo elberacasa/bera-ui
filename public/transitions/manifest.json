@@ -199,6 +199,66 @@
       "recipe": "/transitions/morphing-icon-button.agent.md",
       "asset": "/transitions/morphing-icon-button.json",
       "registry": "/r/morphing-icon-button.json"
+    },
+    {
+      "id": "inline-edit",
+      "name": "Inline edit",
+      "description": "Rename in place. Keep the context.",
+      "category": "Inputs",
+      "exportName": "InlineEdit",
+      "detail": "A label opens into an editable surface, then returns to its accepted value. Save and cancel stay within the same place.",
+      "when": "Project names, short titles, and metadata that can be edited in place.",
+      "integration": "Connect value and onCommit to the actual update. Resolve only after saving succeeds, reject on failure, and update the controlled value after acceptance. Optional validate returns a readable error. Enter saves; Escape or Cancel discards an idle draft. During a pending save, Escape or Close only hides the editor: the operation continues and new commits remain blocked until settlement. Composition input never submits early. The preview changes local data only. Replay must not save or move focus.",
+      "props": "value, defaultValue, onCommit, validate, label, speed, radius, className, style",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "source": "/transitions/inline-edit.tsx",
+      "styles": "/transitions/inline-edit.css",
+      "recipe": "/transitions/inline-edit.agent.md",
+      "asset": "/transitions/inline-edit.json",
+      "registry": "/r/inline-edit.json"
+    },
+    {
+      "id": "animated-list",
+      "name": "Animated list",
+      "description": "Add, remove, and rearrange without losing your place.",
+      "category": "Layout",
+      "exportName": "AnimatedList",
+      "detail": "Stable items move into their new positions as the list changes. Content stays sharp while the surrounding space adjusts.",
+      "when": "Changing file lists, search results, queues, or selected items.",
+      "integration": "Supply items with unique stable IDs and React content. The host owns insertion, removal, sorting, and focus after its own commands. Keep business actions in the host; this recipe supplies list semantics and motion. Exiting rows leave the focus order immediately. Replay never changes host data or repeats actions.",
+      "props": "items, emptyState, ariaLabel, speed, radius, className, style",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "source": "/transitions/animated-list.tsx",
+      "styles": "/transitions/animated-list.css",
+      "recipe": "/transitions/animated-list.agent.md",
+      "asset": "/transitions/animated-list.json",
+      "registry": "/r/animated-list.json"
+    },
+    {
+      "id": "selection-toolbar",
+      "name": "Selection toolbar",
+      "description": "Actions take shape around your selection.",
+      "category": "Actions",
+      "exportName": "SelectionToolbar",
+      "detail": "A compact selection count expands into contextual actions. The surface follows the current selection and folds away when it clears.",
+      "when": "Bulk actions for selected files, messages, or table rows.",
+      "integration": "Connect count, actions, and onClear to host-owned selection. Each action calls its real onSelect operation; pending and failure follow its promise. The host clears or updates selection after acceptance. Supply returnFocusRef for focused controls that disappear; unrelated focus stays put. Preview archive and restore affect local sample files only. Replay never calls actions.",
+      "props": "count, actions, onClear, returnFocusRef, ariaLabel, speed, radius, className, style",
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "source": "/transitions/selection-toolbar.tsx",
+      "styles": "/transitions/selection-toolbar.css",
+      "recipe": "/transitions/selection-toolbar.agent.md",
+      "asset": "/transitions/selection-toolbar.json",
+      "registry": "/r/selection-toolbar.json"
     }
   ],
   "adapters": [

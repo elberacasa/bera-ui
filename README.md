@@ -26,21 +26,22 @@
 
 bera/ui is a motion library for React. Explore an interaction, adjust its feel, and bring the source into your product. Each recipe includes the component, its styles, and the guidance your coding agent needs to adapt it.
 
-<a href="https://bera-ui.vercel.app/#compare-accordion">
+<a href="https://bera-ui.vercel.app/#compare-animated-list">
   <picture>
-    <source media="(prefers-reduced-motion: reduce)" srcset="assets/comparison.png" />
-    <img src="assets/comparison.gif" alt="The same workspace settings without motion and with Bera’s accordion transition" width="100%" />
+    <source media="(prefers-reduced-motion: reduce)" srcset="assets/list-comparison.png" />
+    <img src="assets/list-comparison.gif" alt="The same project files reorder instantly without motion and move between positions with Bera" width="100%" />
   </picture>
 </a>
 
-The same interface and shared state, using the [accordion recipe](https://bera-ui.vercel.app/#accordion). This recording used **0.4× slow playback**; [try the current comparison at normal speed](https://bera-ui.vercel.app/#compare-accordion).
+The same interface and shared state, using the [animated list recipe](https://bera-ui.vercel.app/#animated-list). Recorded in the real gallery at **0.35× playback**; [try it at normal speed](https://bera-ui.vercel.app/#compare-animated-list).
 
 ## See what changes
 
-Six live comparisons share the same content, styling, and application state on both sides. Their resting states match: use the action beside each example to see what motion changes. Jump directly to a pattern or inspect it with **0.35× slow playback**. On mobile, choose **Without bera** or **With bera**, then repeat the same action.
+Seven live comparisons share the same content, styling, and application state on both sides. Their resting states match: use the action beside each example to see what motion changes. Jump directly to a pattern or inspect it with **0.35× slow playback**. On mobile, choose **Without bera** or **With bera**, then repeat the same action.
 
 | Comparison                                                                | Use case                    | Without Bera                            | With Bera                                                     |
 | ------------------------------------------------------------------------- | --------------------------- | --------------------------------------- | ------------------------------------------------------------- |
+| [Animated list](https://bera-ui.vercel.app/#compare-animated-list)        | Organize project files      | Rows jump to their new positions.       | Stable items move as the list's space adjusts.                |
 | [Sliding tabs](https://bera-ui.vercel.app/#compare-sliding-tabs)          | Filter project files        | Selection switches instantly.           | The active indicator travels between tabs as content changes. |
 | [Accordion](https://bera-ui.vercel.app/#compare-accordion)                | Reveal workspace settings   | Content appears at its final height.    | The section opens and closes to its content height.           |
 | [Expanding search](https://bera-ui.vercel.app/#compare-expanding-search)  | Find a component            | The button becomes a field immediately. | The field grows from the button, then reveals its controls.   |
@@ -52,6 +53,14 @@ Six live comparisons share the same content, styling, and application state on b
 - **Tune it.** Adjust timing and shape, then carry your settings into the integration.
 - **Make it yours.** Keep your components, content, design tokens, and application state.
 - **Keep the source.** Copy a single React export and its CSS. Edit them in your own project.
+
+## New in the collection
+
+- [Inline edit](https://bera-ui.vercel.app/#inline-edit): edit short titles in place, with validation, cancellation, and feedback tied to the real save operation.
+- [Animated list](https://bera-ui.vercel.app/#animated-list): insert, remove, and reorder keyed content while keeping the host in charge of its data.
+- [Selection toolbar](https://bera-ui.vercel.app/#selection-toolbar): reveal bulk actions around a selection, with pending and failure states tied to actual callbacks.
+
+Each includes editable React source, scoped CSS, a shadcn registry item, and a focused agent recipe.
 
 ## Refine an existing interface
 

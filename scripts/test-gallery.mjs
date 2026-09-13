@@ -206,6 +206,22 @@ try {
         100,
     "The default collection must show a usable component preview above the fold",
   );
+  const captionAlignment = await collection
+    .locator(".tl-caption")
+    .first()
+    .evaluate((caption) => {
+      const title = caption.querySelector("h3").getBoundingClientRect();
+      const action = caption
+        .querySelector(".tl-inspect")
+        .getBoundingClientRect();
+      return Math.abs(
+        title.y + title.height / 2 - action.y - action.height / 2,
+      );
+    });
+  assert.ok(
+    captionAlignment < 1,
+    "Customize must remain aligned beside its component name",
+  );
   passed(
     "homepage opens on an above-fold collection with accessible view navigation",
   );
@@ -276,6 +292,7 @@ try {
   );
 
   const patterns = [
+    ["animated-list", ".bc-list-preview ul", "text"],
     ["sliding-tabs", '[role="tab"][aria-selected="true"]', "text"],
     ["accordion", ".bt-accordion-trigger", "aria-expanded"],
     ["expanding-search", ".bs-search-form", "data-open"],
@@ -515,6 +532,177 @@ try {
   );
   assert.ok(await trigger.evaluate((node) => node === document.activeElement));
   passed("closing the inspector restores focus to its collection trigger");
+
+  const categoryPicker = collection.getByRole("combobox", {
+    name: "Filter components",
+  });
+  await categoryPicker.selectOption("Inputs");
+  await collection.locator("#inline-edit").waitFor({ state: "visible" });
+  await collection.locator("#animated-list").waitFor({ state: "hidden" });
+  await categoryPicker.selectOption("All");
+  await collection.locator("#animated-list").waitFor({ state: "visible" });
+  passed("phone category picker reveals the selected component family");
+
+  for (const [id, name, exported] of [
+    ["inline-edit", "Inline edit", "InlineEdit"],
+    ["animated-list", "Animated list", "AnimatedList"],
+    ["selection-toolbar", "Selection toolbar", "SelectionToolbar"],
+  ]) {
+    await collection
+      .locator(`#${id}`)
+      .getByRole("button", { name: `Customize ${name}`, exact: true })
+      .click();
+    const workbench = page.getByRole("dialog", { name, exact: true });
+    const sample = workbench.locator(".tl-tuning-preview");
+    if (id === "inline-edit") {
+      await sample
+        .getByRole("button", { name: "Edit project name", exact: true })
+        .click();
+    } else if (id === "animated-list") {
+      await sample
+        .getByRole("button", { name: "Add file", exact: true })
+        .click();
+    } else {
+      const countFits = await sample.locator(".bst-count").evaluate((count) => {
+        const label = count.getBoundingClientRect();
+        const surface = count.closest(".bst-surface").getBoundingClientRect();
+        return (
+          label.top >= surface.top &&
+          label.bottom <= surface.bottom &&
+          label.right <= surface.right
+        );
+      });
+      assert.ok(
+        countFits,
+        "Idle selection text must remain visible when actions wrap in the narrow inspector",
+      );
+      await sample.getByRole("checkbox").first().check();
+      // The controls exist at full content width while the closed shell masks
+      // them. Measure only after the reduced-motion effect exposes the actions.
+      await page.waitForFunction(() => {
+        const toolbar = document.querySelector("[role='dialog'] .bst-toolbar");
+        if (!toolbar) return false;
+        const actions = toolbar.querySelector(".bst-controls");
+        const surface = toolbar
+          .querySelector(".bst-surface")
+          .getBoundingClientRect();
+        const content = toolbar.querySelector(".bst-content");
+        return (
+          getComputedStyle(actions).opacity === "1" &&
+          Math.abs(surface.width - toolbar.clientWidth) < 1 &&
+          Math.abs(surface.height - content.offsetHeight - 2) < 1
+        );
+      });
+    }
+    const overflow = await sample.evaluate((frame) => {
+      const bounds = frame.getBoundingClientRect();
+      const playbackTop = frame
+        .querySelector(".tl-tuning-playback")
+        .getBoundingClientRect().top;
+      return [...frame.querySelectorAll("button, input, select")]
+        .filter(
+          (node) =>
+            node.getClientRects().length &&
+            !node.closest("[inert], [aria-hidden='true'], .tl-tuning-playback"),
+        )
+        .map((node) => ({
+          label: node.getAttribute("aria-label") || node.textContent,
+          bounds: node.getBoundingClientRect().toJSON(),
+        }))
+        .filter(
+          ({ bounds: rect }) =>
+            rect.left < bounds.left - 1 ||
+            rect.right > bounds.right + 1 ||
+            rect.top < bounds.top - 1 ||
+            rect.bottom > Math.min(bounds.bottom, playbackTop) + 1,
+        );
+    });
+    assert.deepEqual(
+      overflow,
+      [],
+      `${name}'s opened controls must fit the 320px inspector`,
+    );
+    await workbench.getByRole("tab", { name: "React", exact: true }).click();
+    await workbench.locator("pre").waitFor();
+    assert.ok(
+      (await workbench.locator("pre").textContent()).includes(exported),
+      `${name} must load its own generated source`,
+    );
+    await workbench
+      .getByRole("button", { name: "Close transition", exact: true })
+      .click();
+    await workbench.waitFor({ state: "hidden" });
+  }
+  passed(
+    "new recipes remain usable in the phone customizer and load their standalone source",
+  );
+
+  // A correct final state is not evidence of animation. Exercise hydration in
+  // the static export, then measure the same keyed row during a real reorder.
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto(`${origin}/#compare-animated-list`);
+  await page.reload();
+  await expectView("compare");
+  const slowPlayback = comparisons.getByRole("button", {
+    name: "Slow motion",
+    exact: true,
+  });
+  await slowPlayback.click();
+  await comparisons
+    .locator("#compare-animated-list")
+    .evaluate((row) =>
+      row.scrollIntoView({ block: "center", behavior: "instant" }),
+    );
+  const motionFrames = await page.evaluate(async () => {
+    const row = document.getElementById("compare-animated-list");
+    const before = row.querySelector('.cx-without [data-list-id="brief"]');
+    const after = row.querySelector('.cx-with [data-list-id="brief"]');
+    const read = () => [
+      before.getBoundingClientRect().y,
+      after.getBoundingClientRect().y,
+    ];
+    // Let scrolling and the speed change settle before collecting positions.
+    await new Promise((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(resolve)),
+    );
+    const start = read();
+    row.querySelector(".cx-row-play").click();
+    const frames = [];
+    const began = performance.now();
+    await new Promise((resolve) => {
+      const sample = (now) => {
+        frames.push({ time: now - began, positions: read() });
+        if (now - began < 1800) requestAnimationFrame(sample);
+        else resolve();
+      };
+      requestAnimationFrame(sample);
+    });
+    return { start, frames };
+  });
+  const finalPositions = motionFrames.frames.at(-1).positions;
+  const travel = finalPositions[1] - motionFrames.start[1];
+  assert.ok(Math.abs(travel) > 100, "Reorder must move the keyed row");
+  assert.ok(
+    motionFrames.frames.some(({ positions }) => {
+      const progress = (positions[1] - motionFrames.start[1]) / travel;
+      return progress > 0.1 && progress < 0.9;
+    }),
+    "The hydrated Bera list must visibly pass through intermediate positions",
+  );
+  assert.ok(
+    motionFrames.frames
+      .filter(({ time }) => time > 100)
+      .every(({ positions }) => Math.abs(positions[0] - finalPositions[0]) < 1),
+    "The baseline must jump to its final position without interpolation",
+  );
+  assert.ok(
+    Math.abs(finalPositions[0] - finalPositions[1]) < 1,
+    "Both comparisons must settle at the same position",
+  );
+  passed(
+    "hydrated list comparison visibly animates while its baseline changes immediately",
+  );
   assert.deepEqual(errors, [], "The browser reported runtime errors");
   assert.deepEqual(
     externalRequests,

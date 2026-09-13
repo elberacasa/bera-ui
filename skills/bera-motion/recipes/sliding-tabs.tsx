@@ -83,10 +83,10 @@ type SlidingTabsProps = PlaybackProps & {
     ariaLabel?: string;
 };
 const notes = [
-    { title: "Refine the details", time: "Just now", unread: true, saved: true },
-    { title: "Keep it simple", time: "2 hours ago", unread: false, saved: true },
+    { title: "Project brief", time: "Just now", unread: true, saved: true },
+    { title: "Release notes", time: "2 hours ago", unread: false, saved: true },
     {
-        title: "Make room for focus",
+        title: "API reference",
         time: "Yesterday",
         unread: false,
         saved: false,

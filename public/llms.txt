@@ -1,6 +1,6 @@
 # bera/ui
 
-> Reusable motion for existing React interfaces: 10 standalone transition recipes, CSS host adapters, live tuning, and an optional coding-agent skill.
+> Reusable motion for existing React interfaces: 13 standalone transition recipes, CSS host adapters, live tuning, and an optional coding-agent skill.
 
 Read the host project and preserve its primitives, state ownership, and styles. Standalone components default to natural sizing and preview=false. Standalone registry installation adds the original recipe; pass chosen speed and radius in the consuming code. CSS host adapters use their documented custom properties instead. Review dependency changes and each recipe's integration boundary.
 
@@ -24,6 +24,9 @@ Read the host project and preserve its primitives, state ownership, and styles. 
 - [Rolling counter](https://bera-ui.vercel.app/transitions/rolling-counter.agent.md): Adjustable integer quantities, totals, or compact counters.
 - [Accordion](https://bera-ui.vercel.app/transitions/accordion.agent.md): Expandable help, preferences, and short supporting details.
 - [Icon morph](https://bera-ui.vercel.app/transitions/morphing-icon-button.agent.md): A menu or panel toggle that needs a clear change of state.
+- [Inline edit](https://bera-ui.vercel.app/transitions/inline-edit.agent.md): Project names, short titles, and metadata that can be edited in place.
+- [Animated list](https://bera-ui.vercel.app/transitions/animated-list.agent.md): Changing file lists, search results, queues, or selected items.
+- [Selection toolbar](https://bera-ui.vercel.app/transitions/selection-toolbar.agent.md): Bulk actions for selected files, messages, or table rows.
 
 ## Host adapters
 
@@ -41,3 +44,6 @@ Read the host project and preserve its primitives, state ownership, and styles. 
 - [Rolling counter registry item](https://bera-ui.vercel.app/r/rolling-counter.json): installable source, companion CSS, and dependencies.
 - [Accordion registry item](https://bera-ui.vercel.app/r/accordion.json): installable source, companion CSS, and dependencies.
 - [Icon morph registry item](https://bera-ui.vercel.app/r/morphing-icon-button.json): installable source, companion CSS, and dependencies.
+- [Inline edit registry item](https://bera-ui.vercel.app/r/inline-edit.json): installable source, companion CSS, and dependencies.
+- [Animated list registry item](https://bera-ui.vercel.app/r/animated-list.json): installable source, companion CSS, and dependencies.
+- [Selection toolbar registry item](https://bera-ui.vercel.app/r/selection-toolbar.json): installable source, companion CSS, and dependencies.

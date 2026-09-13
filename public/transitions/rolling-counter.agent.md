@@ -239,7 +239,9 @@ function RollingCounter({ value, defaultValue = 24, onValueChange, min = 0, max 
           <Plus size={17} strokeWidth={1.8}/>
         </motion.button>
       </div>
-      <span className="bs-counter-hint">Every little increment.</span>
+      <span className="bs-counter-hint">
+        Range {low}–{high}
+      </span>
     </div>);
 }
 export { RollingCounter };

@@ -16,6 +16,10 @@ import {
   TextComparisonPreview,
 } from "./comparisons/state-previews";
 import { SearchComparisonPreview } from "./comparisons/search-preview";
+import {
+  ListComparisonPreview,
+  type FileComparisonId,
+} from "./comparisons/list-preview";
 import "../app/motion-comparison.css";
 
 type View = "without" | "with";
@@ -27,6 +31,8 @@ type Row = {
   play: () => void;
   preview: (enhanced: boolean) => ReactNode;
 };
+export const comparisonCount = 7;
+const defaultFileOrder: FileComparisonId[] = ["brief", "tokens", "readme"];
 const tabs: TabsComparisonValue[] = ["all", "code", "docs"];
 const statuses = ["Draft saved", "Ready for review", "Changes approved"];
 
@@ -54,6 +60,7 @@ export function MotionComparison({
   const [count, setCount] = useState(8);
   const [navigation, setNavigation] = useState(false);
   const [status, setStatus] = useState(0);
+  const [fileOrder, setFileOrder] = useState(defaultFileOrder);
   const reduced = useMotionPreference();
   const speed = slow ? 0.35 : 1;
   const playTabs = () =>
@@ -64,6 +71,29 @@ export function MotionComparison({
   const playIcon = () => setNavigation((value) => !value);
   const playStatus = () => setStatus((value) => (value + 1) % statuses.length);
   const rows: Row[] = [
+    {
+      id: "animated-list",
+      name: "Animated list",
+      description:
+        "Items keep their identity as the list changes. The surrounding space follows.",
+      action: fileOrder.length < 2 ? "Restore files" : "Change order",
+      play: () =>
+        setFileOrder((current) =>
+          current.length < 2
+            ? defaultFileOrder
+            : [...current.slice(1), current[0]],
+        ),
+      preview: (enhanced) => (
+        <ListComparisonPreview
+          enhanced={enhanced}
+          speed={speed}
+          order={fileOrder}
+          onRemove={(removed) =>
+            setFileOrder((current) => current.filter((id) => id !== removed))
+          }
+        />
+      ),
+    },
     {
       id: "sliding-tabs",
       name: "Sliding tabs",
@@ -240,8 +270,9 @@ export function MotionComparison({
         </div>
         <table id={`${id}-table`} className="cx-table" data-view={view}>
           <caption className="cx-sr-only">
-            Interactive comparison of six transitions. Resting states match. Use
-            the action in each row or change either preview to update both.
+            Interactive comparison of {rows.length} transitions. Resting states
+            match. Use the action in each row or change either preview to update
+            both.
           </caption>
           <thead>
             <tr>

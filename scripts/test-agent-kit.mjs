@@ -17,11 +17,14 @@ import { checkTransitionExamples } from "./check-transition-examples.mjs";
 const execute = promisify(execFile);
 const EXPECTED_IDS = [
   "accordion",
+  "animated-list",
   "copy-button",
   "expanding-search",
+  "inline-edit",
   "morphing-icon-button",
   "morphing-menu",
   "rolling-counter",
+  "selection-toolbar",
   "sliding-tabs",
   "state-button",
   "text-swap",
@@ -191,9 +194,19 @@ const CONSUMER_PROPS = {
     "value={4} min={0} max={99} onValueChange={value => update(value)}",
   accordion:
     'items={[{ title: "Details", body: <a href="#details">Read more</a> }]} value={0} onValueChange={value => update(value)}',
+  "inline-edit":
+    'value="Project name" onCommit={async value => { await save(); update(value); }} validate={value => value.trim() ? undefined : "Enter a name"}',
+  "animated-list":
+    'items={[{ id: "first", content: <button type="button">Open file</button> }]} emptyState={<span>No files</span>} ariaLabel="Project files"',
+  "selection-toolbar":
+    'count={2} actions={[{ id: "archive", label: "Archive", onSelect: save }]} onClear={() => update(0)} returnFocusRef={{ current: null }}',
 };
 
 async function compileConsumer(ts, repository, project, transition) {
+  assert.ok(
+    Object.hasOwn(CONSUMER_PROPS, transition.id),
+    `Add a host integration fixture for ${transition.id}`,
+  );
   const directory = path.join(project, "components/bera");
   const sourcePath = path.join(directory, `${transition.id}.tsx`);
   const consumerPath = path.join(project, "consumer.tsx");

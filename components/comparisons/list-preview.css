@@ -1,0 +1,71 @@
+.bc-list-preview {
+  width: 100%;
+  max-width: 320px;
+  min-width: 0;
+}
+.bc-list-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: #c6c6c6;
+}
+.bc-list-heading > span:last-child {
+  color: #929292;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.bc-list-file {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 54px;
+  min-width: 0;
+  padding-left: 12px;
+}
+.bc-list-file > svg {
+  color: #929292;
+}
+.bc-list-file > div {
+  flex: 1;
+  min-width: 0;
+}
+.bc-list-file span,
+.bc-list-file small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bc-list-file span {
+  color: #e4e4e4;
+  font-size: 13px;
+}
+.bc-list-file small {
+  margin-top: 3px;
+  font-size: 11px;
+  color: #929292;
+}
+.bc-list-file button {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #929292;
+}
+.bc-list-file button:hover {
+  background: #202020;
+  color: #eee;
+}
+.bc-list-empty {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #929292;
+  margin: 12px 0;
+}

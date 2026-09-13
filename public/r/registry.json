@@ -283,6 +283,90 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "inline-edit",
+      "type": "registry:component",
+      "title": "Inline edit",
+      "description": "Rename in place. Keep the context.",
+      "dependencies": [
+        "motion@^12.43.0",
+        "lucide-react@^1.31.0"
+      ],
+      "files": [
+        {
+          "path": "skills/bera-motion/recipes/inline-edit.tsx",
+          "type": "registry:component",
+          "target": "@components/bera/inline-edit.tsx"
+        },
+        {
+          "path": "skills/bera-motion/recipes/inline-edit.css",
+          "type": "registry:file",
+          "target": "@components/bera/inline-edit.css"
+        }
+      ],
+      "docs": "Import { InlineEdit } from your configured components alias under bera/inline-edit. Keep its companion CSS. Connect value and onCommit to the actual update. Resolve only after saving succeeds, reject on failure, and update the controlled value after acceptance. Optional validate returns a readable error. Enter saves; Escape or Cancel discards an idle draft. During a pending save, Escape or Close only hides the editor: the operation continues and new commits remain blocked until settlement. Composition input never submits early. The preview changes local data only. Replay must not save or move focus. Defaults: preview=false, speed=1, radius=12. Tested with React 19 and shadcn 4.21.0; use complete CSS color tokens. Integration: https://bera-ui.vercel.app/transitions/inline-edit.agent.md",
+      "categories": [
+        "inputs",
+        "motion"
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "animated-list",
+      "type": "registry:component",
+      "title": "Animated list",
+      "description": "Add, remove, and rearrange without losing your place.",
+      "dependencies": [
+        "motion@^12.43.0",
+        "lucide-react@^1.31.0"
+      ],
+      "files": [
+        {
+          "path": "skills/bera-motion/recipes/animated-list.tsx",
+          "type": "registry:component",
+          "target": "@components/bera/animated-list.tsx"
+        },
+        {
+          "path": "skills/bera-motion/recipes/animated-list.css",
+          "type": "registry:file",
+          "target": "@components/bera/animated-list.css"
+        }
+      ],
+      "docs": "Import { AnimatedList } from your configured components alias under bera/animated-list. Keep its companion CSS. Supply items with unique stable IDs and React content. The host owns insertion, removal, sorting, and focus after its own commands. Keep business actions in the host; this recipe supplies list semantics and motion. Exiting rows leave the focus order immediately. Replay never changes host data or repeats actions. Defaults: preview=false, speed=1, radius=12. Tested with React 19 and shadcn 4.21.0; use complete CSS color tokens. Integration: https://bera-ui.vercel.app/transitions/animated-list.agent.md",
+      "categories": [
+        "layout",
+        "motion"
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "selection-toolbar",
+      "type": "registry:component",
+      "title": "Selection toolbar",
+      "description": "Actions take shape around your selection.",
+      "dependencies": [
+        "motion@^12.43.0",
+        "lucide-react@^1.31.0"
+      ],
+      "files": [
+        {
+          "path": "skills/bera-motion/recipes/selection-toolbar.tsx",
+          "type": "registry:component",
+          "target": "@components/bera/selection-toolbar.tsx"
+        },
+        {
+          "path": "skills/bera-motion/recipes/selection-toolbar.css",
+          "type": "registry:file",
+          "target": "@components/bera/selection-toolbar.css"
+        }
+      ],
+      "docs": "Import { SelectionToolbar } from your configured components alias under bera/selection-toolbar. Keep its companion CSS. Connect count, actions, and onClear to host-owned selection. Each action calls its real onSelect operation; pending and failure follow its promise. The host clears or updates selection after acceptance. Supply returnFocusRef for focused controls that disappear; unrelated focus stays put. Preview archive and restore affect local sample files only. Replay never calls actions. Defaults: preview=false, speed=1, radius=12. Tested with React 19 and shadcn 4.21.0; use complete CSS color tokens. Integration: https://bera-ui.vercel.app/transitions/selection-toolbar.agent.md",
+      "categories": [
+        "actions",
+        "motion"
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "radix-menu-motion",
       "type": "registry:file",
       "title": "Radix menu motion",

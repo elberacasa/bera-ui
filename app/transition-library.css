@@ -2,7 +2,7 @@
   --tl-line: #242424;
   --tl-nav-height: 62px;
   --tl-muted: #929292;
-  max-width: 1248px;
+  max-width: 1368px;
   padding: 0 48px;
   margin: 0 auto;
   color: #efefef;
@@ -11,7 +11,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 84px;
+  height: 76px;
   gap: 32px;
 }
 .tl-brand {
@@ -47,20 +47,20 @@
 }
 .tl-intro {
   display: grid;
-  grid-template-columns: 1.25fr 1fr;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 64px;
-  align-items: end;
-  padding: 40px 0 44px;
+  align-items: center;
+  padding: 34px 0 36px;
 }
 .tl-intro h1 {
-  font-size: clamp(42px, 4.5vw, 58px);
+  font-size: clamp(32px, 3.6vw, 44px);
   font-weight: 500;
   letter-spacing: -0.055em;
   line-height: 1.09;
   margin: 0;
 }
 .tl-intro-detail {
-  padding-bottom: 5px;
+  padding-bottom: 0;
   max-width: 350px;
   justify-self: end;
 }
@@ -68,7 +68,7 @@
   font-size: 15px;
   line-height: 1.75;
   color: #929292;
-  margin: 0 0 22px;
+  margin: 14px 0 0;
 }
 .tl-agent-button {
   display: inline-flex;
@@ -171,8 +171,8 @@
 }
 .tl-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 64px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 40px;
 }
 .tl-specimen {
   min-width: 0;
@@ -182,11 +182,11 @@
 }
 .tl-preview {
   position: relative;
-  height: 264px;
+  min-height: 264px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 0;
+  padding: 0;
   isolation: isolate;
 }
 .tl-preview > div:first-child {
@@ -194,13 +194,9 @@
   max-width: min(360px, 100%);
 }
 .tl-replay {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  z-index: 5;
   display: grid;
   place-items: center;
-  width: 40px;
+  width: 32px;
   height: 40px;
   border-radius: 8px;
   border: 0;
@@ -212,8 +208,8 @@
     color 0.18s,
     background 0.18s;
 }
-.tl-preview:hover .tl-replay,
-.tl-preview:focus-within .tl-replay,
+.tl-specimen:hover .tl-replay,
+.tl-specimen:focus-within .tl-replay,
 .tl-replay:focus-visible {
   opacity: 1;
 }
@@ -227,7 +223,7 @@
   align-items: center;
   gap: 8px 14px;
 }
-.tl-caption > div {
+.tl-caption > div:first-child {
   display: contents;
 }
 .tl-caption h3 {
@@ -246,8 +242,6 @@
   min-height: 43px;
 }
 .tl-inspect {
-  grid-column: 2;
-  grid-row: 1;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -455,7 +449,7 @@
 .tl-code-tabs [data-slot="tabs-content"] {
   min-width: 0;
 }
-@media (max-width: 1000px) {
+@media (max-width: 1180px) {
   .transition-library {
     padding-inline: 32px;
   }
@@ -465,10 +459,10 @@
   }
   .tl-intro {
     gap: 44px;
-    padding: 42px 0 52px;
+    padding: 30px 0 32px;
   }
   .tl-intro h1 {
-    font-size: 42px;
+    font-size: 36px;
   }
   .tl-intro p {
     font-size: 14px;
@@ -501,7 +495,7 @@
     padding: 20px 0 24px;
   }
   .tl-intro h1 {
-    font-size: 42px;
+    font-size: 34px;
   }
   .tl-intro-detail {
     justify-self: start;
@@ -509,18 +503,17 @@
     padding: 0;
   }
   .tl-intro p {
-    margin-bottom: 14px;
+    margin: 10px 0 0;
     max-width: 310px;
   }
   .tl-toolbar {
-    align-items: stretch;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
     gap: 12px;
-    padding-bottom: 14px;
+    padding-bottom: 0;
   }
   .tl-filters {
-    justify-content: space-between;
-    gap: 0;
+    display: none;
   }
   .tl-filters > button {
     padding: 10px 12px;
@@ -541,7 +534,7 @@
     padding: 21px 0 25px;
   }
   .tl-preview {
-    height: 264px;
+    min-height: 264px;
   }
   .tl-replay {
     opacity: 1;
@@ -618,7 +611,7 @@
     gap: 18px;
   }
   .tl-intro h1 {
-    font-size: 40px;
+    font-size: 31px;
   }
   .tl-inspector {
     padding: 16px;
@@ -731,7 +724,7 @@
   display: grid;
   place-items: center;
   min-height: 290px;
-  padding: 14px 16px 32px;
+  padding: 14px 16px 48px;
   border-right: 1px solid #292929;
 }
 .tl-tuning-preview > div:first-child {
@@ -741,6 +734,9 @@
 }
 .tl-tuning-preview .bs-demo {
   padding-inline: 0;
+}
+.tl-tuning-preview .bal-root[data-preview="true"] {
+  min-height: 248px;
 }
 .tl-tuning-playback {
   position: absolute;
@@ -883,7 +879,7 @@
     min-height: 258px;
     border-right: 0;
     border-bottom: 1px solid #292929;
-    padding: 8px 16px 24px;
+    padding: 8px 16px 48px;
   }
   .tl-tuning-controls {
     padding: 18px;
@@ -922,11 +918,6 @@
   align-items: center;
   gap: 20px;
   flex-wrap: wrap;
-}
-.tl-intro-note {
-  color: #858585;
-  font-size: 11px;
-  line-height: 1.6;
 }
 .tl-view-nav {
   position: sticky;
@@ -1050,7 +1041,7 @@
     min-height: 0;
   }
   .tl-preview {
-    height: 248px;
+    min-height: 248px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1069,4 +1060,79 @@
 }
 .tl-specimen :is(button, a, input) {
   scroll-margin-top: calc(var(--tl-nav-height) + 20px);
+}
+
+.tl-category-select {
+  display: none;
+  position: relative;
+  min-width: 0;
+}
+.tl-category-select select {
+  appearance: none;
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #303030;
+  border-radius: 8px;
+  background: #141414;
+  padding: 0 30px 0 12px;
+  color: #dedede;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.tl-category-select select:focus-visible {
+  outline: 1px solid #bdbdbd;
+  outline-offset: 3px;
+}
+.tl-category-select > svg {
+  position: absolute;
+  right: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #929292;
+}
+@media (max-width: 900px) {
+  .tl-filters {
+    display: none;
+  }
+  .tl-category-select {
+    display: block;
+    width: 160px;
+  }
+}
+@media (max-width: 700px) {
+  .tl-intro {
+    gap: 20px;
+    padding: 18px 0 26px;
+  }
+  .tl-intro h1 {
+    max-width: 310px;
+    line-height: 1.15;
+  }
+  .tl-category-select {
+    width: 148px;
+  }
+  .tl-playback button {
+    min-height: 44px;
+  }
+  .tl-caption {
+    padding-top: 2px;
+  }
+}
+
+.tl-specimen-actions {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.tl-specimen-actions .tl-inspect {
+  padding-inline: 4px;
+}
+@media (max-width: 700px) {
+  .tl-caption {
+    column-gap: 8px;
+  }
 }
