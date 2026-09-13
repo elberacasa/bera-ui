@@ -26,8 +26,8 @@ Candidate additions must include directly interactive examples, complete source,
 
 - **SVG state morphs:** connect meaningful icon states, extending the menu/close recipe to play/pause and other useful toggles, with consistent optical weight and reversible path motion.
 - **Button state morphs:** connect idle, pending, success, and retry states while preserving the real action's lifetime and the host button's semantics.
-- **Inline editing:** carry a label into an editable state, then resolve confirmation or cancellation without losing focus or context.
-- **List changes:** animate insertion, removal, and reordering while keeping item identity, reading order, and keyboard navigation intact.
+- **Inline editing:** [Inline edit](https://bera-ui.vercel.app/#inline-edit) now covers short values, validation, cancellation, and asynchronous save outcomes. Expand only for host workflows that need additional behavior.
+- **List changes:** [Animated list](https://bera-ui.vercel.app/#animated-list) now covers keyed insertion, removal, and reordering. [Selection toolbar](https://bera-ui.vercel.app/#selection-toolbar) adds contextual bulk actions. Drag reordering remains a separate host interaction.
 - **Expanded number ranges:** define behavior for signed values and changing digit counts before extending the counter's documented bounds.
 
 Use the [motion proposal form](https://github.com/elberacasa/bera-ui/issues/new?template=motion.yml) to propose a pattern or a focused refinement. Link the interface use case and describe observable acceptance criteria.

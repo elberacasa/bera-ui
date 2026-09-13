@@ -1,0 +1,294 @@
+/*
+MIT License
+
+Copyright (c) 2026 Alejandro Beracasa
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+.bie-root {
+  --bie-ink: var(--foreground, #eee);
+  --bie-muted: var(
+    --muted-foreground,
+    color-mix(in srgb, var(--bie-ink) 65%, var(--background, #080808))
+  );
+  --bie-panel: var(--popover, var(--background, #171717));
+  --bie-border: var(
+    --border,
+    color-mix(in srgb, var(--bie-ink) 18%, var(--background, #080808))
+  );
+  --bie-accent: var(
+    --accent,
+    color-mix(in srgb, var(--bie-ink) 6%, var(--background, #080808))
+  );
+  --bie-primary: var(--primary, var(--bie-ink));
+  --bie-primary-ink: var(--primary-foreground, var(--background, #191919));
+  --bie-ring: var(--ring, var(--bie-ink));
+  display: inline-flex;
+  box-sizing: border-box;
+  align-items: center;
+  width: 320px;
+  max-width: 100%;
+  color: var(--bie-ink);
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.bie-root *,
+.bie-root *::before,
+.bie-root *::after {
+  box-sizing: border-box;
+}
+.bie-root[data-preview="true"] {
+  align-items: flex-start;
+  min-height: 240px;
+  margin-inline: auto;
+  padding: 48px 16px 16px;
+}
+.bie-host {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+.bie-caption {
+  display: block;
+  margin-bottom: 10px;
+  padding-inline: 13px;
+  color: var(--bie-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+.bie-measure,
+.bie-value,
+.bie-root .bie-input {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.015em;
+}
+.bie-root[data-preview="true"] .bie-measure,
+.bie-root[data-preview="true"] .bie-value,
+.bie-root[data-preview="true"] .bie-input {
+  font-size: 20px;
+  line-height: 28px;
+}
+.bie-root[data-preview="true"] .bie-trigger,
+.bie-root[data-preview="true"] .bie-input {
+  padding-block: 8px;
+}
+.bie-measure-box {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}
+.bie-measure {
+  display: inline-block;
+  white-space: pre;
+}
+.bie-surface {
+  position: relative;
+  isolation: isolate;
+  max-width: 100%;
+  border: 1px solid transparent;
+  border-radius: var(--bera-radius, 12px);
+  background: transparent;
+  transition:
+    background-color var(--bie-duration, 160ms),
+    border-color var(--bie-duration, 160ms),
+    box-shadow var(--bie-duration, 160ms);
+}
+.bie-surface[data-editing="true"] {
+  border-color: var(--bie-border);
+  background: var(--bie-panel);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--bie-ink) 4%, transparent);
+}
+.bie-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 0;
+}
+.bie-surface[data-measured="false"] {
+  width: max-content;
+}
+.bie-surface[data-measured="false"] .bie-content {
+  position: relative;
+  width: max-content;
+  max-width: 100%;
+}
+.bie-root button {
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.bie-root button:focus-visible {
+  outline: 2px solid var(--bie-ring);
+  outline-offset: 3px;
+}
+.bie-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: max(0px, calc(var(--bera-radius, 12px) - 1px));
+  background: transparent;
+  color: var(--bie-ink);
+  text-align: left;
+}
+.bie-trigger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--bie-ink) 5%, transparent);
+}
+.bie-trigger:disabled {
+  cursor: default;
+}
+.bie-trigger[aria-disabled="true"] {
+  cursor: progress;
+  color: var(--bie-muted);
+}
+.bie-value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bie-glyph {
+  display: inline-flex;
+  flex: none;
+  color: var(--bie-muted);
+}
+.bie-form {
+  margin: 0;
+  width: 100%;
+  min-width: 0;
+}
+.bie-root .bie-input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: max(0px, calc(var(--bera-radius, 12px) - 1px))
+    max(0px, calc(var(--bera-radius, 12px) - 1px)) 0 0;
+  outline: 0;
+  background: transparent;
+  color: var(--bie-ink);
+  caret-color: var(--bie-ink);
+  box-shadow: none;
+}
+.bie-input:focus-visible {
+  outline: 0;
+  box-shadow: inset 0 -1px 0 var(--bie-muted);
+}
+.bie-input[readonly] {
+  color: var(--bie-muted);
+}
+.bie-error {
+  margin: 0;
+  padding: 0 12px 10px;
+  color: var(--bie-ink);
+  font-size: 12px;
+  line-height: 18px;
+  overflow-wrap: anywhere;
+}
+.bie-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 8px;
+  border-top: 1px solid color-mix(in srgb, var(--bie-border) 65%, transparent);
+}
+.bie-cancel,
+.bie-save {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 76px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: max(0px, calc(var(--bera-radius, 12px) - 5px));
+  font-size: 13px !important;
+}
+.bie-cancel {
+  background: transparent;
+  color: var(--bie-muted);
+}
+.bie-cancel:hover {
+  background: var(--bie-accent);
+  color: var(--bie-ink);
+}
+.bie-save {
+  min-width: 90px;
+  background: var(--bie-primary);
+  color: var(--bie-primary-ink);
+  border-color: color-mix(
+    in srgb,
+    var(--bie-primary) 78%,
+    var(--bie-primary-ink)
+  );
+  box-shadow: inset 0 1px 0
+    color-mix(in srgb, var(--bie-primary-ink) 7%, transparent);
+}
+.bie-save[aria-disabled="true"] {
+  cursor: progress;
+  opacity: 0.78;
+}
+.bie-save span {
+  display: inline-flex;
+}
+.bie-preview-note {
+  margin: 14px 0 0;
+  padding-inline: 13px;
+  color: var(--bie-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+.bie-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.bie-root[data-reduced="true"] *,
+.bie-root[data-reduced="true"] *::before,
+.bie-root[data-reduced="true"] *::after {
+  transition-duration: 0s !important;
+}
+@media (pointer: coarse) {
+  .bie-measure,
+  .bie-value,
+  .bie-root .bie-input {
+    font-size: 16px;
+  }
+}

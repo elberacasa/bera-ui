@@ -70,10 +70,10 @@ export type SlidingTabsProps = PlaybackProps & {
 };
 
 const notes = [
-  { title: "Refine the details", time: "Just now", unread: true, saved: true },
-  { title: "Keep it simple", time: "2 hours ago", unread: false, saved: true },
+  { title: "Project brief", time: "Just now", unread: true, saved: true },
+  { title: "Release notes", time: "2 hours ago", unread: false, saved: true },
   {
-    title: "Make room for focus",
+    title: "API reference",
     time: "Yesterday",
     unread: false,
     saved: false,
@@ -570,7 +570,7 @@ export function ExpandingSearch({
             <span className="bs-search-hint">
               {open
                 ? `Search ${items.length} components`
-                : "A little room to find things."}
+                : "Find a component in your workspace."}
             </span>
           )}
         </div>
@@ -789,7 +789,9 @@ export function RollingCounter({
           <Plus size={17} strokeWidth={1.8} />
         </motion.button>
       </div>
-      <span className="bs-counter-hint">Every little increment.</span>
+      <span className="bs-counter-hint">
+        Range {low}–{high}
+      </span>
     </div>
   );
 }

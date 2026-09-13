@@ -351,16 +351,16 @@ export function MorphingMenu({
 
 const accordionItems = [
   {
-    title: "Can I use this in my project?",
-    body: "Yes. Copy the component and its styles, then make it your own.",
+    title: "Project overview",
+    body: "Website refresh, shared components, and documentation.",
   },
   {
-    title: "Does it work with a keyboard?",
-    body: "Tab to a heading. Press Enter or Space to open and close it.",
+    title: "Project files",
+    body: "The brief, design files, and implementation notes are kept together.",
   },
   {
-    title: "Can I change the motion?",
-    body: "Set the speed to suit your interface. Reduced motion is respected automatically.",
+    title: "Release notes",
+    body: "Review the changes and resolved issues included in the latest version.",
   },
 ];
 

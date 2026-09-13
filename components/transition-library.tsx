@@ -12,9 +12,9 @@ import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import {
   ArrowUpRight,
   Braces,
+  ChevronDown,
   Gauge,
   RotateCcw,
-  SlidersHorizontal,
 } from "lucide-react";
 import {
   StateButton,
@@ -32,7 +32,13 @@ import {
   ToastStack,
 } from "@/components/transitions/surfaces";
 import { MorphingIconButton } from "@/components/transitions/icons";
-import { MotionComparison } from "@/components/motion-comparison";
+import { InlineEdit } from "@/components/transitions/inline-edit";
+import { AnimatedList } from "@/components/transitions/animated-list";
+import { SelectionToolbar } from "@/components/transitions/selection-toolbar";
+import {
+  MotionComparison,
+  comparisonCount,
+} from "@/components/motion-comparison";
 import { GithubMark } from "@/components/github-mark";
 import { Brand } from "@/components/brand";
 import { TransitionInspector } from "@/components/transition-inspector";
@@ -44,6 +50,9 @@ import "@/components/transitions/selection.css";
 import "@/components/transitions/surfaces.css";
 
 const components = {
+  InlineEdit,
+  AnimatedList,
+  SelectionToolbar,
   StateButton,
   TextSwap,
   CopyButton,
@@ -56,6 +65,9 @@ const components = {
   MorphingIconButton,
 };
 const collectionOrder = [
+  "inline-edit",
+  "animated-list",
+  "selection-toolbar",
   "sliding-tabs",
   "expanding-search",
   "state-button",
@@ -75,7 +87,7 @@ const transitions = catalog
   .sort(
     (a, b) => collectionOrder.indexOf(a.id) - collectionOrder.indexOf(b.id),
   );
-const categories = ["All", "Feedback", "Navigation", "Surfaces"];
+const categories = ["All", ...new Set(catalog.map((item) => item.category))];
 const readHash = () => window.location.hash;
 const serverHash = () => "";
 
@@ -151,24 +163,16 @@ export function TransitionLibrary() {
           </nav>
         </header>
         <section className="tl-intro">
-          <h1>
-            Interfaces,
-            <br />
-            in motion.
-          </h1>
+          <div>
+            <h1>Interfaces, in motion.</h1>
+            <p>Useful transitions. Source you can make your own.</p>
+          </div>
           <div className="tl-intro-detail">
-            <p>
-              Carefully made transitions for the interfaces you already have.
-              Try them here. Take the source. Make them yours.
-            </p>
             <div className="tl-intro-actions">
               <Link href="/agents" className="tl-agent-button">
                 <Braces size={16} /> Install the skill{" "}
                 <ArrowUpRight size={14} />
               </Link>
-              <span className="tl-intro-note">
-                React. Motion. Yours to adapt.
-              </span>
             </div>
           </div>
         </section>
@@ -177,9 +181,9 @@ export function TransitionLibrary() {
             Components <span aria-hidden="true">{catalog.length}</span>
           </a>
           <a href="#compare" aria-current={comparing ? "page" : undefined}>
-            Compare motion <span aria-hidden="true">6</span>
+            Compare motion <span aria-hidden="true">{comparisonCount}</span>
           </a>
-          <span className="tl-view-hint">Interact. Inspect. Adapt.</span>
+          <span className="tl-view-hint">React + Motion</span>
         </nav>
         {!comparing && (
           <p className="tl-motion-notice" role="status">
@@ -239,6 +243,20 @@ export function TransitionLibrary() {
                 </button>
               ))}
             </div>
+            <label className="tl-category-select">
+              <span className="sr-only">Filter components</span>
+              <select
+                value={category}
+                onChange={(event) => setCategory(event.target.value)}
+              >
+                {categories.map((name) => (
+                  <option key={name} value={name}>
+                    {name === "All" ? "All components" : name}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={13} aria-hidden="true" />
+            </label>
             <div className="tl-playback">
               <button
                 type="button"
@@ -278,18 +296,29 @@ export function TransitionLibrary() {
                         <h3>{item.name}</h3>
                         <p>{item.description}</p>
                       </div>
-                      <button
-                        type="button"
-                        className="tl-inspect"
-                        aria-label={`Customize ${item.name}`}
-                        onClick={(event) => {
-                          returnFocus.current = event.currentTarget;
-                          setSelectedId(item.id);
-                        }}
-                      >
-                        <SlidersHorizontal size={14} />
-                        <span>Customize</span>
-                      </button>
+                      <div className="tl-specimen-actions">
+                        {item.id !== "state-button" && (
+                          <button
+                            type="button"
+                            className="tl-replay"
+                            aria-label={`Replay ${item.name}`}
+                            onClick={() => replay(item.id)}
+                          >
+                            <RotateCcw size={13} />
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          className="tl-inspect"
+                          aria-label={`Customize ${item.name}`}
+                          onClick={(event) => {
+                            returnFocus.current = event.currentTarget;
+                            setSelectedId(item.id);
+                          }}
+                        >
+                          <span>Customize</span>
+                        </button>
+                      </div>
                     </div>
                     <div className={`tl-preview tl-preview-${item.id}`}>
                       <Demo
@@ -298,16 +327,6 @@ export function TransitionLibrary() {
                         radius={tuning.radius}
                         replayKey={replays[item.id] || 0}
                       />
-                      {item.id !== "state-button" && (
-                        <button
-                          type="button"
-                          className="tl-replay"
-                          aria-label={`Replay ${item.name}`}
-                          onClick={() => replay(item.id)}
-                        >
-                          <RotateCcw size={13} />
-                        </button>
-                      )}
                     </div>
                   </motion.article>
                 );

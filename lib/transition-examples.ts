@@ -194,6 +194,78 @@ export function PanelToggle({ open, onOpenChange, panelId, buttonRef }: {
 }`,
       );
 
+    case "inline-edit":
+      return example(
+        'import { useState } from "react";',
+        `export function RenameProject({ initialName, saveName }: {
+  initialName: string;
+  saveName: (name: string) => Promise<void>;
+}) {
+  const [name, setName] = useState(initialName);
+  return (
+    <InlineEdit
+      value={name}
+      label="Project name"
+      validate={(draft) => draft.trim() ? undefined : "Enter a project name."}
+      onCommit={async (draft) => {
+        await saveName(draft);
+        setName(draft);
+      }}
+      ${motion}
+    />
+  );
+}`,
+      );
+
+    case "animated-list":
+      return example(
+        'import type { ReactNode } from "react";',
+        `// Keep insertion, sorting, and row actions in the host application.
+export function FileResults({ files }: {
+  files: readonly { id: string; content: ReactNode }[];
+}) {
+  return (
+    <AnimatedList
+      items={files}
+      ariaLabel="Project files"
+      emptyState={<p>No files match your filters.</p>}
+      ${motion}
+    />
+  );
+}`,
+      );
+
+    case "selection-toolbar":
+      return example(
+        'import type { Dispatch, RefObject, SetStateAction } from "react";',
+        `// Keep selection, archive results, and focus ownership in the host.
+export function FileActions({ selectedIds, setSelectedIds, archiveFiles, returnFocusRef }: {
+  selectedIds: readonly string[];
+  setSelectedIds: Dispatch<SetStateAction<readonly string[]>>;
+  archiveFiles: (ids: readonly string[]) => Promise<void>;
+  returnFocusRef: RefObject<HTMLElement | null>;
+}) {
+  return (
+    <SelectionToolbar
+      count={selectedIds.length}
+      actions={[{
+        id: "archive",
+        label: "Archive",
+        onSelect: async () => {
+          const submittedIds = [...selectedIds];
+          await archiveFiles(submittedIds);
+          const archived = new Set(submittedIds);
+          setSelectedIds((current) => current.filter((id) => !archived.has(id)));
+        },
+      }]}
+      onClear={() => setSelectedIds([])}
+      returnFocusRef={returnFocusRef}
+      ${motion}
+    />
+  );
+}`,
+      );
+
     default:
       throw new Error(`Missing integration example for "${item.id}".`);
   }

@@ -253,7 +253,7 @@ function ExpandingSearch({ items = defaultSearchItems, open: controlledOpen, def
             </motion.div>) : (<span className="bs-search-hint">
               {open
                 ? `Search ${items.length} components`
-                : "A little room to find things."}
+                : "Find a component in your workspace."}
             </span>)}
         </div>
       </motion.div>
