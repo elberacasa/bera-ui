@@ -8,13 +8,15 @@ import {
   useSyncExternalStore,
 } from "react";
 import Link from "next/link";
-import { AnimatePresence, motion, MotionConfig } from "motion/react";
+import { motion, MotionConfig } from "motion/react";
 import {
   ArrowUpRight,
   Braces,
   ChevronDown,
   Gauge,
   RotateCcw,
+  Search,
+  X,
 } from "lucide-react";
 import {
   StateButton,
@@ -35,6 +37,8 @@ import { MorphingIconButton } from "@/components/transitions/icons";
 import { InlineEdit } from "@/components/transitions/inline-edit";
 import { AnimatedList } from "@/components/transitions/animated-list";
 import { SelectionToolbar } from "@/components/transitions/selection-toolbar";
+import { PlaybackToggle } from "@/components/transitions/playback-toggle";
+import { ConfirmAction } from "@/components/transitions/confirm-action";
 import {
   MotionComparison,
   comparisonCount,
@@ -50,6 +54,8 @@ import "@/components/transitions/selection.css";
 import "@/components/transitions/surfaces.css";
 
 const components = {
+  PlaybackToggle,
+  ConfirmAction,
   InlineEdit,
   AnimatedList,
   SelectionToolbar,
@@ -65,6 +71,8 @@ const components = {
   MorphingIconButton,
 };
 const collectionOrder = [
+  "playback-toggle",
+  "confirm-action",
   "inline-edit",
   "animated-list",
   "selection-toolbar",
@@ -93,16 +101,19 @@ const serverHash = () => "";
 
 export function TransitionLibrary() {
   const [category, setCategory] = useState("All");
+  const [query, setQuery] = useState("");
   const [slow, setSlow] = useState(false);
   const [replays, setReplays] = useState<Record<string, number>>({});
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [settings, setSettings] = useState<Record<string, MotionTuning>>({});
   const returnFocus = useRef<HTMLButtonElement | null>(null);
+  const searchInput = useRef<HTMLInputElement | null>(null);
   const reduced = useMotionPreference();
   const subscribeNavigation = useCallback((notify: () => void) => {
     const onHashChange = () => {
       if (transitions.some((item) => `#${item.id}` === window.location.hash)) {
         setCategory("All");
+        setQuery("");
       }
       notify();
     };
@@ -111,6 +122,36 @@ export function TransitionLibrary() {
   }, []);
   const hash = useSyncExternalStore(subscribeNavigation, readHash, serverHash);
   const comparing = hash === "#compare" || hash.startsWith("#compare-");
+
+  useEffect(() => {
+    const focusSearch = (event: KeyboardEvent) => {
+      if (
+        event.defaultPrevented ||
+        comparing ||
+        selectedId ||
+        event.key !== "/" ||
+        event.repeat ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.altKey ||
+        event.isComposing
+      )
+        return;
+      const target = event.target;
+      if (
+        target instanceof HTMLElement &&
+        (target.isContentEditable ||
+          target.closest(
+            "a, button, input, textarea, select, summary, audio, video, [role='textbox'], [tabindex]:not([tabindex='-1'])",
+          ))
+      )
+        return;
+      event.preventDefault();
+      searchInput.current?.focus();
+    };
+    window.addEventListener("keydown", focusSearch);
+    return () => window.removeEventListener("keydown", focusSearch);
+  }, [comparing, selectedId]);
 
   useEffect(() => {
     if (!hash) return;
@@ -122,13 +163,22 @@ export function TransitionLibrary() {
     });
     return () => cancelAnimationFrame(frame);
   }, [hash]);
-  const shown = useMemo(
-    () =>
-      transitions.filter(
-        (item) => category === "All" || item.category === category,
-      ),
-    [category],
-  );
+  const shown = useMemo(() => {
+    const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    return transitions.filter((item) => {
+      if (category !== "All" && item.category !== category) return false;
+      const text = [
+        item.id,
+        item.name,
+        item.description,
+        item.category,
+        item.when,
+      ]
+        .join(" ")
+        .toLowerCase();
+      return terms.every((term) => text.includes(term));
+    });
+  }, [category, query]);
   const selected = transitions.find((item) => item.id === selectedId) ?? null;
   function replay(id: string) {
     setReplays((current) => ({ ...current, [id]: (current[id] || 0) + 1 }));
@@ -257,6 +307,41 @@ export function TransitionLibrary() {
               </select>
               <ChevronDown size={13} aria-hidden="true" />
             </label>
+            <div className="tl-search">
+              <Search size={15} aria-hidden="true" />
+              <input
+                ref={searchInput}
+                type="search"
+                name="transition-search"
+                aria-label="Find a transition"
+                aria-keyshortcuts="/"
+                placeholder="Find a transition…"
+                autoComplete="off"
+                spellCheck={false}
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Escape" && query) {
+                    event.preventDefault();
+                    setQuery("");
+                  }
+                }}
+              />
+              {query ? (
+                <button
+                  type="button"
+                  aria-label="Clear search"
+                  onClick={() => {
+                    setQuery("");
+                    searchInput.current?.focus();
+                  }}
+                >
+                  <X size={14} aria-hidden="true" />
+                </button>
+              ) : (
+                <kbd aria-hidden="true">/</kbd>
+              )}
+            </div>
             <div className="tl-playback">
               <button
                 type="button"
@@ -270,71 +355,84 @@ export function TransitionLibrary() {
               </button>
             </div>
           </div>
-          <motion.div
-            className="tl-grid"
-            layout
-            transition={{ duration: reduced ? 0 : 0.22 }}
-          >
-            <AnimatePresence initial={false} mode="popLayout">
-              {shown.map((item) => {
-                const Demo = item.component;
-                const tuning = settings[item.id] ?? defaultTuning;
-                return (
-                  <motion.article
-                    id={item.id}
-                    key={item.id}
-                    layout
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: reduced ? 0 : 0.2 }}
-                    className="tl-specimen"
-                    tabIndex={-1}
-                  >
-                    <div className="tl-caption">
-                      <div>
-                        <h3>{item.name}</h3>
-                        <p>{item.description}</p>
-                      </div>
-                      <div className="tl-specimen-actions">
-                        {item.id !== "state-button" && (
-                          <button
-                            type="button"
-                            className="tl-replay"
-                            aria-label={`Replay ${item.name}`}
-                            onClick={() => replay(item.id)}
-                          >
-                            <RotateCcw size={13} />
-                          </button>
-                        )}
+          <p className="sr-only" role="status">
+            {query
+              ? `${shown.length} ${shown.length === 1 ? "transition" : "transitions"} found for ${query}.`
+              : ""}
+          </p>
+          <div className="tl-grid">
+            {shown.map((item) => {
+              const Demo = item.component;
+              const tuning = settings[item.id] ?? defaultTuning;
+              return (
+                <article
+                  id={item.id}
+                  key={item.id}
+                  className="tl-specimen"
+                  tabIndex={-1}
+                >
+                  <div className="tl-caption">
+                    <div>
+                      <h3>{item.name}</h3>
+                      <p>{item.description}</p>
+                    </div>
+                    <div className="tl-specimen-actions">
+                      {item.id !== "state-button" && (
                         <button
                           type="button"
-                          className="tl-inspect"
-                          aria-label={`Customize ${item.name}`}
-                          onClick={(event) => {
-                            returnFocus.current = event.currentTarget;
-                            setSelectedId(item.id);
-                          }}
+                          className="tl-replay"
+                          aria-label={`Replay ${item.name}`}
+                          onClick={() => replay(item.id)}
                         >
-                          <span>Customize</span>
+                          <RotateCcw size={13} />
                         </button>
-                      </div>
+                      )}
+                      <button
+                        type="button"
+                        className="tl-inspect"
+                        aria-label={`Customize ${item.name}`}
+                        onClick={(event) => {
+                          returnFocus.current = event.currentTarget;
+                          setSelectedId(item.id);
+                        }}
+                      >
+                        <span>Customize</span>
+                      </button>
                     </div>
-                    <div className={`tl-preview tl-preview-${item.id}`}>
-                      <Demo
-                        preview
-                        speed={tuning.tempo * (slow ? 0.35 : 1)}
-                        radius={tuning.radius}
-                        replayKey={replays[item.id] || 0}
-                      />
-                    </div>
-                  </motion.article>
-                );
-              })}
-            </AnimatePresence>
-          </motion.div>
+                  </div>
+                  <div className={`tl-preview tl-preview-${item.id}`}>
+                    <Demo
+                      preview
+                      speed={tuning.tempo * (slow ? 0.35 : 1)}
+                      radius={tuning.radius}
+                      replayKey={replays[item.id] || 0}
+                    />
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+          {shown.length === 0 && (
+            <div className="tl-empty">
+              <h3>No transitions found</h3>
+              <p>Try a different name, action, or category.</p>
+              <button
+                type="button"
+                onClick={() => {
+                  setQuery("");
+                  setCategory("All");
+                  searchInput.current?.focus();
+                }}
+              >
+                Clear filters
+              </button>
+            </div>
+          )}
           <div className="tl-collection-end">
-            <span>{shown.length} transitions, ready to adapt</span>
+            <span>
+              {shown.length} {shown.length === 1 ? "transition" : "transitions"}
+              , ready to adapt
+            </span>
             <Link href="https://github.com/elberacasa/bera-ui/issues">
               Suggest a transition <ArrowUpRight size={12} />
             </Link>

@@ -1,0 +1,26 @@
+.bc-playback-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  width: 100%;
+  min-width: 0;
+  min-height: 164px;
+}
+.bc-playback-control {
+  --bera-icon-button-size: 64px;
+  --bera-icon-size: 34px;
+}
+.bc-playback-caption {
+  display: grid;
+  gap: 7px;
+  width: 96px;
+}
+.bc-playback-caption > span {
+  color: #e3e3e3;
+  font-size: 16px;
+}
+.bc-playback-caption small {
+  color: #929292;
+  font-size: 12px;
+}

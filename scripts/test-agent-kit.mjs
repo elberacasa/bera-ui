@@ -18,11 +18,13 @@ const execute = promisify(execFile);
 const EXPECTED_IDS = [
   "accordion",
   "animated-list",
+  "confirm-action",
   "copy-button",
   "expanding-search",
   "inline-edit",
   "morphing-icon-button",
   "morphing-menu",
+  "playback-toggle",
   "rolling-counter",
   "selection-toolbar",
   "sliding-tabs",
@@ -177,6 +179,10 @@ function unpackArchive(compressed) {
 }
 
 const CONSUMER_PROPS = {
+  "playback-toggle":
+    'playing={false} onPlayingChange={value => update(Number(value))} labels={{ play: "Play", pause: "Pause" }} disabled={false} buttonRef={{ current: null }}',
+  "confirm-action":
+    'onConfirm={save} label="Archive project" confirmLabel="Archive" cancelLabel="Cancel" pendingLabel="Archiving…" successLabel="Archived"',
   "morphing-icon-button":
     'pressed={false} onPressedChange={value => update(Number(value))} label="Navigation" aria-controls="navigation-panel" disabled={false}',
   "state-button": "onAction={save}",
@@ -366,6 +372,115 @@ async function main() {
       assert.deepEqual(output.transitions, catalog.transitions);
       assert.deepEqual(output.adapters, catalog.adapters);
     });
+    await check(
+      "search matches IDs, use cases, every query word, and category filters",
+      async () => {
+        const exact = await runInstaller(installer, ["search", "STATE-BUTTON"]);
+        assert.deepEqual(exact, {
+          ok: true,
+          command: "search",
+          version: 2,
+          query: "STATE-BUTTON",
+          category: null,
+          transitions: [stateButton],
+          adapters: [],
+        });
+        const useCase = await runInstaller(installer, [
+          "search",
+          "  sUbMiT\tFeEdBaCk  ",
+          "--category",
+          "feedback",
+        ]);
+        assert.equal(useCase.query, "sUbMiT FeEdBaCk");
+        assert.deepEqual(useCase.transitions, [stateButton]);
+        assert.deepEqual(useCase.adapters, []);
+        const category = await runInstaller(installer, ["search", "Feedback"]);
+        assert.deepEqual(
+          category.transitions,
+          catalog.transitions.filter((item) => item.category === "Feedback"),
+        );
+        const text = await execute(process.execPath, [
+          installer,
+          "search",
+          "submit",
+        ]);
+        assert.ok(text.stdout.includes("Read: references/state-button.md"));
+        assert.ok(text.stdout.includes(stateButton.when));
+      },
+    );
+    await check(
+      "search distinguishes host adapters and returns stable empty results",
+      async () => {
+        const adapter = await runInstaller(installer, [
+          "search",
+          "RADIX",
+          "menu",
+          "--category",
+          "host integration",
+        ]);
+        assert.deepEqual(adapter.transitions, []);
+        assert.deepEqual(adapter.adapters, catalog.adapters);
+        assert.deepEqual(adapter.adapters[0].dependencies, []);
+        for (const args of [
+          ["search", "submit no-such-recipe-9f23"],
+          ["search", "submit", "--category", "Navigation"],
+          ["search", "submit", "--category", "Unknown category"],
+        ]) {
+          const empty = await runInstaller(installer, args);
+          assert.deepEqual(empty.transitions, []);
+          assert.deepEqual(empty.adapters, []);
+        }
+        assert.deepEqual(
+          await runInstaller(installer, [
+            "search",
+            "RADIX menu",
+            "--category",
+            "host integration",
+          ]),
+          adapter,
+        );
+      },
+    );
+    await check(
+      "search never writes or reads host packages and rejects invalid options",
+      async () => {
+        const root = await project();
+        await fs.writeFile(
+          path.join(root, "package.json"),
+          "invalid host JSON",
+        );
+        const before = await snapshot(root);
+        const beforeKit = await snapshot(kit);
+        const result = await execute(
+          process.execPath,
+          [installer, "search", "submit", "--json"],
+          { cwd: root },
+        );
+        assert.equal(JSON.parse(result.stdout).ok, true);
+        for (const args of [
+          ["search"],
+          ["search", "  "],
+          ["search", "submit", "--category", "  "],
+          ["search", "submit", "--category"],
+          ["search", "submit", "--project", root],
+          ["search", "submit", "--dry-run"],
+          [
+            "search",
+            "submit",
+            "--category",
+            "Feedback",
+            "--category",
+            "Navigation",
+          ],
+        ])
+          assert.equal(
+            (await runInstaller(installer, args, 1)).error.code,
+            "USAGE",
+          );
+        assert.deepEqual(await snapshot(root), before);
+        assert.deepEqual(await snapshot(kit), beforeKit);
+      },
+    );
     await check(
       "CSS adapter dry run and install preserve the host menu, theme, and packages",
       async () => {

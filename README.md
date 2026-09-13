@@ -26,36 +26,39 @@
 
 bera/ui is a motion library for React. Explore an interaction, adjust its feel, and bring the source into your product. Each recipe includes the component, its styles, and the guidance your coding agent needs to adapt it.
 
-<a href="https://bera-ui.vercel.app/#compare-animated-list">
+<a href="https://bera-ui.vercel.app/#compare-playback-toggle">
   <picture>
-    <source media="(prefers-reduced-motion: reduce)" srcset="assets/list-comparison.png" />
-    <img src="assets/list-comparison.gif" alt="The same project files reorder instantly without motion and move between positions with Bera" width="100%" />
+    <source media="(prefers-reduced-motion: reduce)" srcset="assets/motion-comparison.png" />
+    <img src="assets/motion-comparison.gif" alt="Play and pause icons reshape and project files reorder: instant changes without Bera alongside continuous transitions with Bera" width="100%" />
   </picture>
 </a>
 
-The same interface and shared state, using the [animated list recipe](https://bera-ui.vercel.app/#animated-list). Recorded in the real gallery at **0.35× playback**; [try it at normal speed](https://bera-ui.vercel.app/#compare-animated-list).
+The same interfaces and shared state, using the [play / pause](https://bera-ui.vercel.app/#playback-toggle) and [animated list](https://bera-ui.vercel.app/#animated-list) recipes. Recorded in the real gallery at **0.35× playback**; [try them at normal speed](https://bera-ui.vercel.app/#compare-playback-toggle).
 
 ## See what changes
 
-Seven live comparisons share the same content, styling, and application state on both sides. Their resting states match: use the action beside each example to see what motion changes. Jump directly to a pattern or inspect it with **0.35× slow playback**. On mobile, choose **Without bera** or **With bera**, then repeat the same action.
+Eight live comparisons share the same content, styling, and application state on both sides. Their resting states match: use the action beside each example to see what motion changes. Jump directly to a pattern or inspect it with **0.35× slow playback**. On mobile, choose **Without bera** or **With bera**, then repeat the same action.
 
-| Comparison                                                                | Use case                    | Without Bera                            | With Bera                                                     |
-| ------------------------------------------------------------------------- | --------------------------- | --------------------------------------- | ------------------------------------------------------------- |
-| [Animated list](https://bera-ui.vercel.app/#compare-animated-list)        | Organize project files      | Rows jump to their new positions.       | Stable items move as the list's space adjusts.                |
-| [Sliding tabs](https://bera-ui.vercel.app/#compare-sliding-tabs)          | Filter project files        | Selection switches instantly.           | The active indicator travels between tabs as content changes. |
-| [Accordion](https://bera-ui.vercel.app/#compare-accordion)                | Reveal workspace settings   | Content appears at its final height.    | The section opens and closes to its content height.           |
-| [Expanding search](https://bera-ui.vercel.app/#compare-expanding-search)  | Find a component            | The button becomes a field immediately. | The field grows from the button, then reveals its controls.   |
-| [Rolling counter](https://bera-ui.vercel.app/#compare-rolling-counter)    | Adjust team seats           | Digits change instantly.                | Changed digits roll in the direction of the adjustment.       |
-| [Morphing icon](https://bera-ui.vercel.app/#compare-morphing-icon-button) | Toggle workspace navigation | Menu and close shapes switch instantly. | The same SVG strokes reshape into the next icon.              |
-| [Text swap](https://bera-ui.vercel.app/#compare-text-swap)                | Preview review statuses     | The status text changes instantly.      | Words and their icon move through a sequenced handoff.        |
+| Comparison                                                                | Use case                    | Without Bera                            | With Bera                                                       |
+| ------------------------------------------------------------------------- | --------------------------- | --------------------------------------- | --------------------------------------------------------------- |
+| [Play / pause](https://bera-ui.vercel.app/#compare-playback-toggle)       | Control playback            | The icon changes to its next shape.     | The same SVG paths reshape continuously and reverse mid-motion. |
+| [Animated list](https://bera-ui.vercel.app/#compare-animated-list)        | Organize project files      | Rows jump to their new positions.       | Stable items move as the list's space adjusts.                  |
+| [Sliding tabs](https://bera-ui.vercel.app/#compare-sliding-tabs)          | Filter project files        | Selection switches instantly.           | The active indicator travels between tabs as content changes.   |
+| [Accordion](https://bera-ui.vercel.app/#compare-accordion)                | Reveal workspace settings   | Content appears at its final height.    | The section opens and closes to its content height.             |
+| [Expanding search](https://bera-ui.vercel.app/#compare-expanding-search)  | Find a component            | The button becomes a field immediately. | The field grows from the button, then reveals its controls.     |
+| [Rolling counter](https://bera-ui.vercel.app/#compare-rolling-counter)    | Adjust team seats           | Digits change instantly.                | Changed digits roll in the direction of the adjustment.         |
+| [Morphing icon](https://bera-ui.vercel.app/#compare-morphing-icon-button) | Toggle workspace navigation | Menu and close shapes switch instantly. | The same SVG strokes reshape into the next icon.                |
+| [Text swap](https://bera-ui.vercel.app/#compare-text-swap)                | Preview review statuses     | The status text changes instantly.      | Words and their icon move through a sequenced handoff.          |
 
 - **Try it.** Interactive previews, replay, and slow playback reveal how each transition works.
 - **Tune it.** Adjust timing and shape, then carry your settings into the integration.
 - **Make it yours.** Keep your components, content, design tokens, and application state.
 - **Keep the source.** Copy a single React export and its CSS. Edit them in your own project.
 
-## New in the collection
+## Featured recipes
 
+- [Play / pause](https://bera-ui.vercel.app/#playback-toggle): a reversible SVG morph that follows the host's real playback state.
+- [Confirm action](https://bera-ui.vercel.app/#confirm-action): unfold a compact action into confirmation, with safe cancellation and feedback from the actual operation.
 - [Inline edit](https://bera-ui.vercel.app/#inline-edit): edit short titles in place, with validation, cancellation, and feedback tied to the real save operation.
 - [Animated list](https://bera-ui.vercel.app/#animated-list): insert, remove, and reorder keyed content while keeping the host in charge of its data.
 - [Selection toolbar](https://bera-ui.vercel.app/#selection-toolbar): reveal bulk actions around a selection, with pending and failure states tied to actual callbacks.
@@ -129,9 +132,10 @@ The [agent guide](https://bera-ui.vercel.app/agents#registry), [machine-readable
 <details>
 <summary><strong>Install without shadcn</strong></summary>
 
-Download the [portable kit](https://bera-ui.vercel.app/bera-motion.tar.gz) and extract it into your project root. Then install a selected transition:
+Download the [portable kit](https://bera-ui.vercel.app/bera-motion.tar.gz) and extract it into your project root. Find a recipe by action, then install its ID:
 
 ```sh
+node bera-motion/install.mjs search "copy" --json
 node bera-motion/install.mjs add copy-button --project .
 ```
 

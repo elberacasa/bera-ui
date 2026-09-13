@@ -11,12 +11,14 @@ Start with the user's action and the states it connects. Improve that transition
 
 “Discover,” “review,” “apply,” and “refine” are natural-language requests, not installer commands.
 
-- **Discover:** Read [catalog.json](catalog.json), inspect the relevant host interface, and identify the closest recipe by use case.
+- **Discover:** Inspect the relevant host interface, then search the kit by action or use case. Read [catalog.json](catalog.json) for the complete index.
 - **Review:** Read the host implementation and [motion guidance](references/motion.md). Explain concrete problems in onset, continuity, interruption, or settlement.
 - **Apply:** Read [integration guidance](references/integration.md), then the selected catalog entry's `recipe`, `source`, and `styles` files. Choose between refining the host component and adding a standalone recipe.
 - **Refine:** Read the existing implementation and [motion guidance](references/motion.md). Tune the smallest relevant parameters and validate the resulting interaction.
 
 Use the catalog's actual IDs, use cases, dependencies, and paths. Its `transitions` are standalone recipes; its `adapters` apply motion to existing primitives. Load only the selected entry's guidance and declared files. Do not assume every entry includes a React component.
+
+From this kit directory, run `node install.mjs search "submit" --category Feedback --json`. Search is read-only, matches every query word across names and use cases, and returns the existing recipe and source paths. Omit `--category` to search the whole kit. Use `node install.mjs list --json` to browse all entries; an empty search result is not a reason to invent a recipe ID.
 
 For an existing Radix/shadcn dropdown, read [Radix menu motion](references/radix-menu-motion.md). The CSS adapter preserves `Content` and `SubContent` and adds no dependencies. Confirm the primitive is Radix before applying it; the Base UI implementation has a different contract.
 

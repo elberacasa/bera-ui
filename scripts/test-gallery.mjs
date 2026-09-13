@@ -292,6 +292,7 @@ try {
   );
 
   const patterns = [
+    ["playback-toggle", ".bc-playback-control", "aria-label"],
     ["animated-list", ".bc-list-preview ul", "text"],
     ["sliding-tabs", '[role="tab"][aria-selected="true"]', "text"],
     ["accordion", ".bt-accordion-trigger", "aria-expanded"],
@@ -543,7 +544,74 @@ try {
   await collection.locator("#animated-list").waitFor({ state: "visible" });
   passed("phone category picker reveals the selected component family");
 
+  const search = collection.getByRole("searchbox", {
+    name: "Find a transition",
+  });
+  await search.fill("PrOjEcT nAmEs");
+  await collection.locator("#inline-edit").waitFor({ state: "visible" });
+  await collection.locator("#animated-list").waitFor({ state: "hidden" });
+  await categoryPicker.selectOption("Actions");
+  await collection
+    .getByRole("heading", { name: "No transitions found", exact: true })
+    .waitFor();
+  await collection
+    .getByRole("button", { name: "Clear filters", exact: true })
+    .click();
+  assert.equal(await search.inputValue(), "");
+  assert.equal(await categoryPicker.inputValue(), "All");
+  assert.ok(await search.evaluate((input) => input === document.activeElement));
+  await search.fill("no matching recipe");
+  await collection
+    .getByRole("heading", { name: "No transitions found", exact: true })
+    .waitFor();
+  await search.press("Escape");
+  assert.equal(await search.inputValue(), "");
+  await componentsLink.focus();
+  await page.keyboard.press("/");
+  assert.ok(
+    await componentsLink.evaluate((link) => link === document.activeElement),
+    "Search must not take focus from another control",
+  );
+  await page.locator("#top").focus();
+  await page.keyboard.press("/");
+  assert.ok(await search.evaluate((input) => input === document.activeElement));
+  await search.fill("project");
+  await search.press("/");
+  assert.equal(
+    await search.inputValue(),
+    "project/",
+    "The shortcut must not intercept text entry",
+  );
+  await page.goto(`${origin}/#inline-edit`);
+  await collection.locator("#inline-edit").waitFor({ state: "visible" });
+  assert.equal(
+    await search.inputValue(),
+    "",
+    "Direct component links clear a conflicting search",
+  );
+  const searchOverflow = await collection
+    .locator(".tl-toolbar")
+    .evaluate((toolbar) => {
+      const bounds = toolbar.getBoundingClientRect();
+      return [...toolbar.querySelectorAll("button, input, select")]
+        .filter((node) => node.getClientRects().length)
+        .some((node) => {
+          const box = node.getBoundingClientRect();
+          return box.left < bounds.left - 1 || box.right > bounds.right + 1;
+        });
+    });
+  assert.equal(
+    searchOverflow,
+    false,
+    "Search and category controls must fit at320px",
+  );
+  passed(
+    "collection search finds use cases, combines categories, and preserves keyboard and direct-link behavior",
+  );
+
   for (const [id, name, exported] of [
+    ["playback-toggle", "Play / pause", "PlaybackToggle"],
+    ["confirm-action", "Confirm action", "ConfirmAction"],
     ["inline-edit", "Inline edit", "InlineEdit"],
     ["animated-list", "Animated list", "AnimatedList"],
     ["selection-toolbar", "Selection toolbar", "SelectionToolbar"],
@@ -554,7 +622,17 @@ try {
       .click();
     const workbench = page.getByRole("dialog", { name, exact: true });
     const sample = workbench.locator(".tl-tuning-preview");
-    if (id === "inline-edit") {
+    if (id === "playback-toggle") {
+      await sample.getByRole("button", { name: "Play", exact: true }).click();
+      await sample.getByRole("button", { name: "Pause", exact: true }).click();
+    } else if (id === "confirm-action") {
+      await sample
+        .getByRole("button", { name: "Archive project", exact: true })
+        .click();
+      await sample
+        .getByRole("button", { name: "Cancel", exact: true })
+        .waitFor();
+    } else if (id === "inline-edit") {
       await sample
         .getByRole("button", { name: "Edit project name", exact: true })
         .click();
@@ -702,6 +780,68 @@ try {
   );
   passed(
     "hydrated list comparison visibly animates while its baseline changes immediately",
+  );
+  await comparisons
+    .locator("#compare-playback-toggle")
+    .evaluate((row) =>
+      row.scrollIntoView({ block: "center", behavior: "instant" }),
+    );
+  const iconFrames = await page.evaluate(async () => {
+    const row = document.getElementById("compare-playback-toggle");
+    const paths = (side) =>
+      [...row.querySelectorAll(`.${side} [data-playback-path]`)].map((path) =>
+        path.getAttribute("d"),
+      );
+    const read = () => ({
+      without: paths("cx-without"),
+      with: paths("cx-with"),
+    });
+    const start = read();
+    row.querySelector(".cx-row-play").click();
+    const frames = [];
+    const began = performance.now();
+    await new Promise((resolve) => {
+      const sample = (now) => {
+        frames.push({ time: now - began, ...read() });
+        if (now - began < 2600) requestAnimationFrame(sample);
+        else resolve();
+      };
+      requestAnimationFrame(sample);
+    });
+    return { start, frames };
+  });
+  const finalIcon = iconFrames.frames.at(-1);
+  assert.equal(finalIcon.with.length, 2);
+  assert.deepEqual(
+    finalIcon.with,
+    finalIcon.without,
+    "SVG endpoints must match on both sides",
+  );
+  assert.notDeepEqual(
+    finalIcon.with,
+    iconFrames.start.with,
+    "The action must change the icon",
+  );
+  assert.ok(
+    iconFrames.frames.some((frame) =>
+      frame.with.some(
+        (path, index) =>
+          path !== iconFrames.start.with[index] &&
+          path !== finalIcon.with[index],
+      ),
+    ),
+    "Hydrated SVG paths must pass through intermediate shapes",
+  );
+  assert.ok(
+    iconFrames.frames
+      .filter((frame) => frame.time > 100)
+      .every((frame) =>
+        frame.without.every((path, index) => path === finalIcon.without[index]),
+      ),
+    "The instant SVG baseline must not interpolate",
+  );
+  passed(
+    "playback comparison uses continuous SVG geometry with an immediate baseline",
   );
   assert.deepEqual(errors, [], "The browser reported runtime errors");
   assert.deepEqual(

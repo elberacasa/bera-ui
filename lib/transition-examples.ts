@@ -15,6 +15,72 @@ export function transitionUsage(
     `"use client";\n\n${imports ? `${imports}\n` : ""}${component}\n\n${body}\n`;
 
   switch (item.id) {
+    case "confirm-action":
+      return example(
+        "",
+        `// Resolve only when the archive succeeds; reject with a useful error.
+export function ArchiveProject({ projectId, archiveProject }: {
+  projectId: string;
+  archiveProject: (id: string) => Promise<void>;
+}) {
+  return (
+    <ConfirmAction
+      key={projectId}
+      label="Archive project"
+      confirmLabel="Archive"
+      onConfirm={() => archiveProject(projectId)}
+      ${motion}
+    />
+  );
+}`,
+      );
+    case "playback-toggle":
+      return example(
+        'import { useRef, useState } from "react";',
+        `export function VideoPreview({ src }: { src: string }) {
+  const video = useRef<HTMLVideoElement>(null);
+  const playbackRequest = useRef(0);
+  const [playing, setPlaying] = useState(false);
+  const [error, setError] = useState("");
+  return (
+    <div>
+      <video
+        ref={video}
+        src={src}
+        controls
+        playsInline
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        onEnded={() => setPlaying(false)}
+        onEmptied={() => {
+          playbackRequest.current += 1;
+          setPlaying(false);
+          setError("");
+        }}
+        aria-label="Video preview"
+      />
+      <PlaybackToggle
+        playing={playing}
+        onPlayingChange={(next) => {
+          const media = video.current;
+          if (!media) return;
+          const request = ++playbackRequest.current;
+          setError("");
+          if (next) {
+            void media.play().catch((error: unknown) => {
+              if (request !== playbackRequest.current || video.current !== media ||
+                  (error instanceof DOMException && error.name === "AbortError")) return;
+              setError("Playback could not start. Try the video's controls.");
+            });
+          } else media.pause();
+        }}
+        ${motion}
+      />
+      <p role="status">{error}</p>
+    </div>
+  );
+}`,
+      );
     case "state-button":
       return example(
         "",

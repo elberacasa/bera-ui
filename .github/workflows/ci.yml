@@ -67,6 +67,10 @@ jobs:
         run: npm exec --yes --package=playwright@1.62.1 -- node scripts/test-animated-list.mjs
       - name: Verify contextual selection actions
         run: npm exec --yes --package=playwright@1.62.1 -- node scripts/test-selection-toolbar.mjs
+      - name: Verify playback state and SVG reversal
+        run: npm exec --yes --package=playwright@1.62.1 -- node scripts/test-playback-toggle.mjs
+      - name: Verify explicit action confirmation
+        run: npm exec --yes --package=playwright@1.62.1 -- node scripts/test-confirm-action.mjs
       - name: Build the gallery for browser verification
         run: npm run build
       - name: Verify gallery navigation, playback, and mobile customization
